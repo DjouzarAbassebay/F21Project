@@ -1,0 +1,31 @@
+format 221
+
+classcanvas 128002 class_ref 128002 // Customer
+  simpleclassdiagramsettings end
+  xyz 85 160 2000
+end
+usecasecanvas 128130 usecase_ref 128002 // Order products
+  xyzwh 287 176 3005 64 32 label_xy 276 208
+end
+subject 128258 ""
+  xyzwh 220 111 2000 376 372
+classcanvas 128514 class_ref 128130 // Manager
+  simpleclassdiagramsettings end
+  xyz 84 360 2000
+end
+usecasecanvas 128642 usecase_ref 128130 // View report
+  xyzwh 282 377 3005 64 32 label_xy 281 409
+end
+usecasecanvas 128898 usecase_ref 128258 // Print menu
+  xyzwh 476 174 3005 64 32 label_xy 476 206
+end
+line 128386 ----
+  from ref 128002 z 3006 to ref 128130
+line 128770 ----
+  from ref 128514 z 3006 to ref 128642
+simplerelationcanvas 129026 simplerelation_ref 128002
+  from ref 128898 z 3006 to ref 128130
+end
+line 129154 ----
+  from ref 128514 z 3006 to ref 128898
+end
