@@ -1,4 +1,4 @@
-package Package;
+package com.company;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,16 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 public class Manager {
-    private static String ordersPath;
 
-    private static String menuPath;
+    private static String ordersPath = "orders.csv";
+    private static String menuPath = "menu.csv";
+    private static String reportPath = "reports";
+    public static Map<Object, Item> menu = new HashMap<> ();
+    public static List<Order> orders = new ArrayList<> ();
 
-    private static String reportPath;
 
-    public Map<Object, Item> menu = new HashMap<Object, Item> ();
+    public Manager() {
 
-    public List<Order> orders = new ArrayList<Order> ();
+    }
 
+
+    //Methods
     public void initializeOrders() {
     }
 
@@ -28,6 +32,17 @@ public class Manager {
     public void newOrder() {
     }
 
+    public void cancelOrder() {
+    }
+
+    public void validateOrder() {
+    }
+
+    public void updateStock() {
+    }
+
+
+    //Getters
     static String getOrdersPath() {
         // Automatically generated method. Please delete this comment before entering specific code.
         return ordersPath;
@@ -38,15 +53,13 @@ public class Manager {
         return menuPath;
     }
 
-    public void cancelOrder() {
+    static String getReportPath() {
+        // Automatically generated method. Please delete this comment before entering specific code.
+        return reportPath;
     }
 
-    public void validateOrder() {
-    }
 
-    public void updateStock() {
-    }
-
+    //Setters
     static void setMenuPath(String value) {
         // Automatically generated method. Please delete this comment before entering specific code.
         menuPath = value;
@@ -55,11 +68,6 @@ public class Manager {
     static void setOrdersPath(String value) {
         // Automatically generated method. Please delete this comment before entering specific code.
         ordersPath = value;
-    }
-
-    static String getReportPath() {
-        // Automatically generated method. Please delete this comment before entering specific code.
-        return reportPath;
     }
 
     static void setReportPath(String value) {
