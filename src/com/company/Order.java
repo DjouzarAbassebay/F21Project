@@ -6,9 +6,9 @@ import java.util.List;
 public class Order {
 
     private int customerID;
-    private int timestamp;
+    private String timestamp;
     private float price;
-    public List<Item> items = new ArrayList<Item> ();
+    public List<Item> items = new ArrayList<> ();
 
     public Order() {
 
@@ -18,19 +18,26 @@ public class Order {
     public void applyDiscount() {
     }
 
+    public void calculatePrice() {
+
+    }
+
     public void addItem(Item item) {
+        items.add(item);
+        calculatePrice();
+        applyDiscount();
     }
 
     public void removeItem(Item item) {
+        items.remove(item); //Remove only the first occurence
     }
-
 
     //Getters
     int getCustomerID() {
         return this.customerID;
     }
 
-    int getTimestamp() {
+    String getTimestamp() {
         return this.timestamp;
     }
 
@@ -44,7 +51,7 @@ public class Order {
         this.customerID = value;
     }
 
-    void setTimestamp(int value) {
+    void setTimestamp(String value) {
         this.timestamp = value;
     }
 

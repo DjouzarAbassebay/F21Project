@@ -50,4 +50,12 @@ public class Item {
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + description + "\n"
+               + "Category: " + category + "\n"
+               + "Cost: " + cost + "\n"
+               + "Stock: " + stock + "\n\n";
+    }
 }
