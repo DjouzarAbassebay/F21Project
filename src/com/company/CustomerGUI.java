@@ -129,6 +129,7 @@ public class CustomerGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String item = (String) menuBox.getSelectedItem();
                 orderItemsList.addElement(item);
+
             }
         });
 
