@@ -8,7 +8,7 @@ public class Order {
     private int customerID;
     private String timestamp;
     private float price;
-    public List<Item> items = new ArrayList<> ();
+    List<Item> items = new ArrayList<> ();
 
     public Order() {
 
@@ -56,7 +56,7 @@ public class Order {
     }
 
     void setPrice(float value) {
-        this.price = value;
+        this.price += value;
     }
 
 }

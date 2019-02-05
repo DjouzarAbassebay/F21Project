@@ -47,8 +47,10 @@ public class Item {
         this.cost = cost;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setStock(int variation) {
+
+            this.stock+=variation;
+
     }
 
     @Override

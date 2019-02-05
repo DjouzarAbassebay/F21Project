@@ -14,7 +14,7 @@ public class Manager {
     public static Map<String, Item> menu = new HashMap<> ();
     public static List<Order> orders = new ArrayList<> ();
 
-    private Order currentOrder;
+    static Order currentOrder;
 
 
     public Manager() {
@@ -23,7 +23,6 @@ public class Manager {
 
         viewMenu();
     }
-
 
     //Methods
     public void initializeOrders() {
@@ -54,22 +53,30 @@ public class Manager {
     }
 
     public void cancelOrder() {
-        updateStock();
+        for(Item item: currentOrder.items)
+        {
+            item.setStock(1);
+        }
     }
 
     public void validateOrder() {
         Order lastOrder = orders.get(orders.size()-1);
         int customerID = lastOrder.getCustomerID() + 1;
         currentOrder.setCustomerID(customerID);
-
         currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
-
         orders.add(currentOrder);
     }
 
-    public void updateStock() {
-    }
+    public boolean updateOrder(){
+        if(currentOrder.items.get(currentOrder.items.size()-1).getStock()>0) {
+            currentOrder.setPrice(currentOrder.items.size()-1);
+            currentOrder.items.get(currentOrder.items.size()-1).setStock(-1);
+            return true;
+        }
 
+        System.out.println("Item out of stock");
+        return false;
+    }
 
     //Getters
     static String getOrdersPath() {
