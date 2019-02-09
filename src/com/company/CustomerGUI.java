@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import static javax.swing.GroupLayout.Alignment.LEADING;
 
@@ -31,7 +32,8 @@ public class CustomerGUI extends JFrame {
     private JButton finishButton;
 
     private JComboBox menuBox;
-    private String[] itemList;
+    //private String[] itemList;
+    private ArrayList<String> itemList;
 
     private JList<String> orderItems;
     private DefaultListModel<String> orderItemsList;
@@ -62,8 +64,13 @@ public class CustomerGUI extends JFrame {
 
         // Sub 1
         menuLabel = new JLabel("Menu : ");
-        itemList = new String[]{"Water  1£", "Tea  1£", "Ice Tea  1£", "Cheese Burger  3£", "Muffins  3£", "Cookies  2£"};
-        menuBox = new JComboBox<>(itemList);
+        itemList = new ArrayList<String>();
+
+        //for (Item item : Manager.menu.values()){
+        for (Item item : Manager.menu.values()){
+            itemList.add(item.getDescription() + "  " + item.getCost() + "£");
+        }
+        menuBox = new JComboBox<>(itemList.toArray());
 
         // Create a label with an associated text
         instructionsLabel = new JLabel("Please in the menu select and add items to your order !");
