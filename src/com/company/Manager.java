@@ -25,8 +25,7 @@ public class Manager {
     }
 
     //Methods
-    public void initializeOrders() {
-    }
+
 
     public void initializeMenu() {
         try{
@@ -39,6 +38,46 @@ public class Manager {
                 String category = words[0].split("_")[0];
                 Item item = new Item(words[1],category,Float.parseFloat(words[2]),Integer.parseInt(words[3]));
                 menu.put(words[0], item);
+            }
+        }
+        catch(FileNotFoundException e) {e.printStackTrace();}
+        catch (IOException e) {e.printStackTrace();}
+    }
+
+
+    public void initializeOrders() {
+        try{
+            FileInputStream fileInputStream = new FileInputStream(ordersPath);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line;
+
+            line = bufferedReader.readLine();
+
+            while(line != null) {
+
+                String[] words = line.split(";");
+
+                Order order = new Order();
+                order.setCustomerID(Integer.parseInt(words[0]));
+                order.setTimestamp(words[1]);
+                Item item = menu.get(words[2]);
+                order.addItem(item);
+
+                line = bufferedReader.readLine();
+                words = line.split(";");
+
+                while (Integer.parseInt(words[0]) != order.getCustomerID()) {
+                    item = menu.get(words[2]);
+                    order.addItem(item);
+                    line = bufferedReader.readLine();
+
+                    if (line!=null){
+                        words = line.split(";");
+                    }
+                }
+
+                orders.add(order);
             }
         }
         catch(FileNotFoundException e) {e.printStackTrace();}

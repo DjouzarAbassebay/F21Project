@@ -11,7 +11,6 @@ public class Order {
     List<Item> items = new ArrayList<> ();
 
     public Order() {
-
     }
 
 
@@ -19,7 +18,6 @@ public class Order {
     }
 
     public void calculatePrice() {
-
     }
 
     public void addItem(Item item) {
