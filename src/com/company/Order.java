@@ -23,7 +23,10 @@ public class Order {
     }
 
     public void calculatePrice() {
-
+        price = 0;
+        for(Item item : items) {
+            price += item.getCost();
+        }
     }
 
     public void addItem(Item item) {

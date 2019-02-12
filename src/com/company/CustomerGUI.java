@@ -174,6 +174,7 @@ public class CustomerGUI extends JFrame {
                     System.out.print(manager.currentOrder.items.get(i));
                 }
 
+                System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
             }
         });
 
@@ -231,6 +232,7 @@ public class CustomerGUI extends JFrame {
 
                     manager.validateCurrentOrder();
                     //Manager.displayOrders();
+                    orderItemsList.removeAllElements();
                 }
                 else {
                     JOptionPane.showMessageDialog(null, "GOODBYE");
