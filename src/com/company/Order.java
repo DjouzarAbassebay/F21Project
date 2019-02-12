@@ -57,4 +57,12 @@ public class Order {
         this.price += value;
     }
 
+    @Override
+    public String toString() {
+        return "CustomerId " +  customerID + "\n"
+                + "Timestamp " + timestamp + "\n"
+                + "Price: " + price+ "\n"
+                + "Item: " + items.size() + "\n\n";
+    }
+
 }

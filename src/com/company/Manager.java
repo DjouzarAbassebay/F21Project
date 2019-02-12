@@ -22,6 +22,7 @@ public class Manager {
         initializeOrders();
 
         viewMenu();
+        viewOrders();
     }
 
     //Methods
@@ -67,13 +68,16 @@ public class Manager {
                 line = bufferedReader.readLine();
                 words = line.split(";");
 
-                while (Integer.parseInt(words[0]) != order.getCustomerID()) {
+                while (Integer.parseInt(words[0]) == order.getCustomerID()) {
                     item = menu.get(words[2]);
                     order.addItem(item);
                     line = bufferedReader.readLine();
 
                     if (line!=null){
                         words = line.split(";");
+                    }
+                    else{
+                        words[0] = "-1";
                     }
                 }
 
@@ -156,6 +160,13 @@ public class Manager {
             String value = menu.get(id).toString();
             System.out.println("ID: " + id);
             System.out.println(value);
+        }
+    }
+
+    public void viewOrders() {
+        for (int i=0; i< orders.size(); i++){
+            Order order = orders.get(i);
+            System.out.println(order);
         }
     }
 
