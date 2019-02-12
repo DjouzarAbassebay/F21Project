@@ -8,6 +8,10 @@ public class Order {
     private int customerID;
     private String timestamp;
     private float price;
+
+
+
+
     List<Item> items = new ArrayList<> ();
 
     public Order() {
@@ -44,6 +48,9 @@ public class Order {
     float getPrice() {
         return this.price;
     }
+    public List<Item> getItems() {
+        return items;
+    }
 
 
     //Setters
@@ -58,5 +65,9 @@ public class Order {
     void setPrice(float value) {
         this.price += value;
     }
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
 
 }
