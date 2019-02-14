@@ -39,15 +39,15 @@ public class Order {
     }
 
     //Getters
-    int getCustomerID() {
+    public int getCustomerID() {
         return this.customerID;
     }
 
-    String getTimestamp() {
+    public String getTimestamp() {
         return this.timestamp;
     }
 
-    float getPrice() {
+    public float getPrice() {
         return this.price;
     }
     public List<Item> getItems() {
@@ -56,15 +56,15 @@ public class Order {
 
 
     //Setters
-    void setCustomerID(int value) {
+    public void setCustomerID(int value) {
         this.customerID = value;
     }
 
-    void setTimestamp(String value) {
+    public void setTimestamp(String value) {
         this.timestamp = value;
     }
 
-    void setPrice(float value) {
+    public void setPrice(float value) {
         this.price += value;
     }
     public void setItems(List<Item> items) {
