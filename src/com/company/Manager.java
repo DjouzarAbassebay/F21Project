@@ -110,26 +110,19 @@ public class Manager {
 
         if (orders.isEmpty()) {
 
-            System.out.println("if");
-
             int customerID = 1;
             currentOrder.setCustomerID(customerID);
             currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
-
-
             orders.add(copyOrder(currentOrder));
 
 
         } else {
-
-            System.out.println("else");
 
             Order lastOrder = orders.get(orders.size() - 1);
             int customerID = lastOrder.getCustomerID() + 1;
             currentOrder.setCustomerID(customerID);
             currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
             orders.add(copyOrder(currentOrder));
-
 
 
         }
