@@ -156,15 +156,17 @@ public class CustomerGUI extends JFrame {
                 String item = (String) menuBox.getSelectedItem();
                 int itemIndex = menuBox.getSelectedIndex();
                 Item itemSelected;
+                itemSelected = manager.menu.get(itemIDList.get(itemIndex));
 
                 // Add the selected item name in the "Order Recap" List
+                if(itemSelected.getStock()>0)
                 orderItemsList.addElement(item);
 
                 // Print the selected item ID
                 System.out.print("\n" + itemIDList.get(itemIndex));
 
                 // Add the selected item in the current order
-                itemSelected = manager.menu.get(itemIDList.get(itemIndex));
+
                 manager.currentOrder.addItem(itemSelected);
                 //update order
                 manager.currentOrder.updateOrder();
@@ -188,10 +190,14 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = orderItems.getSelectedIndex();
+
                 if (index >= 0) {
+
                     // remove the item
                     orderItemsList.remove(index);
+                    manager.currentOrder.items.get(manager.currentOrder.items.size() - 1).setStock(1);
                     manager.currentOrder.items.remove(index);
+
 
                     //update order
                     manager.currentOrder.updateOrder();
@@ -221,7 +227,13 @@ public class CustomerGUI extends JFrame {
 
 
                 // Remove all elements in the current order
+                for(int i=0; i<manager.currentOrder.items.size(); i++)
+                {
+                    manager.currentOrder.items.get(i).setStock(1);
+                }
+
                 manager.currentOrder.items.clear();
+
 
                 //update order
                 manager.currentOrder.updateOrder();
