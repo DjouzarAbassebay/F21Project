@@ -44,15 +44,16 @@ public class CustomerGUI extends JFrame {
     private JList<String> orderItems;
     private DefaultListModel<String> orderItemsList;
     private float totalPrice = 0;
+    private JLabel totalPriceLabel;
 
     private Manager manager;
 
-    public CustomerGUI(Manager manager){
+    public CustomerGUI(Manager manager) {
         this.manager = manager;
         initUI();
     }
 
-    public void setTopPanel(){
+    public void setTopPanel() {
 
         welcomePanel = new JPanel();
         // Create a label with an associated text
@@ -60,11 +61,11 @@ public class CustomerGUI extends JFrame {
         // Add the label to the panel
         welcomePanel.add(welcomeLabel);
         // Draw a blue line around the panel
-        welcomePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Welcome Panel"));
+        welcomePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Welcome"));
 
     }
 
-    public void setMiddlePanel(){
+    public void setMiddlePanel() {
 
         instructionsPanel = new JPanel();
         itemSelectionPanel = new JPanel();
@@ -77,12 +78,12 @@ public class CustomerGUI extends JFrame {
         itemList = new ArrayList<String>();
         itemIDList = new ArrayList<String>();
 
-        for (Map.Entry<String, Item> entry : manager.menu.entrySet()){
+        for (Map.Entry<String, Item> entry : manager.menu.entrySet()) {
             itemList.add(entry.getValue().getDescription() + "\t  " + entry.getValue().getCost() + "£");
             itemIDList.add(entry.getKey());
         }
 
-        /*for(int i=0; i<itemIDList.size(); i++) {
+        /*for (int i = 0; i < itemIDList.size(); i++) {
             System.out.println(itemIDList.get(i));
         }*/
 
@@ -91,7 +92,7 @@ public class CustomerGUI extends JFrame {
         // Create a label with an associated text
         instructionsLabel = new JLabel("Please in the menu select and add items to your order !");
 
-        instructionsPanel.setLayout(new GridLayout(1,2));
+        instructionsPanel.setLayout(new GridLayout(1, 2));
 
         itemSelectionPanel.add(menuLabel);
         itemSelectionPanel.add(menuBox);
@@ -125,8 +126,13 @@ public class CustomerGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(orderItems);
 
         totalPrice = manager.currentOrder.getPrice();
-        JLabel totalPriceLabel = new JLabel("Total : " + totalPrice + " £" );
-        totalPriceLabel.setFont(new Font("totalPriceFont", Font.BOLD, 25));
+        totalPriceLabel = new JLabel("Total : " + totalPrice + " £" );
+        totalPriceLabel.setFont(new Font("HelveticaNeue", Font.BOLD, 25));
+
+        instructionsPanelSub2.setLayout(new BoxLayout(instructionsPanelSub2, BoxLayout.Y_AXIS));
+        scrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
+        totalPriceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        scrollPane.setPreferredSize(new Dimension(100, 200));
 
         instructionsPanelSub2.add(scrollPane);
         instructionsPanelSub2.add(totalPriceLabel);
@@ -136,13 +142,13 @@ public class CustomerGUI extends JFrame {
         instructionsPanel.add(instructionsPanelSub2);
 
         // Draw a blue line around the panel
-        instructionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Instructions Panel"));
+        instructionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Instructions"));
         instructionsPanelSub1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Menu"));
         instructionsPanelSub2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Order Recap"));
 
     }
 
-    public void setBottomPanel(){
+    public void setBottomPanel() {
 
         buttonsPanel = new JPanel();
 
@@ -157,25 +163,41 @@ public class CustomerGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String item = (String) menuBox.getSelectedItem();
                 int itemIndex = menuBox.getSelectedIndex();
+                Item itemSelected;
 
                 // Add the selected item name in the "Order Recap" List
                 orderItemsList.addElement(item);
 
                 // Print the selected item ID
-                System.out.print("\n"+ itemIDList.get(itemIndex));
+                System.out.print("\n" + itemIDList.get(itemIndex));
 
                 // Add the selected item in the current order
-                manager.currentOrder.addItem(manager.menu.get(itemIDList.get(itemIndex)));
+                itemSelected = manager.menu.get(itemIDList.get(itemIndex));
+                manager.currentOrder.addItem(itemSelected);
+                //update order
+                manager.currentOrder.updateOrder();
 
                 // Print the selected item
-                System.out.println("\n"+ manager.menu.get(itemIDList.get(itemIndex)));
+                System.out.println("\n" + manager.menu.get(itemIDList.get(itemIndex)));
 
                 // Print the current order items
                 System.out.println("Current Order Items");
-                for(int i=0; i<manager.currentOrder.items.size() ; i++) {
+                for (int i = 0; i < manager.currentOrder.items.size(); i++) {
                     System.out.print(manager.currentOrder.items.get(i));
                 }
-                //System.out.print(manager.currentOrder.getPrice());
+                // Set the price to the current order for th item selected
+                //manager.currentOrder.setPrice(itemSelected.getCost());
+
+
+                System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
+
+                totalPrice = manager.currentOrder.getPrice();
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        totalPriceLabel.setText("Total : " + totalPrice + " £");
+
+                    }
+                });
 
             }
         });
@@ -184,21 +206,14 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = orderItems.getSelectedIndex();
-
                 if (index >= 0) {
-
-                    String orderItem = orderItems.getSelectedValue();
-                    String[] orderItemDetails = orderItem.split("\t");
-                    String orderItemDescription = orderItemDetails[0];
-                    System.out.println("Deleted item : " + orderItemDescription);
-
+                    // remove the item
                     orderItemsList.remove(index);
+                    manager.currentOrder.items.remove(index);
 
-                    for(int i=0; i<manager.currentOrder.items.size(); i++){
-                        if(manager.currentOrder.items.get(i).getDescription().equals(orderItemDescription)){
-                            manager.currentOrder.items.remove(i);
-                        }
-                    }
+                    //update order
+                    manager.currentOrder.updateOrder();
+
                 } else {
                     JOptionPane.showMessageDialog(mainContainerPanel,
                             "Before clicking on the delete button, select the item(s) that you want to delete in the Order Recap.");
@@ -206,9 +221,19 @@ public class CustomerGUI extends JFrame {
 
                 // Print the current order items
                 System.out.println("Current Order Items");
-                for(int i=0; i<manager.currentOrder.items.size() ; i++) {
+                for (int i = 0; i < manager.currentOrder.items.size(); i++) {
                     System.out.print(manager.currentOrder.items.get(i));
                 }
+
+                System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
+
+                totalPrice = manager.currentOrder.getPrice();
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        totalPriceLabel.setText("Total : " + totalPrice + " £");
+
+                    }
+                });
 
             }
         });
@@ -219,15 +244,28 @@ public class CustomerGUI extends JFrame {
                 // Remove all elements in the "Order Recap" List
                 orderItemsList.removeAllElements();
 
-                // Remove all elements of the current order
+                // Remove all elements in the current order
                 manager.currentOrder.items.clear();
+
+                //update order
+                manager.currentOrder.updateOrder();
+
 
                 // Print the current order items
                 System.out.println("Current Order Items");
-                for(int i=0; i<manager.currentOrder.items.size() ; i++) {
+                for (int i = 0; i < manager.currentOrder.items.size(); i++) {
                     System.out.print(manager.currentOrder.items.get(i));
                 }
 
+                System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
+
+                totalPrice = manager.currentOrder.getPrice();
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        totalPriceLabel.setText("Total : " + totalPrice + " £");
+
+                    }
+                });
             }
         });
 
@@ -235,18 +273,14 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int reply;
-                reply = JOptionPane.showConfirmDialog(instructionsPanel, "If you have finished ordering please click on Yes, otherwise click on No.",
+                int reply = JOptionPane.showConfirmDialog(instructionsPanel, "If you have finished ordering please click on Yes, otherwise click on No.",
                         "Have you finished ordering ?", JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
 
                     manager.validateCurrentOrder();
                     //Manager.displayOrders();
-
-                    // Remove all elements in the "Order Recap" List
                     orderItemsList.removeAllElements();
                 }
-
             }
         });
 
@@ -257,7 +291,7 @@ public class CustomerGUI extends JFrame {
         buttonsPanel.add(finishButton);
 
         // Draw a blue line around the panel
-        buttonsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Buttons Panel"));
+        buttonsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Buttons"));
 
     }
 
@@ -276,7 +310,7 @@ public class CustomerGUI extends JFrame {
         settingsPanel.add(reportButton);
     }
 
-    public void initUI(){
+    public void initUI() {
 
         setTitle("Coffee Shop");
 
