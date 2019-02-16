@@ -25,11 +25,11 @@ public class Manager {
         initializeOrders();
 
         viewMenu();
-        viewOrders();
     }
 
     //Methods
-
+    public void initializeOrders() {
+    }
 
     public void initializeMenu() {
         try {
@@ -50,49 +50,6 @@ public class Manager {
         }
     }
 
-
-    public void initializeOrders() {
-        try{
-            FileInputStream fileInputStream = new FileInputStream(ordersPath);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-
-            line = bufferedReader.readLine();
-
-            while(line != null) {
-
-                String[] words = line.split(";");
-
-                Order order = new Order();
-                order.setCustomerID(Integer.parseInt(words[0]));
-                order.setTimestamp(words[1]);
-                Item item = menu.get(words[2]);
-                order.addItem(item);
-
-                line = bufferedReader.readLine();
-                words = line.split(";");
-
-                while (Integer.parseInt(words[0]) == order.getCustomerID()) {
-                    item = menu.get(words[2]);
-                    order.addItem(item);
-                    line = bufferedReader.readLine();
-
-                    if (line!=null){
-                        words = line.split(";");
-                    }
-                    else{
-                        words[0] = "-1";
-                    }
-                }
-
-                orders.add(order);
-            }
-        }
-        catch(FileNotFoundException e) {e.printStackTrace();}
-        catch (IOException e) {e.printStackTrace();}
-    }
-
     public void generateReport() {
     }
 
@@ -110,19 +67,26 @@ public class Manager {
 
         if (orders.isEmpty()) {
 
+            System.out.println("if");
+
             int customerID = 1;
             currentOrder.setCustomerID(customerID);
             currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
+
+
             orders.add(copyOrder(currentOrder));
 
 
         } else {
+
+            System.out.println("else");
 
             Order lastOrder = orders.get(orders.size() - 1);
             int customerID = lastOrder.getCustomerID() + 1;
             currentOrder.setCustomerID(customerID);
             currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
             orders.add(copyOrder(currentOrder));
+
 
 
         }
@@ -211,13 +175,6 @@ public class Manager {
         copy.setItems((List) newItems.clone());
 
         return copy;
-    }
-
-    public void viewOrders() {
-        for (int i=0; i< orders.size(); i++){
-            Order order = orders.get(i);
-            System.out.println(order);
-        }
     }
 
 }

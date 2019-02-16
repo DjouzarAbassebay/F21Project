@@ -19,6 +19,7 @@ public class CustomerGUI extends JFrame {
     private JPanel itemSelectionPanel;
     //private JPanel orderRecapPanel;
     private JPanel buttonsPanel;
+    private JPanel settingsPanel;
 
     private JPanel instructionsPanelSub1;
     private JPanel instructionsPanelSub2;
@@ -32,6 +33,7 @@ public class CustomerGUI extends JFrame {
     private JButton deleteButton;
     private JButton removeAllButton;
     private JButton finishButton;
+    private JButton reportButton;
 
     private JComboBox menuBox;
     //private String[] itemList;
@@ -41,15 +43,16 @@ public class CustomerGUI extends JFrame {
 
     private JList<String> orderItems;
     private DefaultListModel<String> orderItemsList;
+    private float totalPrice = 0;
 
     private Manager manager;
 
-    public CustomerGUI(Manager manager) {
+    public CustomerGUI(Manager manager){
         this.manager = manager;
         initUI();
     }
 
-    public void setTopPanel() {
+    public void setTopPanel(){
 
         welcomePanel = new JPanel();
         // Create a label with an associated text
@@ -61,7 +64,7 @@ public class CustomerGUI extends JFrame {
 
     }
 
-    public void setMiddlePanel() {
+    public void setMiddlePanel(){
 
         instructionsPanel = new JPanel();
         itemSelectionPanel = new JPanel();
@@ -74,27 +77,21 @@ public class CustomerGUI extends JFrame {
         itemList = new ArrayList<String>();
         itemIDList = new ArrayList<String>();
 
-        //for (Item item : Manager.menu.values()){
-        /*for (Item item : Manager.menu.values()){
-            itemList.add(item.getDescription() + "  " + item.getCost() + "£");
-            itemIDList.add(Manager.menu.entrySet());
-        }*/
-
-        for (Map.Entry<String, Item> entry : manager.menu.entrySet()) {
-            itemList.add(entry.getValue().getDescription() + "  " + entry.getValue().getCost() + "£");
+        for (Map.Entry<String, Item> entry : manager.menu.entrySet()){
+            itemList.add(entry.getValue().getDescription() + "\t  " + entry.getValue().getCost() + "£");
             itemIDList.add(entry.getKey());
         }
 
-        for (int i = 0; i < itemIDList.size(); i++) {
+        /*for(int i=0; i<itemIDList.size(); i++) {
             System.out.println(itemIDList.get(i));
-        }
+        }*/
 
         menuBox = new JComboBox<>(itemList.toArray());
 
         // Create a label with an associated text
         instructionsLabel = new JLabel("Please in the menu select and add items to your order !");
 
-        instructionsPanel.setLayout(new GridLayout(1, 2));
+        instructionsPanel.setLayout(new GridLayout(1,2));
 
         itemSelectionPanel.add(menuLabel);
         itemSelectionPanel.add(menuBox);
@@ -127,7 +124,12 @@ public class CustomerGUI extends JFrame {
         //orderItems.setPreferredSize(new Dimension(200, 200));
         JScrollPane scrollPane = new JScrollPane(orderItems);
 
+        totalPrice = manager.currentOrder.getPrice();
+        JLabel totalPriceLabel = new JLabel("Total : " + totalPrice + " £" );
+        totalPriceLabel.setFont(new Font("totalPriceFont", Font.BOLD, 25));
+
         instructionsPanelSub2.add(scrollPane);
+        instructionsPanelSub2.add(totalPriceLabel);
 
         // Add sub panels to the instructions panel
         instructionsPanel.add(instructionsPanelSub1);
@@ -140,7 +142,7 @@ public class CustomerGUI extends JFrame {
 
     }
 
-    public void setBottomPanel() {
+    public void setBottomPanel(){
 
         buttonsPanel = new JPanel();
 
@@ -155,32 +157,26 @@ public class CustomerGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String item = (String) menuBox.getSelectedItem();
                 int itemIndex = menuBox.getSelectedIndex();
-                Item itemSelected;
 
                 // Add the selected item name in the "Order Recap" List
                 orderItemsList.addElement(item);
 
                 // Print the selected item ID
-                System.out.print("\n" + itemIDList.get(itemIndex));
+                System.out.print("\n"+ itemIDList.get(itemIndex));
 
                 // Add the selected item in the current order
-                itemSelected = manager.menu.get(itemIDList.get(itemIndex));
-                manager.currentOrder.addItem(itemSelected);
-                //update order
-                manager.currentOrder.updateOrder();
+                manager.currentOrder.addItem(manager.menu.get(itemIDList.get(itemIndex)));
 
                 // Print the selected item
-                System.out.println("\n" + manager.menu.get(itemIDList.get(itemIndex)));
+                System.out.println("\n"+ manager.menu.get(itemIDList.get(itemIndex)));
 
                 // Print the current order items
                 System.out.println("Current Order Items");
-                for (int i = 0; i < manager.currentOrder.items.size(); i++) {
+                for(int i=0; i<manager.currentOrder.items.size() ; i++) {
                     System.out.print(manager.currentOrder.items.get(i));
                 }
-                // Set the price to the current order for th item selected
-                //manager.currentOrder.setPrice(itemSelected.getCost());
+                //System.out.print(manager.currentOrder.getPrice());
 
-                System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
             }
         });
 
@@ -188,27 +184,31 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = orderItems.getSelectedIndex();
-                if (index >= 0) {
-                    // remove the item
-                    orderItemsList.remove(index);
-                    manager.currentOrder.items.remove(index);
 
-                    //update order
-                    manager.currentOrder.updateOrder();
+                if (index >= 0) {
+
+                    String orderItem = orderItems.getSelectedValue();
+                    String[] orderItemDetails = orderItem.split("\t");
+                    String orderItemDescription = orderItemDetails[0];
+                    System.out.println("Deleted item : " + orderItemDescription);
+
+                    orderItemsList.remove(index);
+
+                    for(int i=0; i<manager.currentOrder.items.size(); i++){
+                        if(manager.currentOrder.items.get(i).getDescription().equals(orderItemDescription)){
+                            manager.currentOrder.items.remove(i);
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(mainContainerPanel,
+                            "Before clicking on the delete button, select the item(s) that you want to delete in the Order Recap.");
                 }
 
                 // Print the current order items
                 System.out.println("Current Order Items");
-                for (int i = 0; i < manager.currentOrder.items.size(); i++) {
+                for(int i=0; i<manager.currentOrder.items.size() ; i++) {
                     System.out.print(manager.currentOrder.items.get(i));
                 }
-
-                System.out.println("Current Order Items");
-                for (int i = 0; i < manager.currentOrder.items.size(); i++) {
-                    System.out.print(manager.currentOrder.items.get(i));
-                }
-
-                System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
 
             }
         });
@@ -219,22 +219,14 @@ public class CustomerGUI extends JFrame {
                 // Remove all elements in the "Order Recap" List
                 orderItemsList.removeAllElements();
 
-
-                // Remove all elements in the current order
+                // Remove all elements of the current order
                 manager.currentOrder.items.clear();
 
-                //update order
-                manager.currentOrder.updateOrder();
-
-
                 // Print the current order items
-
                 System.out.println("Current Order Items");
-                for (int i = 0; i < manager.currentOrder.items.size(); i++) {
+                for(int i=0; i<manager.currentOrder.items.size() ; i++) {
                     System.out.print(manager.currentOrder.items.get(i));
                 }
-
-                System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
 
             }
         });
@@ -242,21 +234,17 @@ public class CustomerGUI extends JFrame {
         finishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object optionArray[] = {"Validate", "Cancel"};
-                /*JOptionPane.showConfirmDialog(instructionsPanel, "If you have finished ordering please click on Validate, otherwise click on Cancel.",
-                        "Have you finished ordering ?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, optionArray, optionArray[0]);
 
-*/
-                int reply = JOptionPane.showConfirmDialog(instructionsPanel, "If you have finished ordering please click on Validate, otherwise click on Cancel.",
+                int reply;
+                reply = JOptionPane.showConfirmDialog(instructionsPanel, "If you have finished ordering please click on Yes, otherwise click on No.",
                         "Have you finished ordering ?", JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
 
                     manager.validateCurrentOrder();
                     //Manager.displayOrders();
+
+                    // Remove all elements in the "Order Recap" List
                     orderItemsList.removeAllElements();
-                } else {
-                    JOptionPane.showMessageDialog(null, "GOODBYE");
-                    System.exit(0);
                 }
 
             }
@@ -273,7 +261,22 @@ public class CustomerGUI extends JFrame {
 
     }
 
-    public void initUI() {
+    public void setSettingsPanel(){
+
+        settingsPanel = new JPanel();
+
+        reportButton = new JButton("Report");
+        reportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                manager.generateReport();
+            }
+        });
+
+        settingsPanel.add(reportButton);
+    }
+
+    public void initUI(){
 
         setTitle("Coffee Shop");
 
@@ -287,6 +290,7 @@ public class CustomerGUI extends JFrame {
         setTopPanel();
         setMiddlePanel();
         setBottomPanel();
+        setSettingsPanel();
 
         // Add the welcome panel to the main container panel
         constraints.ipady = 5;
@@ -312,6 +316,9 @@ public class CustomerGUI extends JFrame {
         constraints.weightx = 1;
         //constraints.weighty = 1;
         mainContainerPanel.add(buttonsPanel);
+
+        // Add the settings panel to the main container panel
+        mainContainerPanel.add(settingsPanel);
 
         // Add main container panel to the JFrame
         add(mainContainerPanel);
