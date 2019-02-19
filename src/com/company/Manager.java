@@ -40,7 +40,7 @@ public class Manager {
             while ((line = bufferedReader.readLine()) != null) {
                 String[] words = line.split(";");
                 String category = words[0].split("_")[0];
-                Item item = new Item(words[1], category, Float.parseFloat(words[2]), Integer.parseInt(words[3]));
+                Item item = new Item(words[1], words[2], category, Float.parseFloat(words[3]), Integer.parseInt(words[4]));
                 menu.put(words[0], item);
             }
         } catch (FileNotFoundException e) {
@@ -157,34 +157,34 @@ public class Manager {
     }
 
     //Getters
-     String getOrdersPath() {
+    String getOrdersPath() {
         // Automatically generated method. Please delete this comment before entering specific code.
         return ordersPath;
     }
 
-     String getMenuPath() {
+    String getMenuPath() {
         // Automatically generated method. Please delete this comment before entering specific code.
         return menuPath;
     }
 
-     String getReportPath() {
+    String getReportPath() {
         // Automatically generated method. Please delete this comment before entering specific code.
         return reportPath;
     }
 
 
     //Setters
-     void setMenuPath(String value) {
+    void setMenuPath(String value) {
         // Automatically generated method. Please delete this comment before entering specific code.
         menuPath = value;
     }
 
-     void setOrdersPath(String value) {
+    void setOrdersPath(String value) {
         // Automatically generated method. Please delete this comment before entering specific code.
         ordersPath = value;
     }
 
-     void setReportPath(String value) {
+    void setReportPath(String value) {
         // Automatically generated method. Please delete this comment before entering specific code.
         reportPath = value;
     }
@@ -219,5 +219,4 @@ public class Manager {
             System.out.println(order);
         }
     }
-
 }
