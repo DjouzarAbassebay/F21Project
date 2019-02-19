@@ -22,39 +22,35 @@ public class Order {
 
         for (int i = 0; i < items.size(); i++) {
 
-
             String category = items.get(i).getCategory();
 
-
             if (category.equals("Cold"))
-
-
                 number_cold += 1;
 
-
             if (category.equals("Hot"))
-
                 number_hot += 1;
 
-
             if (category.equals("Sandwishes"))
-
                 number_sandwishes += 1;
-
-
         }
 
-        if (number_hot >= 4)
-
+        if (number_hot >= 4) {
             price = (float) (0.9 * price);
+            double newPrice = Math.round(price * 100.0) / 100.0;
+            price = (float) newPrice;
+        }
 
+        if(number_cold>=1 && number_sandwishes>=1 && number_hot>=1) {
+            price = (float) (0.8 * price);
+            double newPrice = Math.round(price*100.0)/100.0;
+            price = (float) newPrice;
+        }
 
-        if(number_cold>=1 && number_sandwishes>=1 && number_hot>=1)
-           price = (float) (0.8 *price);
-
-        if(number_cold>=2 && number_sandwishes>=2)
-            price = (float) (0.8 *price);
-
+        if(number_cold>=2 && number_sandwishes>=2) {
+            price = (float) (0.8 * price);
+            double newPrice = Math.round(price * 100.0) / 100.0;
+            price = (float) newPrice;
+        }
     }
 
     public void calculatePrice() {
@@ -65,7 +61,13 @@ public class Order {
     }
 
     public void addItem(Item item) {
-        items.add(item);
+        if(item.getStock()>0)
+        {
+            item.setStock(-1);
+            items.add(item);
+        }
+        else
+            System.out.println("Sorry, we don't have this item anymore.");
 
     }
 

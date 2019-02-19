@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +15,9 @@ import static javax.swing.GroupLayout.Alignment.LEADING;
 
 public class CustomerGUI extends JFrame {
 
+    // Variables definition
+
+    // JPanels definition
     private JPanel mainContainerPanel;
     private JPanel welcomePanel;
     private JPanel instructionsPanel;
@@ -24,76 +29,87 @@ public class CustomerGUI extends JFrame {
     private JPanel instructionsPanelSub1;
     private JPanel instructionsPanelSub2;
 
+    // JLabels definition
     private JLabel welcomeLabel;
     private JLabel instructionsLabel;
     private JLabel menuLabel;
     //private JLabel orderRecapLabel;
+    private JLabel totalPriceLabel;
 
+    // JButtons definition
     private JButton addButton;
     private JButton deleteButton;
     private JButton removeAllButton;
     private JButton finishButton;
     private JButton reportButton;
 
-    private JComboBox menuBox;
-    //private String[] itemList;
+    // ArrayLists definition
     private ArrayList<String> itemList;
     private ArrayList<String> itemIDList;
 
+    // Manager definition
+    private Manager manager;
 
+    // All other attributs definition
+    private JComboBox menuBox;
     private JList<String> orderItems;
     private DefaultListModel<String> orderItemsList;
     private float totalPrice = 0;
-    private JLabel totalPriceLabel;
 
-    private Manager manager;
-
+    // CustomerGUI Constructor
     public CustomerGUI(Manager manager) {
         this.manager = manager;
         initUI();
     }
 
+    // This function sets the appearance and the functionalities of the top panel
     public void setTopPanel() {
 
+        // Initialize the welcome panel
         welcomePanel = new JPanel();
         // Create a label with an associated text
         welcomeLabel = new JLabel("Welcome to our coffee shop !");
-        // Add the label to the panel
+        // Add the label to the welcome panel
         welcomePanel.add(welcomeLabel);
-        // Draw a blue line around the panel
+        // Draw a blue line around the panel with the title "Welcome"
         welcomePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Welcome"));
 
     }
 
+    // This function sets the appearance and the functionalities of the middle panel
     public void setMiddlePanel() {
 
+        // Initialize the JPanels
         instructionsPanel = new JPanel();
         itemSelectionPanel = new JPanel();
 
         instructionsPanelSub1 = new JPanel();
         instructionsPanelSub2 = new JPanel();
 
-        // Sub 1
+        /////////// SUB 1
+
+        // Initialize the JLabel and the ArrayLists
         menuLabel = new JLabel("Menu : ");
         itemList = new ArrayList<String>();
         itemIDList = new ArrayList<String>();
 
+        // Add the description and the cost of each Item to the itemList ArrayList
+        // And add the key of each Item to the itemID ArrayList
         for (Map.Entry<String, Item> entry : manager.menu.entrySet()) {
             itemList.add(entry.getValue().getDescription() + "\t  " + entry.getValue().getCost() + "£");
             itemIDList.add(entry.getKey());
         }
 
-        /*for (int i = 0; i < itemIDList.size(); i++) {
-            System.out.println(itemIDList.get(i));
-        }*/
-
+        // Fill the JComboBox with the itemList
         menuBox = new JComboBox<>(itemList.toArray());
 
-        // Create a label with an associated text
+        // Create a label with an associated text to give instructions to the user
         instructionsLabel = new JLabel("Please in the menu select and add items to your order !");
 
+        // Set the instructions Panel as a grid of 1 row and 2 columns
         instructionsPanel.setLayout(new GridLayout(1, 2));
 
+        // In the itemSelection panel, add a label and the JComboBox to select items
         itemSelectionPanel.add(menuLabel);
         itemSelectionPanel.add(menuBox);
 
@@ -104,6 +120,7 @@ public class CustomerGUI extends JFrame {
         instructionsPanelSub1.setLayout(instructionsGroupLayout);
 
         // instructionsGroupLayout Settings
+        // Used to define the position of the components of instructionsGroupLayout
         instructionsGroupLayout.setAutoCreateContainerGaps(true);
         instructionsGroupLayout.setAutoCreateGaps(true);
         instructionsGroupLayout.setVerticalGroup(instructionsGroupLayout.createSequentialGroup()
@@ -117,23 +134,30 @@ public class CustomerGUI extends JFrame {
                 )
         );
 
-        // Sub 2
+        ////////// SUB 2
+
+        // Initialize the DefaultListModel and the JList
         orderItemsList = new DefaultListModel<>();
         orderItems = new JList(orderItemsList);
 
+        // Set the orderItems JList to be able to select only one item on click
         orderItems.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //orderItems.setPreferredSize(new Dimension(200, 200));
         JScrollPane scrollPane = new JScrollPane(orderItems);
 
+        // Get the price of the current order and set it in a label
         totalPrice = manager.currentOrder.getPrice();
         totalPriceLabel = new JLabel("Total : " + totalPrice + " £" );
         totalPriceLabel.setFont(new Font("HelveticaNeue", Font.BOLD, 25));
 
+        // Set a BoxLayout on instructionsPanelSub2
+        // And set the positions of all the components in instructionsPanelSub2
         instructionsPanelSub2.setLayout(new BoxLayout(instructionsPanelSub2, BoxLayout.Y_AXIS));
         scrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
         totalPriceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         scrollPane.setPreferredSize(new Dimension(100, 200));
 
+        // Add the scrollPane and totalPriceLabel in instructionsPanelSub2
         instructionsPanelSub2.add(scrollPane);
         instructionsPanelSub2.add(totalPriceLabel);
 
@@ -141,13 +165,14 @@ public class CustomerGUI extends JFrame {
         instructionsPanel.add(instructionsPanelSub1);
         instructionsPanel.add(instructionsPanelSub2);
 
-        // Draw a blue line around the panel
+        // Draw a blue line around each panel with an associated title
         instructionsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Instructions"));
         instructionsPanelSub1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Menu"));
         instructionsPanelSub2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Order Recap"));
 
     }
 
+    // This function sets the appearance and the functionalities of the bottom panel
     public void setBottomPanel() {
 
         buttonsPanel = new JPanel();
@@ -158,23 +183,30 @@ public class CustomerGUI extends JFrame {
         removeAllButton = new JButton("Remove All");
         finishButton = new JButton("Finish");
 
+        // Create listener for the add button
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String item = (String) menuBox.getSelectedItem();
                 int itemIndex = menuBox.getSelectedIndex();
                 Item itemSelected;
+                itemSelected = manager.menu.get(itemIDList.get(itemIndex));
 
-                // Add the selected item name in the "Order Recap" List
-                orderItemsList.addElement(item);
+                // If the selected Item is still available
+                // Then add the selected item name in the "Order Recap" List
+                if(itemSelected.getStock()>0)
+                    orderItemsList.addElement(item);
+                else{
+                    JOptionPane.showMessageDialog(mainContainerPanel,
+                            "Sorry, this product is out of stock.");
+                }
 
                 // Print the selected item ID
                 System.out.print("\n" + itemIDList.get(itemIndex));
 
                 // Add the selected item in the current order
-                itemSelected = manager.menu.get(itemIDList.get(itemIndex));
                 manager.currentOrder.addItem(itemSelected);
-                //update order
+                // Update order
                 manager.currentOrder.updateOrder();
 
                 // Print the selected item
@@ -188,27 +220,25 @@ public class CustomerGUI extends JFrame {
                 // Set the price to the current order for th item selected
                 //manager.currentOrder.setPrice(itemSelected.getCost());
 
-
                 System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
 
+                // Display the current price of the order with the User Interface
                 totalPrice = manager.currentOrder.getPrice();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        totalPriceLabel.setText("Total : " + totalPrice + " £");
-
-                    }
-                });
+                totalPriceLabel.setText("Total : " + totalPrice + " £");
 
             }
         });
 
+        // Create listener for the delete button
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = orderItems.getSelectedIndex();
+
                 if (index >= 0) {
-                    // remove the item
+                    // Remove the item
                     orderItemsList.remove(index);
+                    manager.currentOrder.items.get(manager.currentOrder.items.size() - 1).setStock(1);
                     manager.currentOrder.items.remove(index);
 
                     //update order
@@ -227,17 +257,15 @@ public class CustomerGUI extends JFrame {
 
                 System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
 
+                // Display the current price of the order with the User Interface
                 totalPrice = manager.currentOrder.getPrice();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        totalPriceLabel.setText("Total : " + totalPrice + " £");
+                totalPriceLabel.setText("Total : " + totalPrice + " £");
 
-                    }
-                });
 
             }
         });
 
+        // Create listener for the remove button
         removeAllButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -245,11 +273,16 @@ public class CustomerGUI extends JFrame {
                 orderItemsList.removeAllElements();
 
                 // Remove all elements in the current order
+                for(int i=0; i<manager.currentOrder.items.size(); i++)
+                {
+                    manager.currentOrder.items.get(i).setStock(1);
+                }
+
+                // Remove all elements in the current order
                 manager.currentOrder.items.clear();
 
-                //update order
+                // Update order
                 manager.currentOrder.updateOrder();
-
 
                 // Print the current order items
                 System.out.println("Current Order Items");
@@ -259,16 +292,14 @@ public class CustomerGUI extends JFrame {
 
                 System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
 
+                // Display the current price of the order with the User Interface
                 totalPrice = manager.currentOrder.getPrice();
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        totalPriceLabel.setText("Total : " + totalPrice + " £");
+                totalPriceLabel.setText("Total : " + totalPrice + " £");
 
-                    }
-                });
             }
         });
 
+        // Create listener for the finish button
         finishButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -277,9 +308,17 @@ public class CustomerGUI extends JFrame {
                         "Have you finished ordering ?", JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
 
+                    // validate the current order
                     manager.validateCurrentOrder();
                     //Manager.displayOrders();
+
+                    // Remove all elements in the "Order Recap" List
                     orderItemsList.removeAllElements();
+
+                    // Display the current price of the order with the User Interface
+                    totalPrice = manager.currentOrder.getPrice();
+                    totalPriceLabel.setText("Total : " + totalPrice + " £");
+
                 }
             }
         });
@@ -290,7 +329,7 @@ public class CustomerGUI extends JFrame {
         buttonsPanel.add(removeAllButton);
         buttonsPanel.add(finishButton);
 
-        // Draw a blue line around the panel
+        // Draw a blue line around the panel with an associated title
         buttonsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Buttons"));
 
     }
@@ -310,17 +349,25 @@ public class CustomerGUI extends JFrame {
         settingsPanel.add(reportButton);
     }
 
+    // This function initializes the User Interface
     public void initUI() {
 
+        // Set a title for the JFrame
         setTitle("Coffee Shop");
 
+        // Initialize the mainContainer panel of the JFrame
         mainContainerPanel = new JPanel();
 
+        // Set the mainContainer panel as a GridBagLayout
         GridBagLayout gridBagLayout = new GridBagLayout();
         mainContainerPanel.setLayout(gridBagLayout);
+
+        // Apply horizontal constraints to the GridBagLayout
+        // To fix all the panels in the mainContainer panel to the left and right sides
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
+        // Set the appearance and the functionalities of all panels
         setTopPanel();
         setMiddlePanel();
         setBottomPanel();
@@ -354,11 +401,25 @@ public class CustomerGUI extends JFrame {
         // Add the settings panel to the main container panel
         mainContainerPanel.add(settingsPanel);
 
-        // Add main container panel to the JFrame
+        // Add the main container panel to the JFrame
         add(mainContainerPanel);
 
+        // Size optimally all the JFrame's components
         pack();
+
+        // When the JFrame is closed
+        // Call the method to generate the report
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                manager.generateReport();
+            }
+        });
+
+        // On click on the close button, exit the application
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Set the JFrame visible
         setVisible(true);
     }
 }
