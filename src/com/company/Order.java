@@ -60,6 +60,12 @@ public class Order {
         }
     }
 
+    private void updateOrder() {
+        calculatePrice();
+        applyDiscount();
+    }
+
+
     void addItem(Item item) {
         if(item.getStock()>0)
         {
@@ -69,23 +75,29 @@ public class Order {
         else
             System.out.println("Sorry, we don't have this item anymore.");
 
+        updateOrder();
     }
 
-    void updateOrder() {
-        calculatePrice();
-        applyDiscount();
+    void removeItem(int index) {
+        items.get(index).setStock(1);
+        items.remove(index);
+        updateOrder();
     }
 
-    public void removeItem(Item item) {
-        items.remove(item); //Remove only the first occurence
+    void removeAllItem() {
+        for (Item item : items) {
+            item.setStock(1);
+        }
+        items.clear();
+        updateOrder();
     }
 
-    //Getters
+
+    //Getters and setters
     int getCustomerID() {
         return this.customerID;
     }
 
-    //Setters
     void setCustomerID(int value) {
         this.customerID = value;
     }

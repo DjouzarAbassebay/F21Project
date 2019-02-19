@@ -99,6 +99,96 @@ class Manager {
         catch (IOException e) {e.printStackTrace();}
     }
 
+
+    private void newCurrentOrder() {
+        currentOrder = new Order();
+    }
+
+    void validateCurrentOrder() {
+        if (orders.isEmpty()) {
+            int customerID = 1;
+            currentOrder.setCustomerID(customerID);
+            currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
+            orders.add(copyOrder(currentOrder));
+        } else {
+            Order lastOrder = orders.get(orders.size() - 1);
+            int customerID = lastOrder.getCustomerID() + 1;
+            currentOrder.setCustomerID(customerID);
+            currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
+            orders.add(copyOrder(currentOrder));
+        }
+        displayOrders();
+        newCurrentOrder();
+    }
+
+
+    private void viewMenu() {
+        for (String id : menu.keySet()) {
+            String value = menu.get(id).toString();
+            System.out.println("ID: " + id);
+            System.out.println(value);
+        }
+    }
+
+    private void viewOrders() {
+        System.out.println("Orders List");
+        for(Order order : orders) {
+            System.out.println(order);
+        }
+    }
+
+    private void displayOrders() {
+
+        for (Order order : orders) {
+            System.out.println(order.getCustomerID());
+            if (order.items.isEmpty())
+                System.out.println("Order empty !");
+            else {
+                for (int j = 0; j < order.items.size(); j++) {
+                    System.out.println(order.items.get(j));
+                }
+            }
+        }
+    }
+
+    private Order copyOrder(Order order) {
+        Order copy = new Order();
+        copy.setCustomerID(order.getCustomerID());
+        String timestamp = order.getTimestamp();
+        copy.setTimestamp(timestamp);
+        copy.setDiscountPrice(order.getDiscountPrice());
+        copy.setInitialPrice(order.getInitialPrice());
+        ArrayList newItems = (ArrayList) order.getItems();
+        copy.setItems((List) newItems.clone());
+
+        return copy;
+    }
+
+
+    void calculateIncome() {
+
+
+        for(Order order : orders) {
+            System.out.println(order.toString());
+            this.income += order.getDiscountPrice();
+
+        }
+
+        System.out.println("Final Income: "  +income + "       ");
+    }
+
+    private String calculateVariationClass(String id){
+
+        StringBuilder variationStock = new StringBuilder();
+
+
+        float variation = menu.get(id).getInitialStock() - menu.get(id).getStock();
+        variationStock.append(id).append(" : ").append(variation);
+
+        return variationStock.toString();
+
+    }
+
     void generateReport() {
         BufferedWriter bw = null;
         try {
@@ -160,108 +250,6 @@ class Manager {
         }
     }
 
-    private void newCurrentOrder() {
-        currentOrder = new Order();
-    }
-
-    void cancelCurrentOrder() {
-        for (Item item : currentOrder.items) {
-            item.setStock(1);
-        }
-    }
-
-    void removeItem(int index) {
-        currentOrder.items.get(index).setStock(1);
-        currentOrder.items.remove(index);
-        currentOrder.updateOrder();
-    }
-
-    void validateCurrentOrder() {
-
-        if (orders.isEmpty()) {
-
-            int customerID = 1;
-            currentOrder.setCustomerID(customerID);
-            currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
-            orders.add(copyOrder(currentOrder));
 
 
-        } else {
-
-            Order lastOrder = orders.get(orders.size() - 1);
-            int customerID = lastOrder.getCustomerID() + 1;
-            currentOrder.setCustomerID(customerID);
-            currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
-            orders.add(copyOrder(currentOrder));
-
-
-        }
-        displayOrders();
-        newCurrentOrder();
-    }
-
-    private void displayOrders() {
-        System.out.println("Orders List");
-        for (Order order : orders) {
-            System.out.println(order.getCustomerID());
-            if (order.items.isEmpty())
-                System.out.println("Order empty !");
-            else {
-                for (int j = 0; j < order.items.size(); j++) {
-                    System.out.println(order.items.get(j));
-                }
-            }
-        }
-    }
-
-    private String calculateVariationClass(String id){
-
-        StringBuilder variationStock = new StringBuilder();
-
-
-            float variation = menu.get(id).getInitialStock() - menu.get(id).getStock();
-            variationStock.append(id).append(" : ").append(variation);
-
-            return variationStock.toString();
-
-    }
-
-    void calculateIncome() {
-
-
-        for(Order order : orders) {
-            System.out.println(order.toString());
-            this.income += order.getDiscountPrice();
-
-        }
-
-        System.out.println("Final Income: "  +income + "       ");
-    }
-
-    private void viewMenu() {
-        for (String id : menu.keySet()) {
-            String value = menu.get(id).toString();
-            System.out.println("ID: " + id);
-            System.out.println(value);
-        }
-    }
-
-    private Order copyOrder(Order order) {
-        Order copy = new Order();
-        copy.setCustomerID(order.getCustomerID());
-        String timestamp = order.getTimestamp();
-        copy.setTimestamp(timestamp);
-        copy.setDiscountPrice(order.getDiscountPrice());
-        copy.setInitialPrice(order.getInitialPrice());
-        ArrayList newItems = (ArrayList) order.getItems();
-        copy.setItems((List) newItems.clone());
-
-        return copy;
-    }
-
-    private void viewOrders() {
-        for(Order order : orders) {
-            System.out.println(order);
-        }
-    }
 }

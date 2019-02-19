@@ -96,7 +96,6 @@ class CustomerGUI extends JFrame {
 
         // Create listener for the add button
         addButton.addActionListener(e -> {
-
             try {
                 // Get the position of the selected row in the JTable
                 int row = itemsJtable.getSelectedRow();
@@ -123,23 +122,7 @@ class CustomerGUI extends JFrame {
 
                 // Add the selected item in the current order
                 manager.currentOrder.addItem(itemSelected);
-                // Update order
-                manager.currentOrder.updateOrder();
 
-                // Print the selected item
-                System.out.println("\n" + manager.menu.get(itemIDList.get(row)));
-
-                // Print the current order items
-                System.out.println("Current Order Items");
-                for (int i = 0; i < manager.currentOrder.items.size(); i++) {
-                    System.out.print(manager.currentOrder.items.get(i));
-                }
-
-                System.out.println("Price of the current order (with discount): £" + manager.currentOrder.getDiscountPrice());
-                System.out.println("Price of the current order (without discount): £" + manager.currentOrder.getInitialPrice());
-
-
-                // Display the current price of the order with the User Interface
                 discountPrice = manager.currentOrder.getDiscountPrice();
                 discountPriceLabel.setText("Total : " + nf.format(discountPrice));
 
@@ -168,7 +151,7 @@ class CustomerGUI extends JFrame {
 
                 // Remove the item
                 orderItemsList.remove(index);
-                manager.removeItem(index);
+                manager.currentOrder.removeItem(index);
 
                 // Print the current order items
                 System.out.println("Current Order Items");
@@ -197,18 +180,7 @@ class CustomerGUI extends JFrame {
         removeAllButton.addActionListener(e -> {
             // Remove all elements in the "Order Recap" List
             orderItemsList.removeAllElements();
-
-            // Remove all elements in the current order
-            for(int i=0; i<manager.currentOrder.items.size(); i++)
-            {
-                manager.currentOrder.items.get(i).setStock(1);
-            }
-
-            // Remove all elements in the current order
-            manager.currentOrder.items.clear();
-
-            // Update order
-            manager.currentOrder.updateOrder();
+            manager.currentOrder.removeAllItem();
 
             // Print the current order items
             System.out.println("Current Order Items");
