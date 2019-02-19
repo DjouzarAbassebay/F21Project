@@ -63,7 +63,7 @@ public class Item {
     }
 
     public String toStringReport() {
-        return "Name:" + description + " ||"+ "\n"
+        return "Name:" + name + " ||"+ "\n"
                 + " Stock:" + stock + "\n\n";
     }
 

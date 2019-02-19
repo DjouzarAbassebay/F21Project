@@ -1,10 +1,8 @@
 package com.company;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.NumberFormat;
+import java.util.*;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -204,9 +202,8 @@ class Manager {
             FileWriter fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
 
-            bw.write("This is the report of the day");
-            bw.newLine();
-            bw.write("------------------------------");
+            bw.write("This is the report of the day  (" +
+                    java.time.LocalDateTime.now() + ")");
             bw.newLine();
             bw.newLine();
 
@@ -214,7 +211,7 @@ class Manager {
             bw.newLine();
 
             for (String id: menu.keySet()){
-                String value = menu.get(id).toString();
+                String value = menu.get(id).toStringReport();
                 bw.write(value);
                 bw.newLine();
             }
@@ -226,11 +223,16 @@ class Manager {
                 bw.newLine();
             }
 
+            bw.newLine();
+            bw.write("--------------------------------------------");
+            bw.newLine();
+            bw.write( "Total incomes for all orders: ");
 
-            bw.write("Total incomes for all orders: ");
+            bw.write(NumberFormat.getCurrencyInstance(Locale.UK).format(income));
+            bw.newLine();
+            bw.write("--------------------------------------------");
 
-            String SIncome = Double.toString(income);
-            bw.write("£ "+SIncome);
+
 
 
 
