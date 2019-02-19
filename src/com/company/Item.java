@@ -10,6 +10,7 @@ public class Item {
     private int stock;
     private int initialStock;
 
+
     Item(String name, String description, String category, float cost, int stock) throws InvalidItemNameException {
         if (name.matches(".*\\d+.*"))
         {
@@ -18,6 +19,7 @@ public class Item {
 
         else
             this.name = name;
+
         this.description = description;
         this.category = category;
         this.cost = cost;
