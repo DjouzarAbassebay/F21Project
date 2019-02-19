@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -103,10 +104,10 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                // Get the position of the selected row in the JTable
-                int row = itemsJtable.getSelectedRow();
+                try {
+                    // Get the position of the selected row in the JTable
+                    int row = itemsJtable.getSelectedRow();
 
-                if (row >= 0) {
                     String itemName = itemsJtable.getModel().getValueAt(row, 1).toString();
                     String itemPrice = itemsJtable.getModel().getValueAt(row, 3).toString();
                     // Between itemName and itemPrice, there is one tabulation and 2 spaces
@@ -148,24 +149,31 @@ public class CustomerGUI extends JFrame {
                     totalPriceLabel.setText("Total : " + totalPrice + " £");
 
                     // Display the discount of the current order with the User Interface
-                    discountLabel.setText("Discount : " + "-" + discount + " £" );
+                    discountLabel.setText("Discount : " + "-" + discount + " £");
 
-                } else {
+            } catch (ArrayIndexOutOfBoundsException arrayException){
+                    System.out.println("Array index is out of bounds");
                     JOptionPane.showMessageDialog(mainContainerPanel,
                             "Before clicking on the add button, select an item of the menu.");
 
-                }
+            } catch (NullPointerException nullPointerException){
+                    System.out.println("Null pointer");
+                    JOptionPane.showMessageDialog(mainContainerPanel,
+                            "Please select a category before clicking on the add button.");
             }
+
+        }
         });
 
         // Create listener for the delete button
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get the position of the selected item in the order recap
-                int index = orderItems.getSelectedIndex();
 
-                if (index >= 0) {
+                try {
+                    // Get the position of the selected item in the order recap
+                    int index = orderItems.getSelectedIndex();
+
                     // Remove the item
                     orderItemsList.remove(index);
                     manager.currentOrder.items.get(manager.currentOrder.items.size() - 1).setStock(1);
@@ -189,7 +197,7 @@ public class CustomerGUI extends JFrame {
                     // Display the discount of the current order with the User Interface
                     discountLabel.setText("Discount : " + "-" + discount + " £" );
 
-                } else {
+                } catch (ArrayIndexOutOfBoundsException arrayException){
                     JOptionPane.showMessageDialog(mainContainerPanel,
                             "Before clicking on the delete button, select the item(s) that you want to delete in the Order Recap.");
                 }
@@ -527,7 +535,6 @@ public class CustomerGUI extends JFrame {
         JPanel previousAndCategoryPanel = new JPanel();
 
         // Create an button (previous button) in which will be inserted an ImageIcon
-        //
         ImageIcon previousIcon = new ImageIcon("src/com/company/images/previous.png");
         JButton previousButton = new JButton(previousIcon);
 
