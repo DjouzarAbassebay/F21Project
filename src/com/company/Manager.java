@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Manager {
 
     private  String ordersPath = "orders.csv";
@@ -15,6 +19,7 @@ public class Manager {
     public  List<Order> orders = new ArrayList<>();
 
     Order currentOrder;
+    private float income;
 
 
     public Manager() {
@@ -26,6 +31,8 @@ public class Manager {
 
         viewMenu();
         viewOrders();
+
+        generateReport();
     }
 
     //Methods
@@ -94,6 +101,60 @@ public class Manager {
     }
 
     public void generateReport() {
+        BufferedWriter bw = null;
+        try {
+
+            //Specifying the file name and path
+            File file = new File("C:./report.txt");
+
+            // If the file does not exist, it will be created
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileWriter fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+            bw.write("This is the report of the day");
+            bw.newLine();
+            bw.write("------------------------------");
+            bw.newLine();
+            bw.newLine();
+            bw.write("Items in the menu: ");
+            bw.newLine();
+
+            for (String id: menu.keySet()){
+
+                String value = menu.get(id).toString();
+                System.out.println("ID: " + id);
+                bw.write(value);
+
+                bw.newLine();
+
+            }
+
+            bw.write("Items that have been sold: ");
+            bw.newLine();
+
+
+            bw.write("Total incomes for all orders: ");
+
+            String SIncome = Float.toString( income);
+            bw.write(SIncome);
+
+            System.out.println("File written Successfully");
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        finally
+        {
+            try{
+                if(bw!=null)
+                    bw.close();
+            }catch(Exception ex){
+                System.out.println("Error in closing the BufferedWriter"+ex);
+            }
+        }
     }
 
     public void newCurrentOrder() {
@@ -163,6 +224,16 @@ public class Manager {
         }
     }
 
+    public void calculateIncome() {
+
+        for(Order order : orders) {
+            this.income += order.getPrice();
+        }
+
+        System.out.println("Final Income: "  +income + "       ");
+    }
+
+
     //Getters
      String getOrdersPath() {
         // Automatically generated method. Please delete this comment before entering specific code.
@@ -179,12 +250,18 @@ public class Manager {
         return reportPath;
     }
 
+     float getIncome(){
+
+        return income;
+     }
+
 
     //Setters
      void setMenuPath(String value) {
         // Automatically generated method. Please delete this comment before entering specific code.
         menuPath = value;
     }
+
 
      void setOrdersPath(String value) {
         // Automatically generated method. Please delete this comment before entering specific code.

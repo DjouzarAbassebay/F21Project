@@ -11,12 +11,10 @@ public class Order {
 
 
 
-
     List<Item> items = new ArrayList<> ();
 
     public Order() {
     }
-
 
     public void applyDiscount() {
     }
@@ -27,6 +25,8 @@ public class Order {
             price += item.getCost();
         }
     }
+
+
 
     public void addItem(Item item) {
         items.add(item);
@@ -50,6 +50,7 @@ public class Order {
     float getPrice() {
         return this.price;
     }
+
     public List<Item> getItems() {
         return items;
     }

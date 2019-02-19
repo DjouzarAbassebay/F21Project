@@ -55,7 +55,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Name: " + description + "\n"
+        return "Name: " + description + " "+ "\n"
                + "Category: " + category + "\n"
                + "Cost: " + cost + "\n"
                + "Stock: " + stock + "\n\n";
