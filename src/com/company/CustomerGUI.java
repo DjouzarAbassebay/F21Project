@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 
 import static javax.swing.GroupLayout.Alignment.LEADING;
@@ -28,17 +29,8 @@ class CustomerGUI extends JFrame {
     private JPanel orderRecapPanel;
     private JPanel menuPanel;
 
-    // JLabels definition
-    private JLabel welcomeLabel;
-    private JLabel instructionsLabel;
     private JLabel discountPriceLabel;
     private JLabel savedMoneyLabel;
-
-    // JButtons definition
-    private JButton addButton;
-    private JButton deleteButton;
-    private JButton removeAllButton;
-    private JButton finishButton;
 
     private JButton hotDrinksButton;
     private JButton coldDrinksButton;
@@ -51,6 +43,7 @@ class CustomerGUI extends JFrame {
 
     // Manager definition
     private Manager manager;
+    private FinalReport fReport;
 
     // All other attributs definition
     private JList<String> orderItems;
@@ -60,11 +53,12 @@ class CustomerGUI extends JFrame {
     private String categorySelected = "";
     private JTable itemsJtable;
 
-    private NumberFormat nf = NumberFormat.getCurrencyInstance();
+    private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.UK);
 
 
     // CustomerGUI Constructor
     CustomerGUI(Manager manager){
+        fReport = new FinalReport(manager);
         this.manager = manager;
     }
 
@@ -74,7 +68,8 @@ class CustomerGUI extends JFrame {
         // Initialize the JPanel
         welcomePanel = new JPanel();
         // Create a label with an associated text
-        welcomeLabel = new JLabel("Welcome to our coffee shop !");
+        // JLabels definition
+        JLabel welcomeLabel = new JLabel("Welcome to our coffee shop !");
         // Add the label to the panel
         welcomePanel.add(welcomeLabel);
         // Draw a blue line around the panel
@@ -89,10 +84,11 @@ class CustomerGUI extends JFrame {
         buttonsPanel = new JPanel();
 
         // Create buttons and define their title
-        addButton = new JButton("Add");
-        deleteButton = new JButton("Delete");
-        removeAllButton = new JButton("Remove All");
-        finishButton = new JButton("Finish");
+        // JButtons definition
+        JButton addButton = new JButton("Add");
+        JButton deleteButton = new JButton("Delete");
+        JButton removeAllButton = new JButton("Remove All");
+        JButton finishButton = new JButton("Finish");
 
         // Create listener for the add button
         addButton.addActionListener(e -> {
@@ -283,7 +279,7 @@ class CustomerGUI extends JFrame {
         menuPanel = new JPanel();
 
         // Create a label with an associated text
-        instructionsLabel = new JLabel("Please in the menu select and add items to your order !");
+        JLabel instructionsLabel = new JLabel("Please in the menu select and add items to your order !");
         instructionsLabel.setFont(new Font("HelveticaNeue", Font.BOLD, 20));
 
         // Add the border padding around the instructionsLabel
@@ -675,8 +671,7 @@ class CustomerGUI extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                manager.calculateIncome();
-                manager.generateReport();
+                fReport.launch();
             }
         });
 
