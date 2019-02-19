@@ -80,5 +80,4 @@ public class Order {
                 + "Price: " + price+ "\n"
                 + "Number of Items: " + items.size() + "\n\n";
     }
-
 }

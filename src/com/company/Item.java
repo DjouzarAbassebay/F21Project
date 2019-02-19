@@ -56,16 +56,20 @@ public class Item {
     }
 
     public void setStock(int variation) {
-
-            this.stock+=variation;
-
+        this.stock+=variation;
     }
 
     @Override
     public String toString() {
-        return "Name: " + description + " "+ "\n"
-               + "Category: " + category + "\n"
-               + "Cost: " + cost + "\n"
-               + "Stock: " + stock + "\n\n";
+        return "Name: " + description + "\n"
+                + "Description: " + description + "\n"
+                + "Price:  " + cost + "\n"
+                + "Stock:  " + stock + "\n\n";
     }
+
+    public String toStringReport() {
+        return "Name:" + description + " ||"+ "\n"
+                + " Stock:" + stock + "\n\n";
+    }
+
 }

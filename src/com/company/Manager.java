@@ -117,23 +117,22 @@ public class Manager {
 
             FileWriter fw = new FileWriter(file);
             bw = new BufferedWriter(fw);
+
             bw.write("This is the report of the day");
             bw.newLine();
             bw.write("------------------------------");
             bw.newLine();
             bw.newLine();
+
             bw.write("Items in the menu: ");
             bw.newLine();
 
             for (String id: menu.keySet()){
-
                 String value = menu.get(id).toString();
                 bw.write(value);
-
                 bw.newLine();
-
             }
-
+            bw.newLine();
             bw.write("Items that have been sold: ");
             bw.newLine();
             for (String id : menu.keySet()) {
@@ -164,6 +163,7 @@ public class Manager {
             }
         }
     }
+
 
     public void newCurrentOrder() {
         currentOrder = new Order();
@@ -274,7 +274,6 @@ public class Manager {
     }
 
      float getIncome(){
-
         return income;
      }
 

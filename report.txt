@@ -1,59 +1,42 @@
-This is the report of the day
+This is the report of the day  (2019-02-19T14:14:05.860144600)
 ------------------------------
 
 Items in the menu: 
-Name: Orange jus 
-Category: Cold
-Cost: 1.5
-Stock: 5
+Name:Orange jus ||
+ Stock:5
 
 
-Name: Lemon tea 
-Category: Cold
-Cost: 2.99
-Stock: 5
+Name:Lemon tea ||
+ Stock:5
 
 
-Name: Expresso 
-Category: Hot
-Cost: 1.99
-Stock: 20
+Name:Expresso ||
+ Stock:20
 
 
-Name: Ham Cheese 
-Category: Sandwishes
-Cost: 5.0
-Stock: 5
+Name:Ham Cheese ||
+ Stock:5
 
 
-Name: Cheese burger 
-Category: Sandwishes
-Cost: 3.0
-Stock: 5
+Name:Cheese burger ||
+ Stock:5
 
 
-Name: Thon 
-Category: Sandwishes
-Cost: 5.0
-Stock: 5
+Name:Thon ||
+ Stock:5
 
 
-Name: Chicken Bacon 
-Category: Sandwishes
-Cost: 5.0
-Stock: 5
+Name:Chicken Bacon ||
+ Stock:5
 
 
-Name: Chicken Salad 
-Category: Sandwishes
-Cost: 5.0
-Stock: 5
+Name:Chicken Salad ||
+ Stock:5
 
 
-Name: Americano 
-Category: Cold
-Cost: 1.5
-Stock: 5
+Name:Americano ||
+ Stock:5
+
 
 
 Items that have been sold: 
@@ -66,4 +49,7 @@ Sandwishes_103 : 0.0
 Sandwishes_102 : 0.0
 Sandwishes_101 : 0.0
 Cold_101 : 0.0
-Total incomes for all orders: £ 14.49
+
+----------------------------------------------
+Total incomes for all orders: £ 15.99
+----------------------------------------------
