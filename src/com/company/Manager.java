@@ -130,7 +130,7 @@ public class Manager {
         newCurrentOrder();
     }
 
-    public boolean updateCurrentOrder() {
+    /*public boolean updateCurrentOrder() {
         if (currentOrder.items.get(currentOrder.items.size() - 1).getStock() > 0) {
             currentOrder.setPrice(currentOrder.items.size() - 1);
             currentOrder.items.get(currentOrder.items.size() - 1).setStock(-1);
@@ -139,7 +139,7 @@ public class Manager {
 
         System.out.println("Item out of stock");
         return false;
-    }
+    }*/
 
     public  void displayOrders() {
 
@@ -206,7 +206,8 @@ public class Manager {
         copy.setCustomerID(order.getCustomerID());
         String timestamp = order.getTimestamp();
         copy.setTimestamp(new String(timestamp));
-        copy.setPrice(order.getPrice());
+        copy.setDiscountPrice(order.getDiscountPrice());
+        copy.setIntialPrice(order.getIntialPrice());
         ArrayList newItems = (ArrayList) order.getItems();
         copy.setItems((List) newItems.clone());
 

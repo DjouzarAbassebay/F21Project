@@ -36,8 +36,8 @@ public class CustomerGUI extends JFrame {
     private JLabel welcomeLabel;
     private JLabel instructionsLabel;
     private JLabel menuLabel;
-    private JLabel totalPriceLabel;
-    private JLabel discountLabel;
+    private JLabel discountPriceLabel;
+    private JLabel savedMoneyLabel;
 
     // JButtons definition
     private JButton addButton;
@@ -61,8 +61,8 @@ public class CustomerGUI extends JFrame {
     // All other attributs definition
     private JList<String> orderItems;
     private DefaultListModel<String> orderItemsList;
-    private float totalPrice;
-    private float discount;
+    private float discountPrice;
+    private float savedMoney;
     private String categorySelected = "";
     private JTable itemsJtable;
 
@@ -142,14 +142,16 @@ public class CustomerGUI extends JFrame {
                         System.out.print(manager.currentOrder.items.get(i));
                     }
 
-                    System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
+                    System.out.println("Price of the current order (with discount): £" + manager.currentOrder.getDiscountPrice());
+                    System.out.println("Price of the current order (without discount): £" + manager.currentOrder.getIntialPrice());
+
 
                     // Display the current price of the order with the User Interface
-                    totalPrice = manager.currentOrder.getPrice();
-                    totalPriceLabel.setText("Total : " + totalPrice + " £");
+                    discountPrice = manager.currentOrder.getDiscountPrice();
+                    discountPriceLabel.setText("Total : " + discountPrice + " £");
 
                     // Display the discount of the current order with the User Interface
-                    discountLabel.setText("Discount : " + "-" + discount + " £");
+
 
             } catch (ArrayIndexOutOfBoundsException arrayException){
                     System.out.println("Array index is out of bounds");
@@ -188,14 +190,15 @@ public class CustomerGUI extends JFrame {
                         System.out.print(manager.currentOrder.items.get(i));
                     }
 
-                    System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
+                    System.out.println("Price of the current order (with discount): £" + manager.currentOrder.getDiscountPrice());
+                    System.out.println("Price of the current order (without discount): £" + manager.currentOrder.getIntialPrice());
 
                     // Display the current price of the order with the User Interface
-                    totalPrice = manager.currentOrder.getPrice();
-                    totalPriceLabel.setText("Total : " + totalPrice + " £");
+                    discountPrice = manager.currentOrder.getDiscountPrice();
+                    savedMoneyLabel.setText("Total : " + discountPrice + " £");
 
                     // Display the discount of the current order with the User Interface
-                    discountLabel.setText("Discount : " + "-" + discount + " £" );
+
 
                 } catch (ArrayIndexOutOfBoundsException arrayException){
                     JOptionPane.showMessageDialog(mainContainerPanel,
@@ -230,14 +233,15 @@ public class CustomerGUI extends JFrame {
                     System.out.print(manager.currentOrder.items.get(i));
                 }
 
-                System.out.println("Price of the current order: £" + manager.currentOrder.getPrice());
+                System.out.println("Price of the current order (with discount): £" + manager.currentOrder.getDiscountPrice());
+                System.out.println("Price of the current order (without discount): £" + manager.currentOrder.getIntialPrice());
 
                 // Display the current price of the order with the User Interface
-                totalPrice = manager.currentOrder.getPrice();
-                totalPriceLabel.setText("Total : " + totalPrice + " £");
+                discountPrice = manager.currentOrder.getDiscountPrice();
+                discountPriceLabel.setText("Total : " + discountPrice + " £");
 
                 // Display the discount of the current order with the User Interface
-                discountLabel.setText("Discount : " + "-" + discount + " £" );
+
 
             }
         });
@@ -257,11 +261,11 @@ public class CustomerGUI extends JFrame {
                     // Remove all elements in the "Order Recap" List
                     orderItemsList.removeAllElements();
 
-                    totalPrice = manager.currentOrder.getPrice();
-                    totalPriceLabel.setText("Total : " + totalPrice + " £");
+                    discountPrice = manager.currentOrder.getDiscountPrice();
+                    discountPriceLabel.setText("Total : " + discountPrice + " £");
 
                     // Display the discount of the current order with the User Interface
-                    discountLabel.setText("Discount : " + "-" + discount + " £" );
+                    savedMoneyLabel.setText("Discount : " + "-" + savedMoney + " £" );
 
                     // Return on the panel to choice the category
                     itemSelectionPanel.removeAll();
@@ -371,28 +375,28 @@ public class CustomerGUI extends JFrame {
         scrollPane.setPreferredSize(new Dimension(250, 350));
 
         // Get the price of the current order and set it in a label
-        totalPrice = manager.currentOrder.getPrice();
-        totalPriceLabel = new JLabel("Total : " + totalPrice + " £" );
-        totalPriceLabel.setFont(new Font("HelveticaNeue", Font.BOLD, 25));
+        discountPrice = manager.currentOrder.getDiscountPrice();
+        discountPriceLabel = new JLabel("Total : " + discountPrice + " £" );
+        discountPriceLabel.setFont(new Font("HelveticaNeue", Font.BOLD, 25));
 
         // Get the discount applied on the current order and set it in a label
-        discount = 0;
-        discountLabel = new JLabel("Discount : " + "-" + discount + " £" );
-        discountLabel.setFont(new Font("HelveticaNeue", Font.PLAIN, 20));
-        discountLabel.setForeground(Color.RED);
+        savedMoney = 0;
+        savedMoneyLabel = new JLabel("Discount : " + "-" + savedMoney + " £" );
+        savedMoneyLabel.setFont(new Font("HelveticaNeue", Font.PLAIN, 20));
+        savedMoneyLabel.setForeground(Color.RED);
 
         // Set a BoxLayout on orderRecapPanel
         orderRecapPanel.setLayout(new BoxLayout(orderRecapPanel, BoxLayout.Y_AXIS));
 
         // Set the positions of all the components in orderRecapPanel
         scrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
-        totalPriceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        discountLabel.setAlignmentY(Component.LEFT_ALIGNMENT);
+        discountPriceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        savedMoneyLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
 
         // Add the scrollpane and the totalPrice label in orderRecapPanel
         orderRecapPanel.add(scrollPane);
-        orderRecapPanel.add(totalPriceLabel);
-        orderRecapPanel.add(discountLabel);
+        orderRecapPanel.add(discountPriceLabel);
+        orderRecapPanel.add(savedMoneyLabel);
 
     }
 

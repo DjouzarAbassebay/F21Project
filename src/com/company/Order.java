@@ -8,7 +8,8 @@ public class Order {
     List<Item> items = new ArrayList<>();
     private int customerID;
     private String timestamp;
-    private float price;
+    private float discountPrice;
+    private float intialPrice;
 
     public Order() {
     }
@@ -19,6 +20,7 @@ public class Order {
         int number_cold = 0;
         int number_sandwishes = 0;
         int number_hot = 0;
+        discountPrice = intialPrice;
 
         for (int i = 0; i < items.size(); i++) {
 
@@ -35,28 +37,28 @@ public class Order {
         }
 
         if (number_hot >= 4) {
-            price = (float) (0.9 * price);
-            double newPrice = Math.round(price * 100.0) / 100.0;
-            price = (float) newPrice;
+            discountPrice = (float) (0.9 * intialPrice);
+            double newPrice = Math.round(discountPrice * 100.0) / 100.0;
+            discountPrice = (float) newPrice;
         }
 
         if(number_cold>=1 && number_sandwishes>=1 && number_hot>=1) {
-            price = (float) (0.8 * price);
-            double newPrice = Math.round(price*100.0)/100.0;
-            price = (float) newPrice;
+            discountPrice = (float) (0.8 * intialPrice);
+            double newPrice = Math.round(discountPrice*100.0)/100.0;
+            discountPrice = (float) newPrice;
         }
 
         if(number_cold>=2 && number_sandwishes>=2) {
-            price = (float) (0.8 * price);
-            double newPrice = Math.round(price * 100.0) / 100.0;
-            price = (float) newPrice;
+            discountPrice = (float) (0.8 * discountPrice);
+            double newPrice = Math.round(discountPrice * 100.0) / 100.0;
+            discountPrice = (float) newPrice;
         }
     }
 
     public void calculatePrice() {
-        price = 0;
+        intialPrice = 0;
         for (Item item : items) {
-            price += item.getCost();
+            intialPrice += item.getCost();
         }
     }
 
@@ -99,12 +101,20 @@ public class Order {
         this.timestamp = value;
     }
 
-    float getPrice() {
-        return this.price;
+    float getIntialPrice() {
+        return this.intialPrice;
     }
 
-    void setPrice(float value) {
-        this.price += value;
+    void setIntialPrice(float value) {
+        this.intialPrice += value;
+    }
+
+    float getDiscountPrice() {
+        return this.discountPrice;
+    }
+
+    void setDiscountPrice(float value) {
+        this.discountPrice += value;
     }
 
     public List<Item> getItems() {
@@ -120,7 +130,7 @@ public class Order {
     public String toString() {
         return "CustomerId " + customerID + "\n"
                 + "Timestamp " + timestamp + "\n"
-                + "Price: " + price + "\n"
+                + "Price: " + discountPrice + "\n"
                 + "Item: " + items.size() + "\n\n";
     }
 
