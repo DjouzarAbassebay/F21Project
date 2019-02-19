@@ -78,7 +78,7 @@ public class Order {
         return "CustomerId " +  customerID + "\n"
                 + "Timestamp " + timestamp + "\n"
                 + "Price: " + price+ "\n"
-                + "Item: " + items.size() + "\n\n";
+                + "Number of Items: " + items.size() + "\n\n";
     }
 
 }

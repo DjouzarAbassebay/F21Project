@@ -7,6 +7,7 @@ public class Item {
     private String category;
     private float cost;
     private int stock;
+    private int initialStock;
 
     public Item(String description, String category, float cost, int stock) {
         this.description = description;
@@ -25,6 +26,8 @@ public class Item {
         return category;
     }
 
+    public int getInitialStock() {return initialStock;}
+
     public float getCost() {
         return cost;
     }
@@ -41,6 +44,11 @@ public class Item {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public void setInitialStock(int stock) {
+        this.initialStock = stock;
+
     }
 
     public void setCost(float cost) {

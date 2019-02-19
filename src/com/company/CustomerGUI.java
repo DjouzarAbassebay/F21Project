@@ -304,7 +304,7 @@ public class CustomerGUI extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                  manager.calculateIncome();
-                 System.out.println("XXXXXXX"+manager.getIncome());
+                 manager.generateReport();
 
             }
         });

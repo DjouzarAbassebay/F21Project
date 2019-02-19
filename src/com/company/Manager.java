@@ -32,7 +32,7 @@ public class Manager {
         viewMenu();
         viewOrders();
 
-        generateReport();
+
     }
 
     //Methods
@@ -49,12 +49,15 @@ public class Manager {
                 String category = words[0].split("_")[0];
                 Item item = new Item(words[1], category, Float.parseFloat(words[2]), Integer.parseInt(words[3]));
                 menu.put(words[0], item);
+                item.setInitialStock(item.getStock());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
 
@@ -105,7 +108,7 @@ public class Manager {
         try {
 
             //Specifying the file name and path
-            File file = new File("C:./report.txt");
+            File file = new File(".\\report.txt");
 
             // If the file does not exist, it will be created
             if (!file.exists()) {
@@ -125,7 +128,6 @@ public class Manager {
             for (String id: menu.keySet()){
 
                 String value = menu.get(id).toString();
-                System.out.println("ID: " + id);
                 bw.write(value);
 
                 bw.newLine();
@@ -134,14 +136,20 @@ public class Manager {
 
             bw.write("Items that have been sold: ");
             bw.newLine();
+            for (String id : menu.keySet()) {
+                bw.write(calculateVariationClass(id));
+                bw.newLine();
+            }
 
 
             bw.write("Total incomes for all orders: ");
 
             String SIncome = Float.toString( income);
-            bw.write(SIncome);
+            bw.write("£ "+SIncome);
 
-            System.out.println("File written Successfully");
+
+
+            System.out.println("File written successfully");
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -224,10 +232,25 @@ public class Manager {
         }
     }
 
+    public String calculateVariationClass(String id){
+
+        StringBuilder variationStock = new StringBuilder();
+
+
+            float variation = menu.get(id).getInitialStock() - menu.get(id).getStock();
+            variationStock.append(id).append(" : ").append(Float.toString(variation));
+
+            return variationStock.toString();
+
+    }
+
     public void calculateIncome() {
 
+
         for(Order order : orders) {
+            System.out.println(order.toString());
             this.income += order.getPrice();
+
         }
 
         System.out.println("Final Income: "  +income + "       ");
