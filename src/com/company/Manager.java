@@ -10,19 +10,19 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Manager {
+class Manager {
 
-    private  String ordersPath = "orders.csv";
-    private  String menuPath = "menu.csv";
-    private  String reportPath = "reports";
-    public  Map<String, Item> menu = new HashMap<>();
-    public  List<Order> orders = new ArrayList<>();
+    private String ordersPath = "orders.csv";
+    private String menuPath = "menu.csv";
+    private String reportPath = "reports";
+    Map<String, Item> menu = new HashMap<>();
+    private List<Order> orders = new ArrayList<>();
 
     Order currentOrder;
-    private float income;
+    private double income;
 
 
-    public Manager() {
+    Manager() {
 
         newCurrentOrder();
 
@@ -35,10 +35,10 @@ public class Manager {
 
     }
 
+
     //Methods
 
-
-    public void initializeMenu() {
+    private void initializeMenu() {
         try {
             FileInputStream fileInputStream = new FileInputStream(menuPath);
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
@@ -47,12 +47,10 @@ public class Manager {
             while ((line = bufferedReader.readLine()) != null) {
                 String[] words = line.split(";");
                 String category = words[0].split("_")[0];
-                Item item = new Item(words[1], category, Float.parseFloat(words[2]), Integer.parseInt(words[3]));
+                Item item = new Item(words[1], words[2], category, Float.parseFloat(words[3]), Integer.parseInt(words[4]));
                 menu.put(words[0], item);
                 item.setInitialStock(item.getStock());
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,8 +58,7 @@ public class Manager {
 
     }
 
-
-    public void initializeOrders() {
+    private void initializeOrders() {
         try{
             FileInputStream fileInputStream = new FileInputStream(ordersPath);
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
@@ -99,11 +96,10 @@ public class Manager {
                 orders.add(order);
             }
         }
-        catch(FileNotFoundException e) {e.printStackTrace();}
         catch (IOException e) {e.printStackTrace();}
     }
 
-    public void generateReport() {
+    void generateReport() {
         BufferedWriter bw = null;
         try {
 
@@ -143,7 +139,7 @@ public class Manager {
 
             bw.write("Total incomes for all orders: ");
 
-            String SIncome = Float.toString( income);
+            String SIncome = Double.toString(income);
             bw.write("£ "+SIncome);
 
 
@@ -164,34 +160,33 @@ public class Manager {
         }
     }
 
-
-    public void newCurrentOrder() {
+    private void newCurrentOrder() {
         currentOrder = new Order();
     }
 
-    public void cancelCurrentOrder() {
+    void cancelCurrentOrder() {
         for (Item item : currentOrder.items) {
             item.setStock(1);
         }
     }
 
-    public  void validateCurrentOrder() {
+    void removeItem(int index) {
+        currentOrder.items.get(index).setStock(1);
+        currentOrder.items.remove(index);
+        currentOrder.updateOrder();
+    }
+
+    void validateCurrentOrder() {
 
         if (orders.isEmpty()) {
-
-            System.out.println("if");
 
             int customerID = 1;
             currentOrder.setCustomerID(customerID);
             currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
-
-
             orders.add(copyOrder(currentOrder));
 
 
         } else {
-
-            System.out.println("else");
 
             Order lastOrder = orders.get(orders.size() - 1);
             int customerID = lastOrder.getCustomerID() + 1;
@@ -200,103 +195,50 @@ public class Manager {
             orders.add(copyOrder(currentOrder));
 
 
-
         }
         displayOrders();
         newCurrentOrder();
     }
 
-    public boolean updateCurrentOrder() {
-        if (currentOrder.items.get(currentOrder.items.size() - 1).getStock() > 0) {
-            currentOrder.setPrice(currentOrder.items.size() - 1);
-            currentOrder.items.get(currentOrder.items.size() - 1).setStock(-1);
-            return true;
-        }
-
-        System.out.println("Item out of stock");
-        return false;
-    }
-
-    public  void displayOrders() {
-
+    private void displayOrders() {
         System.out.println("Orders List");
-        for (int i = 0; i < orders.size(); i++) {
-            System.out.println(orders.get(i).getCustomerID());
-            if (orders.get(i).items.isEmpty())
+        for (Order order : orders) {
+            System.out.println(order.getCustomerID());
+            if (order.items.isEmpty())
                 System.out.println("Order empty !");
             else {
-                for (int j = 0; j < orders.get(i).items.size(); j++) {
-                    System.out.println(orders.get(i).items.get(j));
+                for (int j = 0; j < order.items.size(); j++) {
+                    System.out.println(order.items.get(j));
                 }
             }
         }
     }
 
-    public String calculateVariationClass(String id){
+    private String calculateVariationClass(String id){
 
         StringBuilder variationStock = new StringBuilder();
 
 
             float variation = menu.get(id).getInitialStock() - menu.get(id).getStock();
-            variationStock.append(id).append(" : ").append(Float.toString(variation));
+            variationStock.append(id).append(" : ").append(variation);
 
             return variationStock.toString();
 
     }
 
-    public void calculateIncome() {
+    void calculateIncome() {
 
 
         for(Order order : orders) {
             System.out.println(order.toString());
-            this.income += order.getPrice();
+            this.income += order.getDiscountPrice();
 
         }
 
         System.out.println("Final Income: "  +income + "       ");
     }
 
-
-    //Getters
-     String getOrdersPath() {
-        // Automatically generated method. Please delete this comment before entering specific code.
-        return ordersPath;
-    }
-
-     String getMenuPath() {
-        // Automatically generated method. Please delete this comment before entering specific code.
-        return menuPath;
-    }
-
-     String getReportPath() {
-        // Automatically generated method. Please delete this comment before entering specific code.
-        return reportPath;
-    }
-
-     float getIncome(){
-        return income;
-     }
-
-
-    //Setters
-     void setMenuPath(String value) {
-        // Automatically generated method. Please delete this comment before entering specific code.
-        menuPath = value;
-    }
-
-
-     void setOrdersPath(String value) {
-        // Automatically generated method. Please delete this comment before entering specific code.
-        ordersPath = value;
-    }
-
-     void setReportPath(String value) {
-        // Automatically generated method. Please delete this comment before entering specific code.
-        reportPath = value;
-    }
-
-
-    public void viewMenu() {
+    private void viewMenu() {
         for (String id : menu.keySet()) {
             String value = menu.get(id).toString();
             System.out.println("ID: " + id);
@@ -304,26 +246,22 @@ public class Manager {
         }
     }
 
-
-    public Order copyOrder(Order order)
-    {
-
+    private Order copyOrder(Order order) {
         Order copy = new Order();
         copy.setCustomerID(order.getCustomerID());
         String timestamp = order.getTimestamp();
-        copy.setTimestamp(new String(timestamp));
-        copy.setPrice(order.getPrice());
+        copy.setTimestamp(timestamp);
+        copy.setDiscountPrice(order.getDiscountPrice());
+        copy.setInitialPrice(order.getInitialPrice());
         ArrayList newItems = (ArrayList) order.getItems();
         copy.setItems((List) newItems.clone());
 
         return copy;
     }
 
-    public void viewOrders() {
-        for (int i=0; i< orders.size(); i++){
-            Order order = orders.get(i);
+    private void viewOrders() {
+        for(Order order : orders) {
             System.out.println(order);
         }
     }
-
 }

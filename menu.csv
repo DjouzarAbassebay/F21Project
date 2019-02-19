@@ -1,9 +1,14 @@
-Hot_001;Expresso;1.99;20
-Sandwishes_101;Chicken Salad;5.0;5
-Sandwishes_102;Chicken Bacon;5.0;5
-Sandwishes_103;Thon;5.0;5
-Sandwishes_104;Ham Cheese;5.0;5
-Cold_203;Orange jus;1.5;5
-Cold_101;Americano;1.5;5
-Sandwishes_203;Cheese burger;3;5
-Cold_201;Lemon tea;2.99;5
+Hot_001;Expresso;Expresso;1.99;20
+Sandwiches_101;Chicken Salad;Chicken Salad sandwich with free-ranging chicken;5.0;5
+Sandwiches_102;Chicken Bacon;Chicken bacon sandwich Panini Remix with free-ranging chicken;5.0;5
+Sandwiches_103;Tuna;Tuna sandwich with tomatoes, lettuce and dices of cheese;5.0;5
+Sandwiches_104;Ham Cheese;Classical ham cheese sandwich;5.0;5
+Cold_203;Orange juice;Orange juice made with local oranges;1.5;5
+Cold_101;Americano;Americano with Red Martini, White Martini, Campari and Jin;1.5;5
+Sandwiches_203;Cheese burger;Cheese burger with a generous steak ;5;5
+Hot_201;Lemon tea;Lemon tea;2.99;5
+Pastry_001;Cookies;Crispy cookies with chocolate chips;1.0;20
+Pastry_002;Croissants;French croissants;1.5;15
+Pastry_003;Muffins;Traditional muffins with chocolate chips;2.0;11
+Pastry_004;Brownies;Chocolate brownies;1.99;7
+Pastry_005;Strawberry cake;Cake baked juicy strawberry;3.20;12

@@ -3,13 +3,15 @@ package com.company;
 
 public class Item {
 
+    private String name;
     private String description;
     private String category;
     private float cost;
     private int stock;
     private int initialStock;
 
-    public Item(String description, String category, float cost, int stock) {
+    Item(String name, String description, String category, float cost, int stock) {
+        this.name = name;
         this.description = description;
         this.category = category;
         this.cost = cost;
@@ -18,53 +20,46 @@ public class Item {
 
 
     //Getters
-    public String getDescription() {
+    String getName() {
+        return name;
+    }
+
+    String getDescription() {
         return description;
     }
 
-    public String getCategory() {
+    String getCategory() {
         return category;
     }
 
-    public int getInitialStock() {return initialStock;}
+    int getInitialStock() {return initialStock;}
 
-    public float getCost() {
+    float getCost() {
         return cost;
     }
 
-    public int getStock() {
+    int getStock() {
         return stock;
     }
 
 
     //Setters
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setInitialStock(int stock) {
+    void setInitialStock(int stock) {
         this.initialStock = stock;
 
     }
 
-    public void setCost(float cost) {
-        this.cost = cost;
-    }
-
-    public void setStock(int variation) {
+    void setStock(int variation) {
         this.stock+=variation;
     }
 
     @Override
     public String toString() {
-        return "Name: " + description + "\n"
+        return "Name: " + name + "\n"
                 + "Description: " + description + "\n"
-                + "Price:  " + cost + "\n"
-                + "Stock:  " + stock + "\n\n";
+                + "Category: " + category + "\n"
+                + "Cost: " + cost + "\n"
+                + "Stock: " + stock + "\n\n";
     }
 
     public String toStringReport() {
