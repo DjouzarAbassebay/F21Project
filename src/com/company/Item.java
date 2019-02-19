@@ -6,12 +6,12 @@ public class Item {
     private String name;
     private String description;
     private String category;
-    private float cost;
+    private double cost;
     private int stock;
     private int initialStock;
 
 
-    Item(String name, String description, String category, float cost, int stock) throws InvalidItemNameException {
+    public Item(String name, String description, String category, double cost, int stock) throws InvalidItemNameException {
         if (name.matches(".*\\d+.*"))
         {
             throw new InvalidItemNameException(name);
@@ -42,7 +42,7 @@ public class Item {
 
     int getInitialStock() {return initialStock;}
 
-    float getCost() {
+    double getCost() {
         return cost;
     }
 

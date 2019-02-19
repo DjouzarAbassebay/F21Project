@@ -9,14 +9,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class Manager {
+public class Manager {
     Map<String, Item> menu = new HashMap<>();
     private List<Order> orders = new ArrayList<>();
 
     Order currentOrder;
 
 
-    Manager() {
+    public Manager() {
 
         newCurrentOrder();
 
@@ -37,7 +37,7 @@ class Manager {
 
         try {
             Item item;
-            String message = "";
+            String message;
 
             String menuPath = "menu.csv";
             FileInputStream fileInputStream = new FileInputStream(menuPath);
@@ -114,7 +114,7 @@ class Manager {
         currentOrder = new Order();
     }
 
-    void validateCurrentOrder() {
+    public void validateCurrentOrder() {
         if (orders.isEmpty()) {
             int customerID = 1;
             currentOrder.setCustomerID(customerID);
@@ -161,7 +161,7 @@ class Manager {
         }
     }
 
-    private Order copyOrder(Order order) {
+    public static Order copyOrder(Order order) {
         Order copy = new Order();
         copy.setCustomerID(order.getCustomerID());
         String timestamp = order.getTimestamp();
@@ -175,8 +175,10 @@ class Manager {
     }
 
 
-    List<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
+
+    public void setCurrentOrder(Order order) {this.currentOrder = order;}
 
 }

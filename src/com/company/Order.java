@@ -11,7 +11,7 @@ public class Order {
     private double discountPrice;
     private double initialPrice;
 
-    Order() {
+    public Order() {
     }
 
     private void applyDiscount() {
@@ -53,7 +53,7 @@ public class Order {
         }
     }
 
-    private void calculatePrice() {
+    public void calculatePrice() {
         initialPrice = 0;
         for (Item item : items) {
             initialPrice += item.getCost();
@@ -66,7 +66,7 @@ public class Order {
     }
 
 
-    void addItem(Item item) {
+    public void addItem(Item item) {
         if(item.getStock()>0)
         {
             item.setStock(-1);
@@ -78,7 +78,7 @@ public class Order {
         updateOrder();
     }
 
-    void removeItem(int index) {
+    public void removeItem(int index) {
         items.get(index).setStock(1);
         items.remove(index);
         updateOrder();
@@ -94,11 +94,11 @@ public class Order {
 
 
     //Getters and setters
-    int getCustomerID() {
+    public int getCustomerID() {
         return this.customerID;
     }
 
-    void setCustomerID(int value) {
+    public void setCustomerID(int value) {
         this.customerID = value;
     }
 
@@ -106,11 +106,11 @@ public class Order {
         return this.timestamp;
     }
 
-    void setTimestamp(String value) {
+    public void setTimestamp(String value) {
         this.timestamp = value;
     }
 
-    double getInitialPrice() {
+    public double getInitialPrice() {
         return this.initialPrice;
     }
 
@@ -118,19 +118,19 @@ public class Order {
         this.initialPrice += value;
     }
 
-    double getDiscountPrice() {
+    public double getDiscountPrice() {
         return this.discountPrice;
     }
 
-    void setDiscountPrice(double value) {
+    public void setDiscountPrice(double value) {
         this.discountPrice += value;
     }
 
-    List<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    void setItems(List<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 
