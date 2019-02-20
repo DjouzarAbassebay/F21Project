@@ -14,12 +14,13 @@ public class Order {
     public Order() {
     }
 
-    private void applyDiscount() {
+    public void applyDiscount() {
 
         int number_cold = 0;
         int number_sandwiches = 0;
         int number_hot = 0;
         int number_pastry = 0;
+
         discountPrice = initialPrice;
 
         for (Item item : items) {
