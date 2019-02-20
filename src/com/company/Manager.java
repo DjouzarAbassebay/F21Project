@@ -18,12 +18,9 @@ public class Manager {
 
 
     public Manager() {
-
         newCurrentOrder();
-
         initializeMenu();
         initializeOrders();
-
         viewMenu();
         viewOrders();
     }
@@ -42,6 +39,37 @@ public class Manager {
                 String category = words[0].split("_")[0];
                 Item item = new Item(words[1], category, Float.parseFloat(words[2]), Integer.parseInt(words[3]));
                 menu.put(words[0], item);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void addStock(int item_nb) {
+        try {
+            int readline = 0;
+            FileInputStream fileInputStream = new FileInputStream(menuPath);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            OutputStream fileOutputStream = new FileOutputStream(menuPath);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            BufferedWriter bufferedwriter = new BufferedWriter(outputStreamWriter);
+            String line;
+            while (readline <= item_nb) {
+                line = bufferedReader.readLine();
+                String[] words = line.split(";");
+                bufferedwriter.write(line);
+                readline ++;
+                if (readline == item_nb)
+                {
+                    int stock = Integer.parseInt(words[3]) + 1;
+                    String stock_string = Integer.toString(stock);
+                    words[3] = stock_string;
+                    bufferedwriter.write(words[0]+";"+words[1]+";"+words[2]+";"+words[3]);
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -205,7 +233,7 @@ public class Manager {
         Order copy = new Order();
         copy.setCustomerID(order.getCustomerID());
         String timestamp = order.getTimestamp();
-        copy.setTimestamp(new String(timestamp));
+        copy.setTimestamp(timestamp);
         copy.setPrice(order.getPrice());
         ArrayList newItems = (ArrayList) order.getItems();
         copy.setItems((List) newItems.clone());
