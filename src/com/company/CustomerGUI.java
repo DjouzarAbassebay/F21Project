@@ -5,6 +5,8 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
@@ -30,7 +32,6 @@ class CustomerGUI extends JFrame {
     private JPanel menuPanel;
 
     private JLabel discountPriceLabel;
-    private JLabel savedMoneyLabel;
 
     private JButton hotDrinksButton;
     private JButton coldDrinksButton;
@@ -49,7 +50,6 @@ class CustomerGUI extends JFrame {
     private JList<String> orderItems;
     private DefaultListModel<String> orderItemsList;
     private double discountPrice;
-    private double savedMoney;
     private String categorySelected = "";
     private JTable itemsJtable;
 
@@ -89,6 +89,7 @@ class CustomerGUI extends JFrame {
         JButton deleteButton = new JButton("Delete");
         JButton removeAllButton = new JButton("Remove All");
         JButton finishButton = new JButton("Finish");
+        JButton promotionsButton = new JButton("Promotions");
 
         // Create listener for the add button
         addButton.addActionListener(e -> {
@@ -122,16 +123,15 @@ class CustomerGUI extends JFrame {
                 discountPrice = manager.currentOrder.getDiscountPrice();
                 discountPriceLabel.setText("Total : " + nf.format(discountPrice));
 
-                // Display the discount of the current order with the User Interface
+                itemsJtable.clearSelection();
 
-                //itemsJtable.clearSelection();
         } catch (ArrayIndexOutOfBoundsException arrayException){
-                System.out.println("Array index is out of bounds");
+                System.out.println("\nArray index is out of bounds\nUser clicked on the add button before selecting an item.");
                 JOptionPane.showMessageDialog(mainContainerPanel,
                         "Before clicking on the add button, select an item of the menu.");
 
         } catch (NullPointerException nullPointerException){
-                System.out.println("Null pointer");
+                System.out.println("\nNull pointer\nUser clicked on the add button before selecting a category.");
                 JOptionPane.showMessageDialog(mainContainerPanel,
                         "Please select a category before clicking on the add button.");
         }
@@ -162,10 +162,10 @@ class CustomerGUI extends JFrame {
                 discountPrice = manager.currentOrder.getDiscountPrice();
                 discountPriceLabel.setText("Total : " + nf.format(discountPrice));
 
-                // Display the discount of the current order with the User Interface
+                itemsJtable.clearSelection();
 
-                //itemsJtable.clearSelection();
             } catch (ArrayIndexOutOfBoundsException arrayException){
+                System.out.println("\nArray index is out of bounds\nUser clicked on the delete button before selecting an item in the Order Recap.");
                 JOptionPane.showMessageDialog(mainContainerPanel,
                         "Before clicking on the delete button, select the item(s) that you want to delete in the Order Recap.");
             }
@@ -191,9 +191,6 @@ class CustomerGUI extends JFrame {
             discountPrice = manager.currentOrder.getDiscountPrice();
             discountPriceLabel.setText("Total : " + nf.format(discountPrice));
 
-            // Display the discount of the current order with the User Interface
-
-
         });
 
         finishButton.addActionListener(e -> {
@@ -212,9 +209,6 @@ class CustomerGUI extends JFrame {
                 discountPrice = manager.currentOrder.getDiscountPrice();
                 discountPriceLabel.setText("Total : " + nf.format(discountPrice));
 
-                // Display the discount of the current order with the User Interface
-                savedMoneyLabel.setText("Discount : " + "-" + savedMoney + " £" );
-
                 // Return on the panel to choice the category
                 itemSelectionPanel.removeAll();
                 setMenuCategoryPanel();
@@ -222,13 +216,41 @@ class CustomerGUI extends JFrame {
             }
         });
 
+        promotionsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // Create and initialize the JPanels
+                JPanel promotionPanel = new JPanel();
+                JPanel imagePanel = new JPanel();
+
+                // Create and insert an image in the image label
+                ImageIcon promotionIcon = new ImageIcon("src/com/company/images/promotions.jpg");
+                JLabel imageLabel = new JLabel(promotionIcon);
+
+                // Add the label to the image panel
+                imagePanel.add(imageLabel);
+
+                // Set a GridLayout to mainPanel
+                promotionPanel.setLayout(new GridLayout(1, 1, 0, 0));
+
+                // Add the image panel to the promotion panel
+                promotionPanel.add(imagePanel);
+
+                // Display in a message dialog the promotion panel
+                JOptionPane.showMessageDialog(null, promotionPanel, "F21 Coffee Promotions", JOptionPane.PLAIN_MESSAGE);
+
+            }
+        });
+
         // Add all buttons to the buttons panel
+        buttonsPanel.add(promotionsButton);
         buttonsPanel.add(addButton);
         buttonsPanel.add(deleteButton);
         buttonsPanel.add(removeAllButton);
         buttonsPanel.add(finishButton);
 
-        // Draw a blue line around the panel
+        // Draw a blue line around the panel with an associated title
         buttonsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Buttons"));
 
     }
@@ -322,16 +344,9 @@ class CustomerGUI extends JFrame {
         scrollPane.setPreferredSize(new Dimension(250, 350));
 
         // Get the price of the current order and set it in a label
-        NumberFormat nf = NumberFormat.getCurrencyInstance();
         discountPrice = manager.currentOrder.getDiscountPrice();
         discountPriceLabel = new JLabel("Total : " + nf.format(discountPrice));
         discountPriceLabel.setFont(new Font("HelveticaNeue", Font.BOLD, 25));
-
-        // Get the discount applied on the current order and set it in a label
-        savedMoney = 0;
-        savedMoneyLabel = new JLabel("Discount : " + "-" + savedMoney + " £" );
-        savedMoneyLabel.setFont(new Font("HelveticaNeue", Font.PLAIN, 20));
-        savedMoneyLabel.setForeground(Color.RED);
 
         // Set a BoxLayout on orderRecapPanel
         orderRecapPanel.setLayout(new BoxLayout(orderRecapPanel, BoxLayout.Y_AXIS));
@@ -339,12 +354,10 @@ class CustomerGUI extends JFrame {
         // Set the positions of all the components in orderRecapPanel
         scrollPane.setAlignmentY(Component.CENTER_ALIGNMENT);
         discountPriceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        savedMoneyLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
 
         // Add the scrollpane and the totalPrice label in orderRecapPanel
         orderRecapPanel.add(scrollPane);
         orderRecapPanel.add(discountPriceLabel);
-        orderRecapPanel.add(savedMoneyLabel);
 
     }
 
@@ -512,7 +525,6 @@ class CustomerGUI extends JFrame {
         DefaultTableModel model = new DefaultTableModel();
 
         // In the model, set the columns name
-        //String[] columnNames = { "Image", "Description", "Price" };
         String[] columnNames = { "Image", "Name", "Description", "Price" };
         model.setColumnIdentifiers(columnNames);
 
@@ -526,9 +538,10 @@ class CustomerGUI extends JFrame {
             if ((itemIcon).getImageLoadStatus() != MediaTracker.COMPLETE){
                 itemIcon = new ImageIcon("src/com/company/images/items/" + "image_not_available.jpg");
             }
+            float itemPrice = Float.parseFloat(details[2]);
 
             Object[] object = new Object[] { itemIcon, details[0],
-                    details[1], details[2]+" £" };
+                    details[1], nf.format(itemPrice) };
             model.addRow(object);
         }
 
@@ -551,6 +564,7 @@ class CustomerGUI extends JFrame {
 
         // Create a TextAreaCellRenderer to unwrap text in the column 2 of the JTable
         TextAreaCellRenderer areaRenderer = new TextAreaCellRenderer();
+        areaRenderer.setMargin(new Insets(10, 5, 0, 5));
 
         // Apply the defaultRenderer on the column 1 (item's description) and 3 (item's price)
         // And apply the textAreaRenderer on the column 2 (item's description)
@@ -677,6 +691,9 @@ class CustomerGUI extends JFrame {
 
         // On click on the close button, exit the application
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Set the JFrame unresizable
+        setResizable(false);
 
         // Set the JFrame visible
         setVisible(true);
