@@ -46,13 +46,13 @@ public class Item {
         return cost;
     }
 
-    int getStock() {
+    public int getStock() {
         return stock;
     }
 
 
     //Setters
-    void setInitialStock(int stock) {
+    public void setInitialStock(int stock) {
         this.initialStock = stock;
 
     }

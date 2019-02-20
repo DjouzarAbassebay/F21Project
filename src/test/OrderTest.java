@@ -33,7 +33,7 @@ class OrderTest {
     // Discount for 4 hot drinks or more
     private Order orderHotDrinks;  // 4 hot drinks
     private Order orderHotDrinksPlus; // 4 hot drinks + 1 hot drink
-    private Order orderMixDrinks; // 4 drinks + 1 cold drink (whatever hot)
+    private Order orderMixDrinks; // 4 drinks + 1 cold drink
 
     private Item itemChoc;
 
@@ -162,6 +162,7 @@ class OrderTest {
         emptyOrder.addItem(itemChoc);
         assertEquals(1, emptyOrder.getItems().size());
         assertEquals(2.50, emptyOrder.getInitialPrice());
+        assertEquals(2, emptyOrder.getItems().get(0).getStock());
     }
 
     @Test
@@ -169,6 +170,7 @@ class OrderTest {
         orderSimpleItem.removeItem(0);
         assertEquals(0, orderSimpleItem.getItems().size());
         assertEquals(0, orderSimpleItem.getDiscountPrice());
+        //assertEquals(3, itemChoc.getStock());
     }
 
     @Test
@@ -176,6 +178,7 @@ class OrderTest {
         orderDoubleItem.removeItem(0);
         assertEquals(1, orderDoubleItem.getItems().size());
         assertEquals((float) 2.50, orderDoubleItem.getDiscountPrice());
+        //assertEquals(3, itemChoc.getStock());
     }
 
     @Test
@@ -183,6 +186,7 @@ class OrderTest {
         emptyOrder.removeItem(0);
         assertEquals(0, emptyOrder.getItems().size());
         assertEquals(0, emptyOrder.getDiscountPrice());
+        //assertEquals(3, itemChoc.getStock());
     }
 
     @Test
