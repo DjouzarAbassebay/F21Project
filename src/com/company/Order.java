@@ -59,10 +59,6 @@ public class Order {
         for (Item item : items) {
             initialPrice += item.getCost();
         }
-    }
-
-    private void updateOrder() {
-        calculatePrice();
         applyDiscount();
     }
 
@@ -76,13 +72,13 @@ public class Order {
         else
             System.out.println("Sorry, we don't have this item anymore.");
 
-        updateOrder();
+       calculatePrice();
     }
 
     public void removeItem(int index) {
         items.get(index).setStock(1);
         items.remove(index);
-        updateOrder();
+        calculatePrice();
     }
 
     void removeAllItem() {
@@ -90,7 +86,7 @@ public class Order {
             item.setStock(1);
         }
         items.clear();
-        updateOrder();
+        calculatePrice();
     }
 
 
