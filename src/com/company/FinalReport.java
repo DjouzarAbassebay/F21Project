@@ -35,7 +35,6 @@ public class FinalReport {
         variationStock.append(id).append(" : ").append(variation);
 
         return variationStock.toString();
-
     }
 
 

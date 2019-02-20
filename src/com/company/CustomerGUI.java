@@ -11,6 +11,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 
 import static javax.swing.GroupLayout.Alignment.LEADING;
 
@@ -681,6 +682,29 @@ class CustomerGUI extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 fReport.launch();
+
+                Scanner sc = new Scanner(System.in);
+                int str;
+                System.out.println("Do you want to add stock ? Yes = 1 No = 0:");
+                str = sc.nextInt();
+                while(str != 0 && str != 1){
+                    System.out.println("Please enter 1 or 0");
+                    str = sc.nextInt();
+                }
+
+                while(str == 1) {
+                    System.out.println("Which item ?");
+                    int item = sc.nextInt();
+                    System.out.println("How many ?");
+                    int nb_item = sc.nextInt();
+                    manager.addStock(item, nb_item);
+                    System.out.println("Do you want to add stock ? Yes = 1 No = 0:");
+                    str = sc.nextInt();
+                    while(str != 0 && str != 1){
+                        System.out.println("Please enter 1 or 0");
+                        str = sc.nextInt();
+                    }
+                }
             }
         });
 

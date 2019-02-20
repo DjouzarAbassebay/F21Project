@@ -1,9 +1,6 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +8,13 @@ import java.util.Map;
 
 public class Manager {
     Map<String, Item> menu = new HashMap<>();
-    Order currentOrder;
     private List<Order> orders = new ArrayList<>();
 
-    // Constructor
+    Order currentOrder;
+
+    //Constructor
     public Manager() {
+
         newCurrentOrder();
 
         initializeMenu();
@@ -71,11 +70,60 @@ public class Manager {
                     message = e.getMessage() + "\n Item not added: "+words[1];
                     System.out.println(message);
                 }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+    //Method that can increase stock when closing the window
+    public void addStock(int item_nb, int stock_nb) {
+        try {
+            String line;
+            String menuPath = "menu.csv";
+            FileInputStream fileInputStream = new FileInputStream(menuPath);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String[] lines = new String[menu.size()];
+
+            int j = 0;
+            while ((line = bufferedReader.readLine()) != null) {
+                lines[j] = line;
+                j++;
+            }
+            OutputStream fileOutputStream = new FileOutputStream(menuPath);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            BufferedWriter bufferedwriter = new BufferedWriter(outputStreamWriter);
+
+            for(int i = 0 ; i<menu.size() ; i++) {
+                String[] words = lines[i].split(";");
+                if (i == item_nb) {
+                    int stock = Integer.parseInt(words[4]) + stock_nb;
+                    String stock_string = Integer.toString(stock);
+                    words[4] = stock_string;
+                    lines[i] = words[0] + ";" + words[1] + ";" + words[2] + ";" + words[3] + ";" + words[4] ;
+                    System.out.println(words[0] + ";" + words[1] + ";" + words[2] + ";" + words[3] + ";" + words[4]);
+                }
+
+            }
+
+            for(int k = 0 ; k<menu.size() ; k++) {
+                System.out.println(lines[k]);
+                bufferedwriter.write(lines[k]);
+                bufferedwriter.newLine();
+            }
+            bufferedwriter.close();
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Method to initialize the list of orders  from the CSV file : orders.csv
     private void initializeOrders() {
