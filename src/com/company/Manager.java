@@ -11,13 +11,11 @@ import java.util.Map;
 
 public class Manager {
     Map<String, Item> menu = new HashMap<>();
+    Order currentOrder;
     private List<Order> orders = new ArrayList<>();
 
-    Order currentOrder;
-
-
+    // Constructor
     public Manager() {
-
         newCurrentOrder();
 
         initializeMenu();
@@ -25,25 +23,39 @@ public class Manager {
 
         viewMenu();
         viewOrders();
-
-
     }
 
 
-    //Methods
+    // Method to create a copy of an order
+    public static Order copyOrder(Order order) {
+        Order copy = new Order();
+        copy.setCustomerID(order.getCustomerID());
+        String timestamp = order.getTimestamp();
+        copy.setTimestamp(timestamp);
+        copy.setDiscountPrice(order.getDiscountPrice());
+        copy.setInitialPrice(order.getInitialPrice());
+        ArrayList newItems = (ArrayList) order.getItems();
+        copy.setItems((List) newItems.clone());
 
+        return copy;
+    }
+
+
+    // Method to initialize the menu from the CSV file : menu.csv
     private void initializeMenu() {
-
 
         try {
             Item item;
             String message;
 
+            // Read the CSV file
             String menuPath = "menu.csv";
             FileInputStream fileInputStream = new FileInputStream(menuPath);
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
+
+            // Stop if it is not the last line of the CSV
             while ((line = bufferedReader.readLine()) != null) {
                 String[] words = line.split(";");
                 String category = words[0].split("_")[0];
@@ -52,7 +64,7 @@ public class Manager {
                     menu.put(words[0], item);
                     item.setInitialStock(item.getStock());
                 } catch (InvalidItemNameException e) {
-                    message = e.getMessage() + "\n Item not added: "+words[1];
+                    message = e.getMessage() + "\n Item not added: " + words[1];
                     System.out.println(message);
                 }
             }
@@ -61,6 +73,7 @@ public class Manager {
         }
     }
 
+    // Method to initialize the list of orders  from the CSV file : orders.csv
     private void initializeOrders() {
         try {
             String ordersPath = "orders.csv";
@@ -88,11 +101,10 @@ public class Manager {
                     item = menu.get(words[2]);
                     try {
                         order.addItem(item);
+                    } catch (NullPointerException e) {
+                        System.out.println("Invalid Item: " + words[2]);
                     }
-                    catch(NullPointerException e){
-                        System.out.println("Invalid Item: "+words[2]);
 
-                    }
                     line = bufferedReader.readLine();
 
                     if (line != null) {
@@ -109,11 +121,12 @@ public class Manager {
         }
     }
 
-
+    // method to create a current order
     private void newCurrentOrder() {
         currentOrder = new Order();
     }
 
+    // method to add the current order into the list of orders
     public void validateCurrentOrder() {
         if (orders.isEmpty()) {
             int customerID = 1;
@@ -131,7 +144,7 @@ public class Manager {
         newCurrentOrder();
     }
 
-
+    // method to display the menu in the terminal
     private void viewMenu() {
         for (String id : menu.keySet()) {
             String value = menu.get(id).toString();
@@ -140,6 +153,7 @@ public class Manager {
         }
     }
 
+    // method to display the orders from the csv file in the terminal
     private void viewOrders() {
         System.out.println("Orders List");
         for (Order order : orders) {
@@ -147,8 +161,8 @@ public class Manager {
         }
     }
 
+    // method to display the items in each order in the terminal
     private void displayOrders() {
-
         for (Order order : orders) {
             System.out.println(order.getCustomerID());
             if (order.items.isEmpty())
@@ -161,24 +175,17 @@ public class Manager {
         }
     }
 
-    public static Order copyOrder(Order order) {
-        Order copy = new Order();
-        copy.setCustomerID(order.getCustomerID());
-        String timestamp = order.getTimestamp();
-        copy.setTimestamp(timestamp);
-        copy.setDiscountPrice(order.getDiscountPrice());
-        copy.setInitialPrice(order.getInitialPrice());
-        ArrayList newItems = (ArrayList) order.getItems();
-        copy.setItems((List) newItems.clone());
-
-        return copy;
-    }
-
-
+    //getters
     public List<Order> getOrders() {
         return orders;
     }
 
-    public void setCurrentOrder(Order order) {this.currentOrder = order;}
+    //setters
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 
+    public void setCurrentOrder(Order order) {
+        this.currentOrder = order;
+    }
 }

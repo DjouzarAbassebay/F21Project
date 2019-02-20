@@ -1,6 +1,5 @@
 package com.company;
 
-
 public class Item {
 
     private String name;
@@ -10,8 +9,10 @@ public class Item {
     private int stock;
     private int initialStock;
 
-
+    // Item's constructor
     public Item(String name, String description, String category, double cost, int stock) throws InvalidItemNameException {
+
+        // To check there is no decimal numbers
         if (name.matches(".*\\d+.*"))
         {
             throw new InvalidItemNameException(name);
@@ -27,7 +28,7 @@ public class Item {
     }
 
 
-    //Getters
+    // Getters
     String getName() {
         return name;
     }
@@ -51,16 +52,16 @@ public class Item {
     }
 
 
-    //Setters
+    // Setters
     public void setInitialStock(int stock) {
         this.initialStock = stock;
-
     }
 
     void setStock(int variation) {
         this.stock+=variation;
     }
 
+    // Used to print into the Terminal
     @Override
     public String toString() {
         return "Name: " + name + "\n"
@@ -70,6 +71,7 @@ public class Item {
                 + "Stock: " + stock + "\n\n";
     }
 
+    // Used to display the the menu in the Final Report
     String toStringReport() {
         return "Name:" + name + " ||"+ "\n"
                 + " Stock:" + stock + "\n\n";

@@ -7,23 +7,27 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-class FinalReport {
+public class FinalReport {
     private double income;
     private Manager manager;
 
-    FinalReport(Manager manager) {
+    public FinalReport(Manager manager) {
         this.manager = manager;
     }
 
-    private void calculateIncome() {
+
+    // method to compute the income of all the orders
+    public void calculateIncome() {
         for(Order order : manager.getOrders()) {
             System.out.println(order.toString());
             this.income += order.getDiscountPrice();
         }
-        System.out.println("Final Income: "  + income + "       ");
+        System.out.println("Final Income: "  + income);
     }
 
-    private String calculateVariationClass(String id){
+
+    // method to compute the variation of stock for each item
+    public String calculateVariationClass(String id){
 
         StringBuilder variationStock = new StringBuilder();
 
@@ -34,8 +38,11 @@ class FinalReport {
 
     }
 
+
+    // method to generate the final report
     private void generateReport() {
         BufferedWriter bw = null;
+
         try {
 
             //Specifying the file name and path
@@ -59,6 +66,8 @@ class FinalReport {
             bw.write("Items in the menu: ");
             bw.newLine();
 
+
+            // loop into the menu map to get the details(name and stock) of each item
             for (String id: manager.menu.keySet()){
                 String value = manager.menu.get(id).toStringReport();
                 bw.write(value);
@@ -67,6 +76,8 @@ class FinalReport {
             bw.newLine();
             bw.write("Items that have been sold: ");
             bw.newLine();
+
+            //loop into all the items
             for (String id : manager.menu.keySet()) {
                 bw.write(calculateVariationClass(id));
                 bw.newLine();
@@ -97,8 +108,16 @@ class FinalReport {
         }
     }
 
+
+    // method to write the final report when we exit the GUI
     void launch() {
         calculateIncome();
         generateReport();
     }
+
+    public double getIncome() {
+        return this.income;
+    }
 }
+
+
