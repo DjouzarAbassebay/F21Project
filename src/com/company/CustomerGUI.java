@@ -237,8 +237,8 @@ class CustomerGUI extends JFrame {
                 // Add the image panel to the promotion panel
                 promotionPanel.add(imagePanel);
 
-                // Display in a message dialog the promotion panel
-                JOptionPane.showMessageDialog(null, promotionPanel, "F21 Coffee Promotions", JOptionPane.PLAIN_MESSAGE);
+                // Display in a message dialog the main container panel
+                JOptionPane.showMessageDialog(mainContainerPanel, promotionPanel, "F21 Coffee Promotions", JOptionPane.PLAIN_MESSAGE);
 
             }
         });
