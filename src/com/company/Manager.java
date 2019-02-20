@@ -11,7 +11,7 @@ public class Manager {
     private List<Order> orders = new ArrayList<>();
 
     Order currentOrder;
-    public String[] id_array = new String[menu.size()];
+    public String[] id_array = new String[14];
 
     public Manager() {
 
@@ -41,9 +41,17 @@ public class Manager {
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
+            int cmpt = 0;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] words = line.split(";");
                 String category = words[0].split("_")[0];
+                String id = words[0].split("_")[1];
+                if(cmpt <= menu.size())
+                {
+                    System.out.println(cmpt);
+                    id_array[cmpt] = id;
+                    cmpt++;
+                }
                 try {
                     item = new Item(words[1], words[2], category, Float.parseFloat(words[3]), Integer.parseInt(words[4]));
                     menu.put(words[0], item);
@@ -59,45 +67,6 @@ public class Manager {
         }
     }
 
-    public void removestock(String id) {
-        try {
-            String line;
-            String menuPath = "menu.csv";
-            FileInputStream fileInputStream = new FileInputStream(menuPath);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String[] lines = new String[menu.size()];
-
-            int j = 0;
-            while ((line = bufferedReader.readLine()) != null) {
-                lines[j] = line;
-                j++;
-            }
-            OutputStream fileOutputStream = new FileOutputStream(menuPath);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-            BufferedWriter bufferedwriter = new BufferedWriter(outputStreamWriter);
-
-            for(int i = 0 ; i<menu.size() ; i++) {
-                String[] words = lines[i].split(";");
-                    int stock = Integer.parseInt(words[4]) - Integer.parseInt(id);
-                    String stock_string = Integer.toString(stock);
-                    words[4] = stock_string;
-                    lines[i] = words[0] + ";" + words[1] + ";" + words[2] + ";" + words[3] + ";" + words[4] ;
-                    System.out.println(words[0] + ";" + words[1] + ";" + words[2] + ";" + words[3] + ";" + words[4]);
-
-                bufferedwriter.write(lines[i]);
-                bufferedwriter.newLine();
-            }
-
-            bufferedwriter.close();
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public void addStock(int item_nb, int stock_nb) {

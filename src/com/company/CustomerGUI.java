@@ -687,12 +687,6 @@ class CustomerGUI extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 fReport.launch();
-
-                for(int i = 0 ; i<manager.menu.size() ; i++)
-                {
-                    manager.addStock(i, fReport.calculateVariationClass(manager.id_array[i]));
-                }
-
                 Scanner sc = new Scanner(System.in);
                 int str = 1;
                 while(str == 1) {
