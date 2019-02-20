@@ -26,14 +26,11 @@ public class Manager {
         viewMenu();
         viewOrders();
 
-
     }
 
 
     //Methods
-
     private void initializeMenu() {
-
 
         try {
             Item item;
@@ -45,13 +42,19 @@ public class Manager {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
+
                 String[] words = line.split(";");
-                String category = words[0].split("_")[0];
+
                 try {
+                    if(!words[0].matches("((Hot|Cold|Sandwiches|Pastry)_\\d{3})"))
+                    {
+                        throw new InvalidItemIdException(words[0]);
+                    }
+                    String category = words[0].split("_")[0];
                     item = new Item(words[1], words[2], category, Float.parseFloat(words[3]), Integer.parseInt(words[4]));
                     menu.put(words[0], item);
                     item.setInitialStock(item.getStock());
-                } catch (InvalidItemNameException e) {
+                } catch (InvalidItemNameException | InvalidItemIdException e) {
                     message = e.getMessage() + "\n Item not added: "+words[1];
                     System.out.println(message);
                 }

@@ -170,7 +170,7 @@ class OrderTest {
         orderSimpleItem.removeItem(0);
         assertEquals(0, orderSimpleItem.getItems().size());
         assertEquals(0, orderSimpleItem.getDiscountPrice());
-        //assertEquals(3, itemChoc.getStock());
+        assertEquals(4, itemChoc.getStock());
     }
 
     @Test
@@ -178,7 +178,7 @@ class OrderTest {
         orderDoubleItem.removeItem(0);
         assertEquals(1, orderDoubleItem.getItems().size());
         assertEquals((float) 2.50, orderDoubleItem.getDiscountPrice());
-        //assertEquals(3, itemChoc.getStock());
+        assertEquals(4, itemChoc.getStock());
     }
 
     @Test
@@ -186,7 +186,7 @@ class OrderTest {
         emptyOrder.removeItem(0);
         assertEquals(0, emptyOrder.getItems().size());
         assertEquals(0, emptyOrder.getDiscountPrice());
-        //assertEquals(3, itemChoc.getStock());
+        assertEquals(3, itemChoc.getStock());
     }
 
     @Test
