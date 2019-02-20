@@ -13,6 +13,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 
 import static javax.swing.GroupLayout.Alignment.LEADING;
 
@@ -686,6 +687,27 @@ class CustomerGUI extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 fReport.launch();
+
+                for(int i = 0 ; i<manager.menu.size() ; i++)
+                {
+                    manager.addStock(i, fReport.calculateVariationClass(manager.id_array[i]));
+                }
+
+                Scanner sc = new Scanner(System.in);
+                int str = 1;
+                while(str == 1) {
+                    System.out.println("Do you want to add stock ? Yes = 1 No = 0:");
+                    str = sc.nextInt();
+                    if (str != 0 && str != 1){
+                        System.out.println("Please enter 1 or 0");
+                        str = sc.nextInt();
+                    }
+                    System.out.println("Witch item ?");
+                    int item = sc.nextInt();
+                    System.out.println("How many ?");
+                    int nb_item = sc.nextInt();
+                    manager.addStock(item, nb_item);
+                }
             }
         });
 

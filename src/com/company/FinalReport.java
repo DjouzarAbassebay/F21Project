@@ -23,7 +23,7 @@ class FinalReport {
         System.out.println("Final Income: "  + income + "       ");
     }
 
-    private String calculateVariationClass(String id){
+    public String calculateVariationClass(String id){
 
         StringBuilder variationStock = new StringBuilder();
 
