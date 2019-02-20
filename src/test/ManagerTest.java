@@ -24,8 +24,8 @@ class ManagerTest {
         Order orderTwoItems = new Order();
         completeOrder = new Order();
 
-        Item itemChoc = new Item("Hot Chocolate", "A hot chocolate", "Beverage",2.50, 3);
-        Item itemSandwich = new Item("Ham Sandwich","A ham sandwich","Food",5.0, 2);
+        Item itemChoc = new Item("Hot Chocolate", "A hot chocolate", "Hot",2.50, 3);
+        Item itemSandwich = new Item("Ham Sandwich","A ham sandwich","Sandwiches",5.0, 2);
         List<Item> simpleItemChoc = new ArrayList<>();
         List<Item> doubleItemChoc = new ArrayList<>();
         List<Item> twoItems = new ArrayList<>();

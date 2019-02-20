@@ -25,7 +25,6 @@ public class Manager {
         viewOrders();
     }
 
-
     // Method to create a copy of an order
     public static Order copyOrder(Order order) {
         Order copy = new Order();
@@ -39,7 +38,6 @@ public class Manager {
 
         return copy;
     }
-
 
     // Method to initialize the menu from the CSV file : menu.csv
     private void initializeMenu() {
@@ -57,14 +55,20 @@ public class Manager {
 
             // Stop if it is not the last line of the CSV
             while ((line = bufferedReader.readLine()) != null) {
+
                 String[] words = line.split(";");
-                String category = words[0].split("_")[0];
+
                 try {
+                    if(!words[0].matches("((Hot|Cold|Sandwiches|Pastry)_\\d{3})"))
+                    {
+                        throw new InvalidItemIdException(words[0]);
+                    }
+                    String category = words[0].split("_")[0];
                     item = new Item(words[1], words[2], category, Float.parseFloat(words[3]), Integer.parseInt(words[4]));
                     menu.put(words[0], item);
                     item.setInitialStock(item.getStock());
-                } catch (InvalidItemNameException e) {
-                    message = e.getMessage() + "\n Item not added: " + words[1];
+                } catch (InvalidItemNameException | InvalidItemIdException e) {
+                    message = e.getMessage() + "\n Item not added: "+words[1];
                     System.out.println(message);
                 }
             }

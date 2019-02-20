@@ -5,8 +5,6 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
@@ -69,7 +67,7 @@ class CustomerGUI extends JFrame {
         welcomePanel = new JPanel();
         // Create a label with an associated text
         // JLabels definition
-        JLabel welcomeLabel = new JLabel("Welcome to our coffee shop !");
+        JLabel welcomeLabel = new JLabel("Welcome to F21Coffee !");
         // Add the label to the panel
         welcomePanel.add(welcomeLabel);
         // Draw a blue line around the panel
@@ -123,7 +121,6 @@ class CustomerGUI extends JFrame {
                 discountPrice = manager.currentOrder.getDiscountPrice();
                 discountPriceLabel.setText("Total : " + nf.format(discountPrice));
 
-                itemsJtable.clearSelection();
 
         } catch (ArrayIndexOutOfBoundsException arrayException){
                 System.out.println("\nArray index is out of bounds\nUser clicked on the add button before selecting an item.");
@@ -162,7 +159,6 @@ class CustomerGUI extends JFrame {
                 discountPrice = manager.currentOrder.getDiscountPrice();
                 discountPriceLabel.setText("Total : " + nf.format(discountPrice));
 
-                itemsJtable.clearSelection();
 
             } catch (ArrayIndexOutOfBoundsException arrayException){
                 System.out.println("\nArray index is out of bounds\nUser clicked on the delete button before selecting an item in the Order Recap.");
@@ -216,31 +212,28 @@ class CustomerGUI extends JFrame {
             }
         });
 
-        promotionsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        promotionsButton.addActionListener(e -> {
 
-                // Create and initialize the JPanels
-                JPanel promotionPanel = new JPanel();
-                JPanel imagePanel = new JPanel();
+            // Create and initialize the JPanels
+            JPanel promotionPanel = new JPanel();
+            JPanel imagePanel = new JPanel();
 
-                // Create and insert an image in the image label
-                ImageIcon promotionIcon = new ImageIcon("src/com/company/images/promotions.jpg");
-                JLabel imageLabel = new JLabel(promotionIcon);
+            // Create and insert an image in the image label
+            ImageIcon promotionIcon = new ImageIcon("src/com/company/images/promotions.jpg");
+            JLabel imageLabel = new JLabel(promotionIcon);
 
-                // Add the label to the image panel
-                imagePanel.add(imageLabel);
+            // Add the label to the image panel
+            imagePanel.add(imageLabel);
 
-                // Set a GridLayout to mainPanel
-                promotionPanel.setLayout(new GridLayout(1, 1, 0, 0));
+            // Set a GridLayout to mainPanel
+            promotionPanel.setLayout(new GridLayout(1, 1, 0, 0));
 
-                // Add the image panel to the promotion panel
-                promotionPanel.add(imagePanel);
+            // Add the image panel to the promotion panel
+            promotionPanel.add(imagePanel);
 
-                // Display in a message dialog the main container panel
-                JOptionPane.showMessageDialog(mainContainerPanel, promotionPanel, "F21 Coffee Promotions", JOptionPane.PLAIN_MESSAGE);
+            // Display in a message dialog the main container panel
+            JOptionPane.showMessageDialog(mainContainerPanel, promotionPanel, "F21 Coffee Promotions", JOptionPane.PLAIN_MESSAGE);
 
-            }
         });
 
         // Add all buttons to the buttons panel
@@ -493,6 +486,8 @@ class CustomerGUI extends JFrame {
 
         // Create listener for this button
         previousButton.addActionListener(e -> {
+            itemsJtable.clearSelection();
+
             // Empty the itemSelectionPanel
             itemSelectionPanel.removeAll();
 
