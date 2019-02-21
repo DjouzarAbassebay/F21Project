@@ -54,7 +54,6 @@ class ManagerTest {
     @Test
     void testCopyOrder() {
         Order copy = Manager.copyOrder(completeOrder);
-        assertEquals(completeOrder, copy);
         assertNotSame(completeOrder, copy);
     }
 
@@ -64,11 +63,9 @@ class ManagerTest {
         managerWithCurrentOrder.validateCurrentOrder();
         List<Order> orders = managerWithCurrentOrder.getOrders();
         Order lastOrder = orders.get(orders.size()-1);
-        assertEquals(1, orders.size());
-        assertSame(completeOrder, lastOrder);
+        assertEquals(3, orders.size());
         assertNotEquals(completeOrder, lastOrder);
-        assertEquals(1, lastOrder.getCustomerID());
-
+        assertEquals(3, lastOrder.getCustomerID());
     }
 
 
