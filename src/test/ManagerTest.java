@@ -1,4 +1,3 @@
-/*
 package test;
 
 import com.company.InvalidItemNameException;
@@ -25,8 +24,8 @@ class ManagerTest {
         Order orderTwoItems = new Order();
         completeOrder = new Order();
 
-        Item itemChoc = new Item("Hot Chocolate", "A hot chocolate", "Hot",2.50, 3);
-        Item itemSandwich = new Item("Ham Sandwich","A ham sandwich","Sandwiches",5.0, 2);
+        Item itemChoc = new Item("Hot Chocolate", "A hot chocolate", "Hot",2.50, 3,20);
+        Item itemSandwich = new Item("Ham Sandwich","A ham sandwich","Sandwiches",5.0, 2, 15);
         List<Item> simpleItemChoc = new ArrayList<>();
         List<Item> doubleItemChoc = new ArrayList<>();
         List<Item> twoItems = new ArrayList<>();
@@ -42,6 +41,7 @@ class ManagerTest {
 
         completeOrder.setCustomerID(1);
         completeOrder.setTimestamp("2016-11-09T11:44:44.797");
+        completeOrder.setName("Peter Parker");
         completeOrder.setDiscountPrice((float) 7.50);
         completeOrder.setItems(twoItems);
 
@@ -58,7 +58,6 @@ class ManagerTest {
         assertNotSame(completeOrder, copy);
     }
 
-
     @Test
     void testValidateCurrentOrder() {
         managerWithCurrentOrder.validateCurrentOrder();
@@ -70,4 +69,4 @@ class ManagerTest {
     }
 
 
-}*/
+}

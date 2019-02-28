@@ -8,6 +8,7 @@ public class Order {
     private List<Item> items = new ArrayList<>();
     private int customerID;
     private String timestamp;
+    private String name;
     private double discountPrice;
     private double initialPrice;
 
@@ -107,6 +108,10 @@ public class Order {
         this.timestamp = value;
     }
 
+    public String getName() {return name;}
+
+    public void setName(String name) {this.name = name;}
+
     public double getInitialPrice() {
         return this.initialPrice;
     }
@@ -134,8 +139,9 @@ public class Order {
 
     @Override
     public String toString() {
-        return "CustomerId " + customerID + "\n"
-                + "Timestamp " + timestamp + "\n"
+        return "CustomerId: " + customerID + "\n"
+                + "Timestamp: " + timestamp + "\n"
+                + "Name: " + name + "\n"
                 + "Price: " + discountPrice + "\n"
                 + "Number of Items: " + items.size() + "\n\n";
     }

@@ -22,17 +22,16 @@ public class Manager {
         viewOrders();
     }
 
-    // Method to create a copy of an order
+    // Method to create a deep copy of an order
     public static Order copyOrder(Order order) {
         Order copy = new Order();
         copy.setCustomerID(order.getCustomerID());
-        String timestamp = order.getTimestamp();
-        copy.setTimestamp(timestamp);
+        copy.setTimestamp(order.getTimestamp());
+        copy.setName(order.getName());
         copy.setDiscountPrice(order.getDiscountPrice());
         copy.setInitialPrice(order.getInitialPrice());
         ArrayList newItems = (ArrayList) order.getItems();
         copy.setItems((List) newItems.clone());
-
 
         return copy;
     }
@@ -75,7 +74,6 @@ public class Manager {
             e.printStackTrace();
         }
     }
-
 
     //Method that can increase stock when closing the window
     public void addStock(int item_nb, int stock_nb) {
@@ -123,7 +121,6 @@ public class Manager {
         }
     }
 
-
     // Method to initialize the list of orders  from the CSV file : orders.csv
     private void initializeOrders() {
         try {
@@ -132,41 +129,31 @@ public class Manager {
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
+            String[] words;
+            Order order = new Order();
+            int oldId = 0, newId;
 
-            line = bufferedReader.readLine();
-
-            while (line != null) {
-
-                String[] words = line.split(";");
-
-                Order order = new Order();
-                order.setCustomerID(Integer.parseInt(words[0]));
-                order.setTimestamp(words[1]);
-                Item item = menu.get(words[2]);
-                order.addItem(item);
-
-                line = bufferedReader.readLine();
+            while ((line=bufferedReader.readLine()) != null) {
                 words = line.split(";");
+                newId = Integer.parseInt(words[0]);
 
-                while (Integer.parseInt(words[0]) == order.getCustomerID()) {
-                    item = menu.get(words[2]);
-                    try {
-                        order.addItem(item);
-                    } catch (NullPointerException e) {
-                        System.out.println("Invalid Item: " + words[2]);
-                    }
-
-                    line = bufferedReader.readLine();
-
-                    if (line != null) {
-                        words = line.split(";");
-                    } else {
-                        words[0] = "-1";
-                    }
+                if(oldId != newId) {
+                    if(oldId != 0) {orders.add(copyOrder(order));}
+                    order = new Order();
+                    oldId = newId;
+                    order.setCustomerID(newId);
+                    order.setTimestamp(words[1]);
+                    order.setName(words[2]);
                 }
 
-                orders.add(order);
+                Item item = menu.get(words[3]);
+                try {
+                    order.addItem(item);
+                } catch (NullPointerException e) {
+                    System.out.println("Invalid Item: " + words[3]);
+                }
             }
+            orders.add(copyOrder(order));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -226,9 +213,7 @@ public class Manager {
         }
     }
 
-    void addProcessedOrder(Order order)
-    {
-
+    void addProcessedOrder(Order order) {
         processedOrders.add(order);
     }
 

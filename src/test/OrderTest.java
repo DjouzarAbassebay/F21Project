@@ -1,4 +1,3 @@
-/*
 package test;
 
 import com.company.InvalidItemNameException;
@@ -60,12 +59,12 @@ class OrderTest {
         orderHotDrinksPlus = new Order();
         orderMixDrinks = new Order();
 
-        itemChoc = new Item("Hot Chocolate", "A hot chocolate", "Hot",2.50, 3);
+        itemChoc = new Item("Hot Chocolate", "A hot chocolate", "Hot",2.50, 3, 20);
 
-        Item itemSandwich = new Item("Ham Sandwich","A ham sandwich","Sandwiches",5.0, 2);
-        Item itemPastry = new Item("Muffins","Chocolate muffins","Pastry",2.0, 3);
-        Item itemColdDrink = new Item("Orange juice","An orange juice","Cold",1.0, 5);
-        Item itemHotDrink = new Item("Lemon tea","A lemon tea","Hot",5.0, 4);
+        Item itemSandwich = new Item("Ham Sandwich","A ham sandwich","Sandwiches",5.0, 2, 25);
+        Item itemPastry = new Item("Muffins","Chocolate muffins","Pastry",2.0, 3, 15);
+        Item itemColdDrink = new Item("Orange juice","An orange juice","Cold",1.0, 5, 10);
+        Item itemHotDrink = new Item("Lemon tea","A lemon tea","Hot",5.0, 4, 15);
 
         List<Item> simpleItemChoc = new ArrayList<>();
         List<Item> doubleItemChoc = new ArrayList<>();
@@ -259,4 +258,3 @@ class OrderTest {
         assertEquals(0, emptyOrder.getInitialPrice());
     }
 }
-*/
