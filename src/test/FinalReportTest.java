@@ -1,3 +1,4 @@
+/*
 package test;
 
 import com.company.InvalidItemNameException;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,17 +21,17 @@ class FinalReportTest {
     private Item itemChoc;
     private Manager manager;
     private FinalReport report;
-    private List<Order> listOrders;
+    private LinkedList<Order> listOrders;
 
 
     @BeforeEach
     void setUp() throws InvalidItemNameException {
 
-        listOrders = new ArrayList<>();
+        listOrders = new LinkedList<>();
         orderSimpleItem = new Order();
         manager = new Manager();
         report = new FinalReport(manager);
-        itemChoc = new Item("Expresso", "A hot chocolate", "Hot",2.50, 3);
+        itemChoc = new Item("Expresso", "A hot chocolate", "Hot",2.50, 3,30);
         List<Item> simpleItemChoc = new ArrayList<>();
         simpleItemChoc.add(itemChoc);
 
@@ -60,3 +62,4 @@ class FinalReportTest {
     }
 
 
+*/

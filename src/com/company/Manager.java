@@ -1,14 +1,12 @@
 package com.company;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Manager {
     Map<String, Item> menu = new HashMap<>();
-    private List<Order> orders = new ArrayList<>();
+    private LinkedList<Order> orders = new LinkedList<>();
+    private List<Order> processedOrders = new ArrayList<>();
 
     Order currentOrder;
 
@@ -34,6 +32,7 @@ public class Manager {
         copy.setInitialPrice(order.getInitialPrice());
         ArrayList newItems = (ArrayList) order.getItems();
         copy.setItems((List) newItems.clone());
+
 
         return copy;
     }
@@ -63,7 +62,7 @@ public class Manager {
                         throw new InvalidItemIdException(words[0]);
                     }
                     String category = words[0].split("_")[0];
-                    item = new Item(words[1], words[2], category, Float.parseFloat(words[3]), Integer.parseInt(words[4]));
+                    item = new Item(words[1], words[2], category, Float.parseFloat(words[3]), Integer.parseInt(words[4]), Integer.parseInt(words[5]));
                     menu.put(words[0], item);
                     item.setInitialStock(item.getStock());
                 } catch (InvalidItemNameException | InvalidItemIdException e) {
@@ -217,14 +216,20 @@ public class Manager {
     private void displayOrders() {
         for (Order order : orders) {
             System.out.println(order.getCustomerID());
-            if (order.items.isEmpty())
+            if (order.getItems().isEmpty())
                 System.out.println("Order empty !");
             else {
-                for (int j = 0; j < order.items.size(); j++) {
-                    System.out.println(order.items.get(j));
+                for (int j = 0; j < order.getItems().size(); j++) {
+                    System.out.println(order.getItems().get(j));
                 }
             }
         }
+    }
+
+    void addProcessedOrder(Order order)
+    {
+
+        processedOrders.add(order);
     }
 
     //getters
@@ -232,8 +237,23 @@ public class Manager {
         return orders;
     }
 
+    public Order getNextOrder(){
+        Order order = new Order();
+        try{
+            order = orders.removeFirst();
+
+        }
+        catch(NoSuchElementException e){
+            order = null;
+
+
+        }
+
+        return order;
+    }
+
     //setters
-    public void setOrders(List<Order> orders) {
+    public void setOrders(LinkedList<Order> orders) {
         this.orders = orders;
     }
 

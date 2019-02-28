@@ -8,9 +8,10 @@ public class Item {
     private double cost;
     private int stock;
     private int initialStock;
+    private int timeProcess;
 
     // Item's constructor
-    public Item(String name, String description, String category, double cost, int stock) throws InvalidItemNameException {
+    public Item(String name, String description, String category, double cost, int stock, int timeProcess) throws InvalidItemNameException {
 
         // To check there is no decimal numbers
         if (name.matches(".*\\d+.*"))
@@ -25,6 +26,7 @@ public class Item {
         this.category = category;
         this.cost = cost;
         this.stock = stock;
+        this.timeProcess=timeProcess;
     }
 
 
@@ -50,6 +52,8 @@ public class Item {
     public int getStock() {
         return stock;
     }
+
+    public int getTimeProcess(){ return timeProcess;}
 
 
     // Setters

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Order {
 
-    List<Item> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
     private int customerID;
     private String timestamp;
     private double discountPrice;

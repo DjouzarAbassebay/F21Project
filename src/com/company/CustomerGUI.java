@@ -149,8 +149,8 @@ class CustomerGUI extends JFrame {
 
                 // Print the current order items
                 System.out.println("Current Order Items");
-                for(int i=0; i<manager.currentOrder.items.size() ; i++) {
-                    System.out.print(manager.currentOrder.items.get(i));
+                for(int i=0; i<manager.currentOrder.getItems().size() ; i++) {
+                    System.out.print(manager.currentOrder.getItems().get(i));
                 }
 
                 System.out.println("Price of the current order (with discount): £" + manager.currentOrder.getDiscountPrice());
@@ -177,8 +177,8 @@ class CustomerGUI extends JFrame {
 
             // Print the current order items
             System.out.println("Current Order Items");
-            for(int i=0; i<manager.currentOrder.items.size() ; i++) {
-                System.out.print(manager.currentOrder.items.get(i));
+            for(int i=0; i<manager.currentOrder.getItems().size() ; i++) {
+                System.out.print(manager.currentOrder.getItems().get(i));
             }
 
             System.out.println("Price of the current order (with discount): £" + manager.currentOrder.getDiscountPrice());
