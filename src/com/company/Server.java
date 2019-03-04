@@ -6,6 +6,7 @@ public class Server extends Thread{
     Order processingOrder;
     Manager manager;
     int id;
+    int processingSpeed = 1;
 
 
     public Server(int id,Manager manager) {
@@ -22,7 +23,7 @@ public class Server extends Thread{
                 for(Item item:processingOrder.getItems()){
                     time += item.getTimeProcess();
                 }
-                Thread.sleep(time*1000);
+                Thread.sleep(time*1000/processingSpeed);
 
                 manager.addProcessedOrder(Manager.copyOrder(processingOrder));
             } catch (InterruptedException e) {
