@@ -24,7 +24,6 @@ public class SettingsGUI extends JFrame {
     private JPanel serversPanel;
     private JPanel baristasPanel;
 
-    private JPanel thirdPanel;
     private JPanel buttonsPanel;
 
     // JLabels definition
@@ -92,7 +91,7 @@ public class SettingsGUI extends JFrame {
         sliderPanel.add(runtimeSlider);
         runtimePanel.add(sliderPanel);
 
-        // Draw a blue line around the panel
+        // Draw a blue line around the panel with an associated title
         runtimePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Runtime Speed"));
     }
 
@@ -241,7 +240,7 @@ public class SettingsGUI extends JFrame {
 
         buttonsGroupLayout.linkSize(SwingConstants.HORIZONTAL, applyButton, cancelButton);
 
-        // Draw a blue line around the panel
+        // Draw a blue line around the panel with an associated title
         buttonsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Buttons"));
 
         // Set buttons listeners
@@ -388,17 +387,10 @@ public class SettingsGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set the JFrame unresizable
-        //setResizable(false);
+        setResizable(false);
 
         // Set the JFrame visible
         setVisible(true);
     }
-
-    /*public static void main(String[] args){
-
-        Manager manager = new Manager();
-        SettingsGUI settingsGUI = new SettingsGUI(manager);
-
-    }*/
 
 }
