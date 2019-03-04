@@ -57,7 +57,8 @@ public class SettingsGUI extends JFrame {
 
     private Manager manager;
 
-    private SettingsGUI(Manager manager){
+    // SettingsGUI Constructor
+    SettingsGUI(Manager manager){
         this.manager = manager;
         initUI();
     }
@@ -267,7 +268,11 @@ public class SettingsGUI extends JFrame {
 
                         // Add server(s) if the maximum number of servers is not reached !
                         if(serversListSize < SERVERS_MAX+1) {
-                            manager.servers.add(new Server(serversListSize+i, manager));
+
+                            Server server = new Server(serversListSize+i, manager);
+                            manager.servers.add(server);
+                            // When a new server is added, start this thread
+                            server.start();
                         } else {
                             JOptionPane.showMessageDialog(mainContainerPanel, "Maximum number of servers reached !");
                         }
@@ -389,11 +394,11 @@ public class SettingsGUI extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args){
+    /*public static void main(String[] args){
 
         Manager manager = new Manager();
         SettingsGUI settingsGUI = new SettingsGUI(manager);
 
-    }
+    }*/
 
 }

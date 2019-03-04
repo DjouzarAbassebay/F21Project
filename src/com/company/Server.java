@@ -18,7 +18,7 @@ public class Server extends Thread{
         while((processingOrder=manager.getNextOrder())!=null)
         {
             try {
-                System.out.println("id: "+id+"\n"+processingOrder.toString());
+                System.out.println("Server id: "+id+"\n"+processingOrder.toString());
                 int time=0;
                 for(Item item:processingOrder.getItems()){
                     time += item.getTimeProcess();
