@@ -1,3 +1,4 @@
+/*
 package com.company;
 
 import javax.swing.*;
@@ -719,3 +720,4 @@ class CustomerGUI extends JFrame {
     }
 
 }
+*/
