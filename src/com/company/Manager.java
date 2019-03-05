@@ -5,22 +5,18 @@ import java.util.*;
 
 public class Manager {
     Map<String, Item> menu = new HashMap<>();
-    private LinkedList<Order> orders = new LinkedList<>();
+
     private List<Order> processedOrders = new ArrayList<>();
     List<Server> servers = new ArrayList<>();
+    SharedObject sharedObject;
 
     Order currentOrder;
 
     //Constructor
-    public Manager() {
-
-        newCurrentOrder();
-
+    public Manager(SharedObject sharedObject) {
+        this.sharedObject = sharedObject;
         initializeMenu();
-        initializeOrders();
-
         viewMenu();
-        viewOrders();
     }
 
     // Method to create a deep copy of an order
@@ -122,65 +118,19 @@ public class Manager {
         }
     }
 
-    // Method to initialize the list of orders  from the CSV file : orders.csv
-    private void initializeOrders() {
-        try {
-            String ordersPath = "orders.csv";
-            FileInputStream fileInputStream = new FileInputStream(ordersPath);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String line;
-            String[] words;
-            Order order = new Order();
-            int oldId = 0, newId;
+    public void addServers(int nbServers) {
+        int serversListSize = servers.size();
+        for (int i = 0; i < nbServers - serversListSize; i++) {
+            System.out.println("Manager Servers Size : " + serversListSize);
 
-            while ((line=bufferedReader.readLine()) != null) {
-                words = line.split(";");
-                newId = Integer.parseInt(words[0]);
+            // Add server(s) if the maximum number of servers is not reached !
+            Server server = new Server(serversListSize+i, this, sharedObject);
+            servers.add(server);
+            // When a new server is added, start this thread
+            server.start();
 
-                if(oldId != newId) {
-                    if(oldId != 0) {orders.add(copyOrder(order));}
-                    order = new Order();
-                    oldId = newId;
-                    order.setCustomerID(newId);
-                    order.setTimestamp(words[1]);
-                    order.setName(words[2]);
-                }
-
-                Item item = menu.get(words[3]);
-                try {
-                    order.addItem(item);
-                } catch (NullPointerException e) {
-                    System.out.println("Invalid Item: " + words[3]);
-                }
-            }
-            orders.add(copyOrder(order));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-    }
-
-    // method to create a current order
-    private void newCurrentOrder() {
-        currentOrder = new Order();
-    }
-
-    // method to add the current order into the list of orders
-    public void validateCurrentOrder() {
-        if (orders.isEmpty()) {
-            int customerID = 1;
-            currentOrder.setCustomerID(customerID);
-            currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
-            orders.add(copyOrder(currentOrder));
-        } else {
-            Order lastOrder = orders.get(orders.size() - 1);
-            int customerID = lastOrder.getCustomerID() + 1;
-            currentOrder.setCustomerID(customerID);
-            currentOrder.setTimestamp(java.time.LocalDateTime.now().toString());
-            orders.add(copyOrder(currentOrder));
-        }
-        displayOrders();
-        newCurrentOrder();
+        System.out.println("Servers List Size : " + servers.size());
     }
 
     // method to display the menu in the terminal
@@ -193,57 +143,16 @@ public class Manager {
     }
 
     // method to display the orders from the csv file in the terminal
-    private void viewOrders() {
-        System.out.println("Orders List");
-        for (Order order : orders) {
-            System.out.println(order);
-        }
-    }
 
-    // method to display the items in each order in the terminal
-    private void displayOrders() {
-        for (Order order : orders) {
-            System.out.println(order.getCustomerID());
-            if (order.getItems().isEmpty())
-                System.out.println("Order empty !");
-            else {
-                for (int j = 0; j < order.getItems().size(); j++) {
-                    System.out.println(order.getItems().get(j));
-                }
-            }
-        }
-    }
 
     void addProcessedOrder(Order order) {
         processedOrders.add(order);
     }
 
-    //getters
-    public List<Order> getOrders() {
-        return orders;
+    public Map<String, Item> getMenu() {
+        return menu;
     }
 
-    public Order getNextOrder(){
-        Order order = new Order();
-        try{
-            order = orders.removeFirst();
-
-        }
-        catch(NoSuchElementException e){
-            order = null;
 
 
-        }
-
-        return order;
-    }
-
-    //setters
-    public void setOrders(LinkedList<Order> orders) {
-        this.orders = orders;
-    }
-
-    public void setCurrentOrder(Order order) {
-        this.currentOrder = order;
-    }
 }

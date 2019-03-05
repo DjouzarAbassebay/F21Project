@@ -256,27 +256,9 @@ public class SettingsGUI extends JFrame {
         applyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                serversListSize = manager.servers.size();
-
                 // If we want to add server(s)...
-                if(serversNumber > serversListSize){
-
-                    for (int i = 0; i < (serversNumber - serversListSize); i++) {
-                        System.out.println("Manager Servers Size : " + serversListSize);
-
-                        // Add server(s) if the maximum number of servers is not reached !
-                        if(serversListSize < SERVERS_MAX+1) {
-
-                            Server server = new Server(serversListSize+i, manager);
-                            manager.servers.add(server);
-                            // When a new server is added, start this thread
-                            server.start();
-                        } else {
-                            JOptionPane.showMessageDialog(mainContainerPanel, "Maximum number of servers reached !");
-                        }
-                    }
-                    System.out.println("Servers List Size : " + manager.servers.size());
+                if(serversNumber > manager.servers.size()){
+                    manager.addServers(serversNumber);
                 }
                 // If we want to remove server(s)...
                 else if (serversNumber < serversListSize){

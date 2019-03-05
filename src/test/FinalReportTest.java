@@ -1,3 +1,4 @@
+/*
 package test;
 
 import com.company.InvalidItemNameException;
@@ -61,3 +62,4 @@ class FinalReportTest {
     }
 
 
+*/

@@ -5,20 +5,25 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class FinalReport {
     private double income;
-    private Manager manager;
 
-    public FinalReport(Manager manager) {
-        this.manager = manager;
+    private SharedObject sharedObject;
+    Map<String, Item> menu ;
+
+    public FinalReport(SharedObject sharedObject, Map<String, Item> menu) {
+        this.sharedObject = sharedObject;
+        this.menu = menu;
     }
 
 
     // method to compute the income of all the orders
     public void calculateIncome() {
-        for(Order order : manager.getOrders()) {
+        for(Order order : sharedObject.getOrders()) {
             System.out.println(order.toString());
             this.income += order.getDiscountPrice();
         }
@@ -31,7 +36,7 @@ public class FinalReport {
 
         StringBuilder variationStock = new StringBuilder();
 
-        float variation = manager.menu.get(id).getInitialStock() - manager.menu.get(id).getStock();
+        float variation = menu.get(id).getInitialStock() - menu.get(id).getStock();
         variationStock.append(id).append(" : ").append(variation);
 
         return variationStock.toString();
@@ -67,8 +72,8 @@ public class FinalReport {
 
 
             // loop into the menu map to get the details(name and stock) of each item
-            for (String id: manager.menu.keySet()){
-                String value = manager.menu.get(id).toStringReport();
+            for (String id: menu.keySet()){
+                String value = menu.get(id).toStringReport();
                 bw.write(value);
                 bw.newLine();
             }
@@ -77,7 +82,7 @@ public class FinalReport {
             bw.newLine();
 
             //loop into all the items
-            for (String id : manager.menu.keySet()) {
+            for (String id : menu.keySet()) {
                 bw.write(calculateVariationClass(id));
                 bw.newLine();
             }
