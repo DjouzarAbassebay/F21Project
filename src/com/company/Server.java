@@ -6,6 +6,7 @@ public class Server extends Thread{
     Order processingOrder;
     Manager manager;
     int id;
+    int processingSpeed = 1;
 
 
     public Server(int id,Manager manager) {
@@ -17,12 +18,12 @@ public class Server extends Thread{
         while((processingOrder=manager.getNextOrder())!=null)
         {
             try {
-                System.out.println("id: "+id+"\n"+processingOrder.toString());
+                System.out.println("Server id: "+id+"\n"+processingOrder.toString());
                 int time=0;
                 for(Item item:processingOrder.getItems()){
                     time += item.getTimeProcess();
                 }
-                Thread.sleep(time*1000);
+                Thread.sleep(time*1000/processingSpeed);
 
                 manager.addProcessedOrder(Manager.copyOrder(processingOrder));
             } catch (InterruptedException e) {

@@ -7,6 +7,7 @@ public class Manager {
     Map<String, Item> menu = new HashMap<>();
     private LinkedList<Order> orders = new LinkedList<>();
     private List<Order> processedOrders = new ArrayList<>();
+    List<Server> servers = new ArrayList<>();
 
     Order currentOrder;
 
