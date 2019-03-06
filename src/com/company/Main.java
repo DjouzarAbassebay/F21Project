@@ -8,25 +8,27 @@ public class Main {
     public static void main(String[] args) {
 
 
-        SharedObject sharedObject = new SharedObject();
+      /*  SharedObject sharedObject = new SharedObject();
         Manager manager = new Manager(sharedObject);
         CsvProducer csvProducer = new CsvProducer(sharedObject, manager.getMenu());
-        csvProducer.start();
+        csvProducer.start();  */
 
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ServerGUI window = new ServerGUI();
-                    window.frame.setVisible(true);
+                    ServerGUI frame = new ServerGUI();
+                    frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
 
+
+
         // CustomerGUI customerGUI = new CustomerGUI(manager);
        // customerGUI.initUI();
 
-        SettingsGUI settingsGUI = new SettingsGUI(manager);
+     //   SettingsGUI settingsGUI = new SettingsGUI(manager);
     }
 }
