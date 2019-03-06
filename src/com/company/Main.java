@@ -1,5 +1,7 @@
 package com.company;
 
+import java.awt.*;
+
 public class Main {
 
     // Launch the GUI and create an instance manager
@@ -11,7 +13,18 @@ public class Main {
         CsvProducer csvProducer = new CsvProducer(sharedObject, manager.getMenu());
         csvProducer.start();
 
-       // CustomerGUI customerGUI = new CustomerGUI(manager);
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    ServerGUI window = new ServerGUI();
+                    window.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // CustomerGUI customerGUI = new CustomerGUI(manager);
        // customerGUI.initUI();
 
         SettingsGUI settingsGUI = new SettingsGUI(manager);
