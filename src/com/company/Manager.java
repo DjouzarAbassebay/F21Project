@@ -10,8 +10,6 @@ public class Manager {
     List<Server> servers = new ArrayList<>();
     SharedObject sharedObject;
 
-    Order currentOrder;
-
     //Constructor
     public Manager(SharedObject sharedObject) {
         this.sharedObject = sharedObject;
@@ -120,8 +118,8 @@ public class Manager {
 
     public void addServers(int nbServers) {
         int serversListSize = servers.size();
+        System.out.println("Servers before changing : " + serversListSize);
         for (int i = 0; i < nbServers - serversListSize; i++) {
-            System.out.println("Manager Servers Size : " + serversListSize);
 
             // Add server(s) if the maximum number of servers is not reached !
             Server server = new Server(serversListSize+i, this, sharedObject);

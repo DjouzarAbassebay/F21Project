@@ -8,11 +8,11 @@ public class Main {
 
         SharedObject sharedObject = new SharedObject();
         Manager manager = new Manager(sharedObject);
+
         CsvProducer csvProducer = new CsvProducer(sharedObject, manager.getMenu());
         csvProducer.start();
-
-       // CustomerGUI customerGUI = new CustomerGUI(manager);
-       // customerGUI.initUI();
+        OnlineProducer onlineProducer = new OnlineProducer(sharedObject, manager.getMenu());
+        onlineProducer.initUI();
 
         SettingsGUI settingsGUI = new SettingsGUI(manager);
     }
