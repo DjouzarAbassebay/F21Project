@@ -614,10 +614,11 @@ public class OnlineProducer extends JFrame {
 
 
 
-    // Method to add the current order at the top of the list of orders (in SharedObject)
+    // This function adds the current order at the orders (in Shared Object)
+    // Then re-initialize the current order to allow to make a new order
     public void validateCurrentOrder() {
 
-        // Default Cistomer ID if the priority Orders List is empty()
+        // Default Customer ID if the priority Orders List is empty()
         int customerID = 1 * 100;
 
         // If the priority Orders List is not empty...
@@ -633,10 +634,13 @@ public class OnlineProducer extends JFrame {
         newCurrentOrder();
     }
 
+    // This function initializes a new current order
     private void newCurrentOrder() {
         currentOrder = new Order();
     }
 
+    // This function adds the input order at the back of the priority orders (in Shared Object)
+    // And update the orders (in Shared Object)
     public void addOrderToPriorityOrdersSH(Order order) {
 
         sharedObject.addOrderToPriorityOrders(order);
