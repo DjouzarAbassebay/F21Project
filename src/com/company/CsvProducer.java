@@ -20,6 +20,11 @@ public class CsvProducer extends  Thread{
         this.menu = menu;
     }
 
+    public CsvProducer(SharedObject sharedObject) {
+        this.sharedObject = sharedObject;
+
+    }
+
 
     // Method to initialize the list of orders  from the CSV file : orders.csv
     public void run() {
@@ -72,5 +77,10 @@ public class CsvProducer extends  Thread{
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
+    }
+
+    public SharedObject getSharedObject(){
+
+        return sharedObject;
     }
 }

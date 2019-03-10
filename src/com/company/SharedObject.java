@@ -21,7 +21,7 @@ public class SharedObject {
         orders.add(order);
     }
 
-    private void viewOrders() {
+    public void viewOrders() {
         System.out.println("Orders List");
         for (Order order : orders) {
             System.out.println(order);
