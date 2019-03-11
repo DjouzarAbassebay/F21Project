@@ -7,7 +7,7 @@ public class Manager {
     Map<String, Item> menu = new HashMap<>();
 
     private List<Order> processedOrders = new ArrayList<>();
-    List<Server> servers = new ArrayList<>();
+    LinkedList<Server> servers = new LinkedList<Server>();
     SharedObject sharedObject;
 
     //Constructor
@@ -131,6 +131,20 @@ public class Manager {
         System.out.println("Servers List Size : " + servers.size());
     }
 
+    public void removeServers(int nbServers) {
+        int serversListSize = servers.size();
+        int i = serversListSize;
+        while(i != nbServers){
+            servers.getLast().stop();
+            servers.removeLast();
+            i--;
+        }
+
+        System.out.println("Servers List Size : " + servers.size());
+    }
+
+
+
     // method to display the menu in the terminal
     private void viewMenu() {
         for (String id : menu.keySet()) {
@@ -143,6 +157,7 @@ public class Manager {
     // method to display the orders from the csv file in the terminal
 
 
+
     void addProcessedOrder(Order order) {
         processedOrders.add(order);
     }
@@ -150,7 +165,4 @@ public class Manager {
     public Map<String, Item> getMenu() {
         return menu;
     }
-
-
-
 }
