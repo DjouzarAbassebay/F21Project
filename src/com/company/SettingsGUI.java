@@ -258,27 +258,29 @@ public class SettingsGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 // If we want to add server(s)...
-                if(serversNumber > manager.servers.size()){
+                if(serversNumber > manager.servers.size()) {
 
                     manager.addServers(serversNumber);
                     serversListSize = manager.servers.size();
                     System.out.println("New Servers Size after adding : " + manager.servers.size());
+
+                    // It is optional !!!
+                    // Add servers only when there are more orders than processing servers...
+                    /*if (manager.sharedObject.getOrders().size() > manager.servers.size()) {
+                        manager.addServers(serversNumber);
+                        serversListSize = manager.servers.size();
+                        System.out.println("New Servers Size after adding : " + manager.servers.size());
+                    } else {
+                        JOptionPane.showMessageDialog(mainContainerPanel, "There are enough servers to deal with orders.");
+                    }*/
                 }
                 // If we want to remove server(s)...
                 else if (serversNumber < manager.servers.size()){
 
-                    for (int i = 1; i < (manager.servers.size() - serversNumber + 1); i++) {
-
-                        // Remove server(s) if the servers list is not empty !
-                        if(!manager.servers.isEmpty()) {
-                            manager.servers.remove(manager.servers.get(manager.servers.size()-i));
-                        } else {
-                            JOptionPane.showMessageDialog(mainContainerPanel, "There is no more servers !");
-                        }
-                    }
+                    // Remove server(s) if the servers list is not empty !
+                    manager.removeServers(serversNumber);
                     serversListSize = manager.servers.size();
                     System.out.println("New Servers Size after removing : " + manager.servers.size());
-
                 }
 
                 // If the servers list is not empty...
