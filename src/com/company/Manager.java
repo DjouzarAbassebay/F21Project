@@ -17,6 +17,7 @@ public class Manager {
         this.sharedObject = sharedObject;
         initializeMenu();
         viewMenu();
+        addServers(1);
     }
 
     // Method to create a deep copy of an order
@@ -153,6 +154,6 @@ public class Manager {
         return menu;
     }
 
-
+    public List<Server> getServers() { return servers; }
 
 }

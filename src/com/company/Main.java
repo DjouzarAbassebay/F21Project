@@ -8,15 +8,18 @@ public class Main {
     public static void main(String[] args) {
 
 
-      /*  SharedObject sharedObject = new SharedObject();
+        SharedObject sharedObject = new SharedObject();
         Manager manager = new Manager(sharedObject);
+        Order order = new Order();
         CsvProducer csvProducer = new CsvProducer(sharedObject, manager.getMenu());
-        csvProducer.start();  */
+        csvProducer.start();
 
+        System.out.println(order.getName()+"OOOOOOOOOOOOOOOOOO");
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ServerGUI frame = new ServerGUI();
+
+                    ServerGUI frame = new ServerGUI(manager, sharedObject);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();

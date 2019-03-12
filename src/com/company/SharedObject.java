@@ -64,5 +64,10 @@ public class SharedObject {
         this.orders = orders;
     }
 
-
+    public String[] toStringCustomer() {
+        String str[] = new String[orders.size()];
+        for(int i = 0; i < orders.size(); i++)
+            str[i] = orders.get(i).getName() + " : " + orders.get(i).getItems().size() + " Items";
+        return  str;
+    }
 }
