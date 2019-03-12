@@ -31,6 +31,8 @@ public class Main {
 
         // CustomerGUI customerGUI = new CustomerGUI(manager);
        // customerGUI.initUI();
+        OnlineProducer onlineProducer = new OnlineProducer(sharedObject, manager.getMenu());
+        onlineProducer.initUI();
 
      //   SettingsGUI settingsGUI = new SettingsGUI(manager);
     }

@@ -7,10 +7,8 @@ public class Manager {
     Map<String, Item> menu = new HashMap<>();
 
     private List<Order> processedOrders = new ArrayList<>();
-    List<Server> servers = new ArrayList<>();
+    LinkedList<Server> servers = new LinkedList<Server>();
     SharedObject sharedObject;
-
-    Order currentOrder;
 
     //Constructor
     public Manager(SharedObject sharedObject) {
@@ -121,8 +119,8 @@ public class Manager {
 
     public void addServers(int nbServers) {
         int serversListSize = servers.size();
+        System.out.println("Servers before changing : " + serversListSize);
         for (int i = 0; i < nbServers - serversListSize; i++) {
-            System.out.println("Manager Servers Size : " + serversListSize);
 
             // Add server(s) if the maximum number of servers is not reached !
             Server server = new Server(serversListSize+i, this, sharedObject);
@@ -134,6 +132,20 @@ public class Manager {
         System.out.println("Servers List Size : " + servers.size());
     }
 
+    public void removeServers(int nbServers) {
+        int serversListSize = servers.size();
+        int i = serversListSize;
+        while(i != nbServers){
+            servers.getLast().stop();
+            servers.removeLast();
+            i--;
+        }
+
+        System.out.println("Servers List Size : " + servers.size());
+    }
+
+
+
     // method to display the menu in the terminal
     private void viewMenu() {
         for (String id : menu.keySet()) {
@@ -144,6 +156,7 @@ public class Manager {
     }
 
     // method to display the orders from the csv file in the terminal
+
 
 
     void addProcessedOrder(Order order) {

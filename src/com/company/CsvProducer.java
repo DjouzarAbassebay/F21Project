@@ -38,7 +38,9 @@ public class CsvProducer extends  Thread{
                 newId = Integer.parseInt(words[0]);
 
                 if(oldId != newId) {
-                    if(oldId != 0) {addOrderToSharedObject(copyOrder(order));}
+                    if(oldId != 0) {
+                        addOrderToNormalOrdersSH(copyOrder(order));
+                    }
                     order = new Order();
                     oldId = newId;
                     order.setCustomerID(newId);
@@ -53,7 +55,8 @@ public class CsvProducer extends  Thread{
                     System.out.println("Invalid Item: " + words[3]);
                 }
             }
-            addOrderToSharedObject(copyOrder(order));
+            addOrderToNormalOrdersSH(copyOrder(order));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,4 +76,22 @@ public class CsvProducer extends  Thread{
             e1.printStackTrace();
         }
     }
+
+
+    public void addOrderToNormalOrdersSH(Order order) {
+        Random r = new Random();
+        int low = 1000;
+        int high = 5000;
+        int timeRandom = r.nextInt(high-low) + low;
+
+        sharedObject.addOrderToNormalOrders(order);
+        sharedObject.updateOrders();
+        System.out.println("This order has been correctly added to the shared object: \n"+order.toString()+"\n");
+        try {
+            Thread.sleep(timeRandom*2);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+    }
+
 }
