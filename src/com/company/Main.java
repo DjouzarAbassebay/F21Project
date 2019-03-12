@@ -19,7 +19,7 @@ public class Main {
             public void run() {
                 try {
 
-                    ServerGUI frame = new ServerGUI(manager, sharedObject);
+                    ServerGUI frame = new ServerGUI(manager);
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -31,8 +31,7 @@ public class Main {
 
         // CustomerGUI customerGUI = new CustomerGUI(manager);
        // customerGUI.initUI();
-        OnlineProducer onlineProducer = new OnlineProducer(sharedObject, manager.getMenu());
-        onlineProducer.initUI();
+
 
      //   SettingsGUI settingsGUI = new SettingsGUI(manager);
     }

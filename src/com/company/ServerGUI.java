@@ -9,6 +9,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.lang.invoke.SerializedLambda;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 public class ServerGUI extends JFrame {
@@ -16,14 +19,15 @@ public class ServerGUI extends JFrame {
     Order order = new Order();
 
     private Manager manager;
-    private SharedObject sharedObject;
+
     private JFrame frame = this;
+
+    private DefaultListModel<String> waitingDefaultList;
 
      // Create the application.
 
-    public ServerGUI(Manager manager, SharedObject sharedObject) {
+    public ServerGUI(Manager manager) {
         this.manager = manager;
-        this.sharedObject = sharedObject;
         initialize();
     }
 
@@ -65,12 +69,11 @@ public class ServerGUI extends JFrame {
         middlePanel.setBounds(27, 323, 761, 233);
         getContentPane().add(middlePanel);
 
-        System.out.println(sharedObject.getOrders().size());
-        JLabel lblNbrePeopleWaiting = new JLabel("There are currently " + sharedObject.getOrders().size()+ " people waiting in the queue:");
+        System.out.println(manager.sharedObject.getOrders().size());
+        JLabel lblNbrePeopleWaiting = new JLabel("There are currently " + manager.sharedObject.getOrders().size()+ " people waiting in the queue:");
         lblNbrePeopleWaiting.setHorizontalAlignment(SwingConstants.CENTER);
         lblNbrePeopleWaiting.setBounds(55, 45, 644, 20);
         topPanel.add(lblNbrePeopleWaiting);
-
     }
 
     private void waitingPanel()
@@ -89,11 +92,21 @@ public class ServerGUI extends JFrame {
         lblWaiting.setBounds(72, 16, 202, 26);
         waitingPanel.add(lblWaiting);
 
-        JList waitingList = new JList(sharedObject.toStringCustomer());
+        waitingDefaultList = new DefaultListModel<>();
+        JList waitingList = new JList(waitingDefaultList);
+        DefaultListCellRenderer renderer =  (DefaultListCellRenderer)waitingList.getCellRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
         JScrollPane jscroll = new JScrollPane();
-        jscroll.add(waitingList);
+
         waitingList.setBounds(31, 46, 291, 147);
-        waitingPanel.add(jscroll);
+
+        for(int i=0; i<manager.sharedObject.getOrders().size(); i++){
+            System.out.println(manager.sharedObject.getOrders().get(i).getName());
+            waitingDefaultList.addElement(manager.sharedObject.getOrders().get(i).getName());
+        }
+        jscroll.add(waitingList);
+        waitingPanel.add(waitingList);
+
     }
 
     private void processingPanel()
@@ -133,7 +146,6 @@ public class ServerGUI extends JFrame {
 
         for (int value = 0; value < i; value++)
         {
-
             JPanel server1Panel = new JPanel();
             server1Panel.setBackground(new Color(250, 250, 210));
             server1Panel.setBounds(32, 343, 176, 194);
@@ -187,7 +199,17 @@ public class ServerGUI extends JFrame {
         server1Total.setBounds(49, 158, 69, 20);
         server1Panel.add(server1Total);
 
-        JList server1Details = new JList();
+        DefaultListModel<String> orderDetailsDefaultList = new DefaultListModel<>();
+        //List<Item> items = order1.getItems();
+        JList server1Details = new JList(orderDetailsDefaultList);
+        DefaultListCellRenderer renderer =  (DefaultListCellRenderer)server1Details.getCellRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
+        JScrollPane jscroll = new JScrollPane();
+        jscroll.add(server1Details);
+
+        for(int i=0; i<order1.getItems().size(); i++){
+            orderDetailsDefaultList.addElement(order1.getItems().get(i).getName());
+        }
         server1Details.setBounds(15, 67, 146, 89);
         server1Panel.add(server1Details);
      //   orderDetailsList = new DefaultListModel<>();
@@ -270,6 +292,17 @@ public class ServerGUI extends JFrame {
 
     }
 
+
+
+    public void refresh() {
+        //SwingUtilities.updateComponentTreeUI(this);
+        //this.invalidate();
+        //this.validate();
+        this.repaint();
+        this.setVisible(false);
+        new ServerGUI(manager).setVisible(true);
+    }
+
     private void buttons()
     {
         // Online Order button
@@ -283,8 +316,8 @@ public class ServerGUI extends JFrame {
         // When the button is clicked
         btnOnlineOrder.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                // CustomerGUI customerGUI = new CustomerGUI(manager);
-                // customerGUI.initUI();
+                OnlineProducer onlineProducer = new OnlineProducer(manager.sharedObject, manager.getMenu());
+                onlineProducer.initUI();
             }
         });
 
@@ -305,7 +338,7 @@ public class ServerGUI extends JFrame {
         });
 
         // Finish button
-    JButton btnFinish = new JButton("MAJ");
+        JButton btnFinish = new JButton("MAJ");
         btnFinish.setForeground(new Color(255, 255, 255));
         btnFinish.setFont(new Font("Tahoma", Font.BOLD, 16));
         btnFinish.setBackground(new Color(205, 133, 63));
@@ -316,9 +349,15 @@ public class ServerGUI extends JFrame {
         btnFinish.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                 waitingPanel();
-                 serverPanels();
-                 System.out.println("ooooooooooooooooooooooo");
+                //waitingPanel();
+                //waitingDefaultList = new DefaultListModel<>();
+                /*for(int i=0; i<manager.sharedObject.getOrders().size(); i++){
+                    System.out.println(manager.sharedObject.getOrders().get(i).getName());
+                    waitingDefaultList.addElement(manager.sharedObject.getOrders().get(i).getName());
+                }*/
+                //serverPanels();
+                refresh();
+                System.out.println("ooooooooooooooooooooooo  " + waitingDefaultList.size());
             }
         });
     }
