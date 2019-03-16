@@ -69,7 +69,6 @@ public class ServerGUI extends JFrame {
         middlePanel.setBounds(27, 323, 761, 233);
         getContentPane().add(middlePanel);
 
-        System.out.println(manager.sharedObject.getOrders().size());
         JLabel lblNbrePeopleWaiting = new JLabel("There are currently " + manager.sharedObject.getOrders().size()+ " people waiting in the queue:");
         lblNbrePeopleWaiting.setHorizontalAlignment(SwingConstants.CENTER);
         lblNbrePeopleWaiting.setBounds(55, 45, 644, 20);
@@ -101,7 +100,6 @@ public class ServerGUI extends JFrame {
         waitingList.setBounds(31, 46, 291, 147);
 
         for(int i=0; i<manager.sharedObject.getOrders().size(); i++){
-            System.out.println(manager.sharedObject.getOrders().get(i).getName());
             waitingDefaultList.addElement(manager.sharedObject.getOrders().get(i).getName());
         }
         jscroll.add(waitingList);
@@ -295,9 +293,6 @@ public class ServerGUI extends JFrame {
 
 
     public void refresh() {
-        //SwingUtilities.updateComponentTreeUI(this);
-        //this.invalidate();
-        //this.validate();
         this.repaint();
         this.setVisible(false);
         new ServerGUI(manager).setVisible(true);
@@ -349,15 +344,7 @@ public class ServerGUI extends JFrame {
         btnFinish.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                //waitingPanel();
-                //waitingDefaultList = new DefaultListModel<>();
-                /*for(int i=0; i<manager.sharedObject.getOrders().size(); i++){
-                    System.out.println(manager.sharedObject.getOrders().get(i).getName());
-                    waitingDefaultList.addElement(manager.sharedObject.getOrders().get(i).getName());
-                }*/
-                //serverPanels();
                 refresh();
-                System.out.println("ooooooooooooooooooooooo  " + waitingDefaultList.size());
             }
         });
     }

@@ -3,11 +3,16 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
+
+
+//TODO: put the processingTime change in Manager and every object that use it with the observer pattern
+
 public class Manager {
     Map<String, Item> menu = new HashMap<>();
 
     private List<Order> processedOrders = new ArrayList<>();
     LinkedList<Server> servers = new LinkedList<Server>();
+    LinkedList<Barista> baristas = new LinkedList<>();
     SharedObject sharedObject;
 
     //Constructor
@@ -16,6 +21,7 @@ public class Manager {
         initializeMenu();
         viewMenu();
         addServers(1);
+        addBaristas(1);
     }
 
     // Method to create a deep copy of an order
@@ -144,6 +150,18 @@ public class Manager {
         System.out.println("Servers List Size : " + servers.size());
     }
 
+    public void addBaristas(int nbBaristas) {
+        int baristasListSize = baristas.size();
+        System.out.println("Baristas before changing : " + baristasListSize);
+        for (int i = 0; i < nbBaristas - baristasListSize; i++) {
+            // Add barista(s) if the maximum number of baristas is not reached !
+            Barista barista = new Barista(this);
+            baristas.add(barista);
+            // When a new barista is added, start this thread
+            barista.start();
+        }
+        System.out.println("Baristas List Size : " + baristas.size());
+    }
 
 
     // method to display the menu in the terminal

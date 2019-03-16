@@ -58,12 +58,12 @@ public class SharedObject {
 
         orders = temp;
 
-        System.out.println("********** ORDERS LIST **********" );
+        /*System.out.println("********** ORDERS LIST **********" );
         for(int i=0; i<orders.size(); i++){
             System.out.println(orders.get(i) );
         }
         System.out.println("*******************************" );
-
+*/
     }
 
 
@@ -92,12 +92,12 @@ public class SharedObject {
         Order order = new Order();
         try{
             order = orders.removeFirst();
-            System.out.println("********** ORDERS LEFT LIST **********" );
+/*            System.out.println("********** ORDERS LEFT LIST **********" );
             for(int i=0; i<orders.size(); i++){
                 System.out.println(orders.get(i) );
             }
             System.out.println("*******************************" );
-            System.out.println("*******************************" );
+            System.out.println("*******************************" );*/
 
         }
         catch(NoSuchElementException e){
