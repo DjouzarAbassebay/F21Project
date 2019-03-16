@@ -1,0 +1,30 @@
+New order processed at  :2016-11-09T11:44:44.797
+  CustomerId :1
+  Price :6.5
+  Number of Items : 2.0
+
+
+New order processed at  :2016-11-09T11:54:44.799
+  CustomerId :2
+  Price :6.990000009536743
+  Number of Items : 2.0
+
+
+New order processed at  :2016-11-09T11:44:44.797
+  CustomerId :3
+  Price :11.5
+  Number of Items : 3.0
+
+
+New order processed at  :2016-11-09T11:54:44.799
+  CustomerId :4
+  Price :8.980000019073486
+  Number of Items : 3.0
+
+
+New order processed at  :2016-11-09T11:54:44.799
+  CustomerId :5
+  Price :15.480000019073486
+  Number of Items : 5.0
+
+
