@@ -1,5 +1,7 @@
 package com.company;
 
+import java.awt.*;
+
 public class Main {
 
     // Launch the GUI and create an instance manager
@@ -8,12 +10,29 @@ public class Main {
 
         SharedObject sharedObject = new SharedObject();
         Manager manager = new Manager(sharedObject);
+        Order order = new Order();
         CsvProducer csvProducer = new CsvProducer(sharedObject, manager.getMenu());
         csvProducer.start();
 
-       // CustomerGUI customerGUI = new CustomerGUI(manager);
+        System.out.println(order.getName()+"OOOOOOOOOOOOOOOOOO");
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+
+                    ServerGUI frame = new ServerGUI(manager);
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
+        // CustomerGUI customerGUI = new CustomerGUI(manager);
        // customerGUI.initUI();
 
-        SettingsGUI settingsGUI = new SettingsGUI(manager);
+
+     //   SettingsGUI settingsGUI = new SettingsGUI(manager);
     }
 }
