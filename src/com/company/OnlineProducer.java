@@ -743,7 +743,7 @@ public class OnlineProducer extends JFrame {
         });
 
         // On click on the close button, exit the application
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set the JFrame unresizable
         setResizable(false);
