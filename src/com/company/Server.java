@@ -23,7 +23,15 @@ public class Server extends Thread{
         {
             if((processingOrder=sharedObject.getNextOrder())!=null)
             {
+                // Remove the processing order to this associated order list
+                if(sharedObject.getPriorityOrders().contains(processingOrder)){
+                    sharedObject.removeOrderToPrioritylOrders(processingOrder);
+                } else {
+                    sharedObject.removeOrderToNormalOrders(processingOrder);
+                }
+
                 try {
+                    System.out.println("Order Processing...");
                     System.out.println("Server id: "+id+"\n"+processingOrder.toString());
                     int time=0;
                     for(Item item:processingOrder.getItems()){
