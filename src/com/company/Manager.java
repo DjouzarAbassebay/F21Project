@@ -4,9 +4,6 @@ import java.io.*;
 import java.util.*;
 
 
-
-//TODO: put the processingTime change in Manager and every object that use it with the observer pattern
-
 public class Manager {
     Map<String, Item> menu = new HashMap<>();
 
@@ -20,8 +17,8 @@ public class Manager {
         this.sharedObject = sharedObject;
         initializeMenu();
         viewMenu();
-        addServers(1);
-        addBaristas(1);
+        addServers(2);
+        addBaristas(2);
     }
 
     // Method to create a deep copy of an order
@@ -155,7 +152,7 @@ public class Manager {
         System.out.println("Baristas before changing : " + baristasListSize);
         for (int i = 0; i < nbBaristas - baristasListSize; i++) {
             // Add barista(s) if the maximum number of baristas is not reached !
-            Barista barista = new Barista(this);
+            Barista barista = new Barista(baristasListSize+i, this);
             baristas.add(barista);
             // When a new barista is added, start this thread
             barista.start();

@@ -38,8 +38,7 @@ public class Server extends Thread{
                 try {
                     System.out.println("Order Processing...");
                     System.out.println("Server id: "+id+"\n"+processingOrder.toString());
-                    baristaProcessing = false;
-                    baristaFinished = false;
+
                     int time=0;
                     for(Item item:processingOrder.getItems()){
                         if(!item.isBeverage())
@@ -50,6 +49,8 @@ public class Server extends Thread{
                         Thread.sleep(100);
                     }
                     manager.addProcessedOrder(Manager.copyOrder(processingOrder));
+                    baristaProcessing = false;
+                    baristaFinished = false;
 
                 } catch (InterruptedException e) {
                     System.out.println(e.getMessage());
@@ -65,8 +66,12 @@ public class Server extends Thread{
         }
     }
 
-    public void baristaTaking() {
-        baristaProcessing = true;
+    public synchronized boolean baristaTaking() {
+        if(!baristaProcessing) {
+            baristaProcessing = true;
+            return true;
+        }
+        return false;
     }
 
     public void baristaFinished() {
@@ -76,4 +81,6 @@ public class Server extends Thread{
     public Order getProcessingOrder() {return processingOrder;}
 
     public synchronized boolean getBaristaProcessing() {return baristaProcessing;}
+
+    public int getServerId() {return id;}
 }

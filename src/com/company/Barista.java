@@ -2,13 +2,13 @@ package com.company;
 
 import java.util.List;
 
-//TODO: Handle dynamic creation of baristas with settingGUI.
-
 public class Barista extends Thread {
 
     Manager manager;
+    private int id;
 
-    public Barista(Manager manager) {
+    public Barista(int id, Manager manager) {
+        this.id = id;
         this.manager = manager;
     }
 
@@ -20,11 +20,10 @@ public class Barista extends Thread {
         }
         while(true) {
             Server server = waitForServer();
-            System.out.println("Barista take care of: " + server.getId() + "\n");
-            server.baristaTaking();
+            System.out.println("Barista " + id + " take care of: " + server.getServerId() + "\n");
             completeOrder(server.getProcessingOrder().getItems());
             server.baristaFinished();
-            System.out.println("Barista finished order\n");
+            System.out.println("Barista " + id + " finished order\n");
 
             try {
                 Thread.sleep(100);
@@ -42,8 +41,10 @@ public class Barista extends Thread {
         while(!occupied && serverIndex < servers.size()) {
             server = servers.get(serverIndex);
             if(server.getProcessingOrder() != null) {
-                if (server.getProcessingOrder().containBeverage() && !server.getBaristaProcessing()) {
-                    occupied = true;
+                if (server.getProcessingOrder().containBeverage()) {
+                    if(server.baristaTaking()) {
+                        occupied = true;
+                    }
                 }
             }
             serverIndex++;
@@ -56,7 +57,6 @@ public class Barista extends Thread {
                 e.printStackTrace();
             }
         }
-
         return server;
     }
 
@@ -68,7 +68,7 @@ public class Barista extends Thread {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("Barista finished " + item + "\n");
+                System.out.println("Barista " + id + " finished " + item + "\n");
             }
         }
     }

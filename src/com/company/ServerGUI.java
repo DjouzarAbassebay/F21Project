@@ -28,6 +28,11 @@ public class ServerGUI extends JFrame {
 
     public ServerGUI(Manager manager) {
         this.manager = manager;
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         initialize();
     }
 
