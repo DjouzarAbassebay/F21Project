@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.lang.invoke.SerializedLambda;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +23,10 @@ public class ServerGUI extends JFrame {
 
     private JFrame frame = this;
 
+    private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.UK);
+
     private DefaultListModel<String> waitingDefaultList;
+    private DefaultListModel<String> processingDefaultList;
 
      // Create the application.
 
@@ -101,7 +105,7 @@ public class ServerGUI extends JFrame {
         waitingList.setBounds(31, 46, 291, 147);
 
         for(int i=0; i<manager.sharedObject.getOrders().size(); i++){
-            System.out.println(manager.sharedObject.getOrders().get(i).getName());
+            // System.out.println(manager.sharedObject.getOrders().get(i).getName());
             waitingDefaultList.addElement(manager.sharedObject.getOrders().get(i).getName());
         }
         jscroll.add(waitingList);
@@ -125,56 +129,29 @@ public class ServerGUI extends JFrame {
         lblProcessing.setBounds(67, 16, 232, 28);
         processingPanel.add(lblProcessing);
 
-     //   JList processingList = new JList(sharedObject.getNextOrder().toArray());
-     //   processingList.setBounds(28, 47, 302, 146);
-      //  processingPanel.add(processingList);
+        processingDefaultList = new DefaultListModel<>();
+        JList processingList = new JList(processingDefaultList);
+        DefaultListCellRenderer renderer =  (DefaultListCellRenderer)processingList.getCellRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
+        JScrollPane jscroll = new JScrollPane();
+
+        processingList.setBounds(31, 46, 291, 147);
+
+        for(int i=0; i<manager.servers.size(); i++){
+            // System.out.println(manager.servers.get(i).getProcessingOrder().getName());
+            Order processingOrder = manager.servers.get(i).getProcessingOrder();
+            if(processingOrder != null) {
+                processingDefaultList.addElement(processingOrder.getName());
+            }
+        }
+        jscroll.add(processingList);
+        processingPanel.add(processingList);
     }
 
 
     private void serverPanels()
     {
-        JPanel detailsPanel = new JPanel();
-        detailsPanel.setBackground(SystemColor.controlHighlight);
 
-        JPanel panel = new JPanel();
-        detailsPanel.add(panel);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-
-/*
-        int i=6;
-        int increment=1;
-
-        for (int value = 0; value < i; value++)
-        {
-            JPanel server1Panel = new JPanel();
-            server1Panel.setBackground(new Color(250, 250, 210));
-            server1Panel.setBounds(32, 343, 176, 194);
-            getContentPane().add(server1Panel);
-            server1Panel.setLayout(null);
-            panel.add(server1Panel);
-
-            JLabel server1Title = new JLabel("Server1");
-            server1Title.setHorizontalAlignment(SwingConstants.CENTER);
-            server1Title.setFont(new Font("Tahoma", Font.PLAIN, 19));
-            server1Title.setBounds(28, 5, 117, 36);
-            server1Panel.add(server1Title);
-
-            JLabel server1NameCustomer = new JLabel(order.getName());
-            server1NameCustomer.setHorizontalAlignment(SwingConstants.CENTER);
-            server1NameCustomer.setBounds(15, 41, 146, 20);
-            server1Panel.add(server1NameCustomer);
-
-            JLabel server1Total = new JLabel(order.getInitialPrice() + " £");
-            server1Total.setHorizontalAlignment(SwingConstants.CENTER);
-            server1Total.setBounds(49, 158, 69, 20);
-            server1Panel.add(server1Total);
-
-            JList server1Details = new JList();
-            server1Details.setBounds(15, 67, 146, 89);
-            server1Panel.add(server1Details);
-
-            increment ++;
-        }*/
         // Server1 Panel
         JPanel server1Panel = new JPanel();
         server1Panel.setBackground(new Color(250, 250, 210));
@@ -194,7 +171,8 @@ public class ServerGUI extends JFrame {
         server1NameCustomer.setBounds(15, 41, 146, 20);
         server1Panel.add(server1NameCustomer);
 
-        JLabel server1Total = new JLabel(order1.getInitialPrice() + " £");
+
+        JLabel server1Total = new JLabel( nf.format(order1.getInitialPrice()));
         server1Total.setHorizontalAlignment(SwingConstants.CENTER);
         server1Total.setBounds(49, 158, 69, 20);
         server1Panel.add(server1Total);
