@@ -10,6 +10,7 @@ public class SharedObject {
     private LinkedList<Order> orders;
     private List<Order> normalOrders;
     private List<Order> priorityOrders;
+    private Manager manager;
 
     public SharedObject() {
         this.orders = new LinkedList<>();
@@ -56,11 +57,13 @@ public class SharedObject {
 
         orders = temp;
 
-        System.out.println("********** ORDERS LIST **********" );
+        manager.notifyObservers();
+
+        /*System.out.println("********** ORDERS LIST **********" );
         for(int i=0; i<orders.size(); i++){
             System.out.println(orders.get(i) );
         }
-        System.out.println("*******************************" );
+        System.out.println("*******************************" );*/
 
     }
 
@@ -90,18 +93,17 @@ public class SharedObject {
         Order order = new Order();
         try{
             order = orders.removeFirst();
-            System.out.println("********** ORDERS LEFT LIST **********" );
+            manager.notifyObservers();
+           /* System.out.println("********** ORDERS LEFT LIST **********" );
             for(int i=0; i<orders.size(); i++){
                 System.out.println(orders.get(i) );
             }
             System.out.println("*******************************" );
-            System.out.println("*******************************" );
+            System.out.println("*******************************" );*/
 
         }
         catch(NoSuchElementException e){
             order = null;
-
-
         }
         return order;
     }
@@ -128,6 +130,7 @@ public class SharedObject {
         this.priorityOrders = orders;
     }
 
+    public void setManager(Manager manager) {this.manager = manager;}
 
     public String[] toStringCustomer() {
         String str[] = new String[orders.size()];

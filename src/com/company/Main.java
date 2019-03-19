@@ -10,6 +10,7 @@ public class Main {
 
         SharedObject sharedObject = new SharedObject();
         Manager manager = new Manager(sharedObject);
+        sharedObject.setManager(manager);
         Order order = new Order();
         CsvProducer csvProducer = new CsvProducer(sharedObject, manager.getMenu());
         csvProducer.start();
@@ -21,6 +22,7 @@ public class Main {
 
                     ServerGUI frame = new ServerGUI(manager);
                     frame.setVisible(true);
+                    manager.registerObserver(frame);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
