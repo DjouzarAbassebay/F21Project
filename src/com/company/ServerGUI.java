@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class ServerGUI extends JFrame {
+public class ServerGUI extends JFrame implements Observer {
 
     private JPanel topPanel;
     private JPanel middlePanel;
@@ -24,9 +24,23 @@ public class ServerGUI extends JFrame {
     private int nb_servers = 2;
     private int count = 0;
 
+    JPanel waitingPanel = new JPanel();
+    JPanel processingPanel = new JPanel();
+
+    private JScrollPane jscrollWaiting;
+    private JScrollPane jscrollProcessing;
+
+    private JLabel lblNbrePeopleWaiting;
+
     private GridBagConstraints constraints;
-    private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.UK);
+
     private DefaultListModel<String> waitingDefaultList;
+    private DefaultListModel<String> processingDefaultList;
+
+    private JList waitingList;
+    private JList processingList;
+
+    private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.UK);
 
     private Manager manager;
 
@@ -73,7 +87,7 @@ public class ServerGUI extends JFrame {
         getContentPane().add(middlePanel);
 
         System.out.println(manager.sharedObject.getOrders().size());
-        JLabel lblNbrePeopleWaiting = new JLabel("There are currently " + manager.sharedObject.getOrders().size()+ " people waiting in the queue:");
+        lblNbrePeopleWaiting = new JLabel("There are currently " + manager.sharedObject.getOrders().size()+ " people waiting in the queue:");
         lblNbrePeopleWaiting.setHorizontalAlignment(SwingConstants.CENTER);
         lblNbrePeopleWaiting.setBounds(55, 45, 644, 20);
         topPanel.add(lblNbrePeopleWaiting);
@@ -84,7 +98,7 @@ public class ServerGUI extends JFrame {
     private void waitingPanel()
     {
         //Waiting Panel
-        JPanel waitingPanel = new JPanel();
+
         waitingPanel.setBorder(new LineBorder(SystemColor.textInactiveText));
         waitingPanel.setBackground(UIManager.getColor("Button.light"));
         waitingPanel.setBounds(32, 98, 356, 209);
@@ -98,19 +112,17 @@ public class ServerGUI extends JFrame {
         waitingPanel.add(lblWaiting);
 
         waitingDefaultList = new DefaultListModel<>();
-        JList waitingList = new JList(waitingDefaultList);
+        waitingList = new JList(waitingDefaultList);
         DefaultListCellRenderer renderer =  (DefaultListCellRenderer)waitingList.getCellRenderer();
         renderer.setHorizontalAlignment(JLabel.CENTER);
-        JScrollPane jscroll = new JScrollPane();
+        jscrollWaiting = new JScrollPane(waitingList);
 
-        waitingList.setBounds(31, 46, 291, 147);
+        jscrollWaiting.setBounds(31, 46, 291, 147);
+        waitingList.setBounds(0, 0, 291, 147);
 
-        for(int i=0; i<manager.sharedObject.getOrders().size(); i++){
-            System.out.println(manager.sharedObject.getOrders().get(i).getName());
-            waitingDefaultList.addElement(manager.sharedObject.getOrders().get(i).getName());
-        }
-        jscroll.add(waitingList);
-        waitingPanel.add(waitingList);
+        waitingPanel.add(jscrollWaiting);
+
+        updateWaitingQueue();
 
     }
 
@@ -118,7 +130,7 @@ public class ServerGUI extends JFrame {
     private void processingPanel()
     {
         //Processing Panel
-        JPanel processingPanel = new JPanel();
+        processingPanel = new JPanel();
         processingPanel.setBorder(new LineBorder(SystemColor.textInactiveText));
         processingPanel.setBackground(UIManager.getColor("Button.light"));
         processingPanel.setBounds(425, 98, 356, 209);
@@ -131,9 +143,17 @@ public class ServerGUI extends JFrame {
         lblProcessing.setBounds(67, 16, 232, 28);
         processingPanel.add(lblProcessing);
 
-        //   JList processingList = new JList(sharedObject.getNextOrder().toArray());
-        //   processingList.setBounds(28, 47, 302, 146);
-        //  processingPanel.add(processingList);
+        processingDefaultList = new DefaultListModel<>();
+        processingList = new JList(processingDefaultList);
+        DefaultListCellRenderer renderer =  (DefaultListCellRenderer)processingList.getCellRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
+        jscrollProcessing = new JScrollPane(processingList);
+
+        jscrollProcessing.setBounds(31, 46, 291, 147);
+           processingList.setBounds(0, 0, 291, 147);
+          processingPanel.add(jscrollProcessing);
+
+        updateProcessingQueue();
     }
 
 
@@ -292,13 +312,10 @@ public class ServerGUI extends JFrame {
 
 
 
-    public void refresh() {
-        //SwingUtilities.updateComponentTreeUI(this);
-        //this.invalidate();
-        //this.validate();
-        this.repaint();
-        this.setVisible(false);
-        new ServerGUI(manager).setVisible(true);
+    public void update() {
+        updateWaitingQueue();
+        updateProcessingQueue();
+        updateNumberPeople();
     }
 
     private void buttons()
@@ -354,12 +371,33 @@ public class ServerGUI extends JFrame {
                     waitingDefaultList.addElement(manager.sharedObject.getOrders().get(i).getName());
                 }*/
                 //serverPanels();
-                refresh();
+                update();
                 System.out.println("ooooooooooooooooooooooo  " + waitingDefaultList.size());
             }
         });
     }
 
+    private void updateWaitingQueue() {
+        waitingDefaultList.removeAllElements();
+        for(int i=0; i<manager.sharedObject.getOrders().size(); i++){
+            waitingDefaultList.addElement(manager.sharedObject.getOrders().get(i).getName());
+        }
+    }
+
+    private void updateProcessingQueue() {
+        processingDefaultList.removeAllElements();
+        for(int i=0; i<manager.servers.size(); i++){
+            // System.out.println(manager.servers.get(i).getProcessingOrder().getName());
+            Order processingOrder = manager.servers.get(i).getProcessingOrder();
+            if(processingOrder != null) {
+                processingDefaultList.addElement(processingOrder.getName());
+            }
+        }
+    }
+
+    private void updateNumberPeople() {
+        lblNbrePeopleWaiting.setText("There are currently " + manager.sharedObject.getOrders().size()+ " people waiting in the queue:");
+    }
 }
 
 

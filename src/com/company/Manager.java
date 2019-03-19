@@ -3,11 +3,12 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
-public class Manager {
+public class Manager implements Subject {
     Map<String, Item> menu = new HashMap<>();
 
     private List<Order> processedOrders = new ArrayList<>();
-    LinkedList<Server> servers = new LinkedList<Server>();
+    private List<Observer> observer = new LinkedList<>();
+    LinkedList<Server> servers = new LinkedList<>();
     SharedObject sharedObject;
 
     //Constructor
@@ -130,6 +131,7 @@ public class Manager {
 
         }
         System.out.println("Servers List Size : " + servers.size());
+        notifyObservers();
     }
 
     public void removeServers(int nbServers) {
@@ -142,6 +144,7 @@ public class Manager {
         }
 
         System.out.println("Servers List Size : " + servers.size());
+        notifyObservers();
     }
 
 
@@ -161,6 +164,7 @@ public class Manager {
 
     void addProcessedOrder(Order order) {
         processedOrders.add(order);
+        notifyObservers();
     }
 
     public Map<String, Item> getMenu() {
@@ -168,5 +172,18 @@ public class Manager {
     }
 
     public List<Server> getServers() { return servers; }
+
+    public void registerObserver(Observer obs)
+    {
+        observer.add(obs);
+    }
+    public void removeObserver(Observer obs)
+    {
+        observer.remove(obs);
+    }
+    public void notifyObservers()
+    {
+        for (Observer obs : observer) obs.update();
+    }
 
 }

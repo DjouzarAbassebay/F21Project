@@ -54,7 +54,6 @@ public class Server extends Thread{
         }
     }
 
-
     public Order getProcessingOrder() {
         return processingOrder;
     }
