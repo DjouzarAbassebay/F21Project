@@ -1,11 +1,12 @@
 package com.company;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class Main {
 
     // Launch the GUI and create an instance manager
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
         SharedObject sharedObject = new SharedObject();
