@@ -3,12 +3,11 @@ package com.company;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.SystemColor;
 import java.lang.invoke.SerializedLambda;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -16,24 +15,29 @@ import java.util.Locale;
 
 public class ServerGUI extends JFrame {
 
-    Order order = new Order();
+    private JPanel topPanel;
+    private JPanel middlePanel;
+
+    private static int MAX_COLUMNS = 4;
+    private int rows = 0;
+    private static int MAX_SERVERS = 50;
+    private int nb_servers = 2;
+    private int count = 0;
+
+    private GridBagConstraints constraints;
+    private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.UK);
+    private DefaultListModel<String> waitingDefaultList;
 
     private Manager manager;
 
-    private JFrame frame = this;
-
-    private DefaultListModel<String> waitingDefaultList;
-
-     // Create the application.
-
+    // Create the application
     public ServerGUI(Manager manager) {
         this.manager = manager;
+        constraints = new GridBagConstraints();
         initialize();
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
+
     private void initialize() {
 
         setResizable(false);
@@ -56,14 +60,13 @@ public class ServerGUI extends JFrame {
         getContentPane().setLayout(null);
         getContentPane().setLayout(null);
 
-        JPanel topPanel = new JPanel();
+        topPanel = new JPanel();
         topPanel.setBorder(new LineBorder(SystemColor.desktop, 2));
         topPanel.setBackground(new Color(250, 250, 210));
         topPanel.setBounds(27, 16, 761, 300);
         getContentPane().add(topPanel);
         topPanel.setLayout(null);
 
-        JPanel middlePanel = new JPanel();
         middlePanel.setBorder(new LineBorder(SystemColor.desktop));
         middlePanel.setBackground(Color.WHITE);
         middlePanel.setBounds(27, 323, 761, 233);
@@ -74,7 +77,9 @@ public class ServerGUI extends JFrame {
         lblNbrePeopleWaiting.setHorizontalAlignment(SwingConstants.CENTER);
         lblNbrePeopleWaiting.setBounds(55, 45, 644, 20);
         topPanel.add(lblNbrePeopleWaiting);
+
     }
+
 
     private void waitingPanel()
     {
@@ -109,6 +114,7 @@ public class ServerGUI extends JFrame {
 
     }
 
+
     private void processingPanel()
     {
         //Processing Panel
@@ -125,172 +131,164 @@ public class ServerGUI extends JFrame {
         lblProcessing.setBounds(67, 16, 232, 28);
         processingPanel.add(lblProcessing);
 
-     //   JList processingList = new JList(sharedObject.getNextOrder().toArray());
-     //   processingList.setBounds(28, 47, 302, 146);
-      //  processingPanel.add(processingList);
+        //   JList processingList = new JList(sharedObject.getNextOrder().toArray());
+        //   processingList.setBounds(28, 47, 302, 146);
+        //  processingPanel.add(processingList);
     }
 
 
-    private void serverPanels()
-    {
-        JPanel detailsPanel = new JPanel();
-        detailsPanel.setBackground(SystemColor.controlHighlight);
+    private class ServerPanel extends JPanel {
 
-        JPanel panel = new JPanel();
-        detailsPanel.add(panel);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        public ServerPanel() {
 
-/*
-        int i=6;
-        int increment=1;
+            // Server Panel
+            /*setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setBackground(new Color(250, 250, 210));
+            setPreferredSize(new Dimension(176, 194));
+            //setBounds(32, 343, 176, 194);
 
-        for (int value = 0; value < i; value++)
-        {
-            JPanel server1Panel = new JPanel();
-            server1Panel.setBackground(new Color(250, 250, 210));
-            server1Panel.setBounds(32, 343, 176, 194);
-            getContentPane().add(server1Panel);
-            server1Panel.setLayout(null);
-            panel.add(server1Panel);
+            JLabel serverTitle = new JLabel("Server");
+            serverTitle.setAlignmentY(Component.CENTER_ALIGNMENT);
+            serverTitle.setFont(new Font("Tahoma", Font.PLAIN, 19));
+            serverTitle.setPreferredSize(new Dimension(117, 36));
+            //serverTitle.setBounds(28, 5, 117, 36);
+            add(serverTitle);
 
-            JLabel server1Title = new JLabel("Server1");
-            server1Title.setHorizontalAlignment(SwingConstants.CENTER);
-            server1Title.setFont(new Font("Tahoma", Font.PLAIN, 19));
-            server1Title.setBounds(28, 5, 117, 36);
-            server1Panel.add(server1Title);
+            Order order = manager.getServers().get(0).processingOrder;
+            JLabel serverNameCustomer = new JLabel(order.getName());
+            serverNameCustomer.setAlignmentY(Component.CENTER_ALIGNMENT);
+            //serverNameCustomer.setPreferredSize(new Dimension(146, 20));
+            serverNameCustomer.setBounds(15, 41, 146, 20);
+            add(serverNameCustomer);
 
-            JLabel server1NameCustomer = new JLabel(order.getName());
-            server1NameCustomer.setHorizontalAlignment(SwingConstants.CENTER);
-            server1NameCustomer.setBounds(15, 41, 146, 20);
-            server1Panel.add(server1NameCustomer);
+            DefaultListModel<String> orderDetailsDefaultList = new DefaultListModel<>();
+            for(int i=0; i<order.getItems().size(); i++){
+                orderDetailsDefaultList.addElement(order.getItems().get(i).getName());
+            }
+            JList serverDetails = new JList(orderDetailsDefaultList);
+            DefaultListCellRenderer renderer =  (DefaultListCellRenderer)serverDetails.getCellRenderer();
+            renderer.setAlignmentY(Component.CENTER_ALIGNMENT);
+            JScrollPane jScrollPane = new JScrollPane(serverDetails);
+            //jScrollPane.setPreferredSize(new Dimension(146, 89));
+            jScrollPane.setBounds(15, 67, 146, 89);
+            add(jScrollPane);
 
-            JLabel server1Total = new JLabel(order.getInitialPrice() + " £");
-            server1Total.setHorizontalAlignment(SwingConstants.CENTER);
-            server1Total.setBounds(49, 158, 69, 20);
-            server1Panel.add(server1Total);
+            JLabel serverTotal = new JLabel(order.getInitialPrice() + " £");
+            serverTotal.setAlignmentY(Component.CENTER_ALIGNMENT);
+            //serverTotal.setBounds(49, 158, 69, 20);
+            serverTotal.setPreferredSize(new Dimension(69, 20));
+            add(serverTotal);
 
-            JList server1Details = new JList();
-            server1Details.setBounds(15, 67, 146, 89);
-            server1Panel.add(server1Details);
+            setBorder( BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK)) );
+            */
 
-            increment ++;
-        }*/
-        // Server1 Panel
-        JPanel server1Panel = new JPanel();
-        server1Panel.setBackground(new Color(250, 250, 210));
-        server1Panel.setBounds(32, 343, 176, 194);
-        getContentPane().add(server1Panel);
-        server1Panel.setLayout(null);
 
-        JLabel server1Title = new JLabel("Server1");
-        server1Title.setHorizontalAlignment(SwingConstants.CENTER);
-        server1Title.setFont(new Font("Tahoma", Font.PLAIN, 19));
-        server1Title.setBounds(28, 5, 117, 36);
-        server1Panel.add(server1Title);
+            // Server Panel
+            // Set the mainContainer panel as a GridBagLayout
+            GridBagLayout gridBagLayout = new GridBagLayout();
+            setLayout(gridBagLayout);
+            setBackground(new Color(250, 250, 210));
+            setPreferredSize(new Dimension(176, 194));
 
-        Order order1 = manager.getServers().get(0).processingOrder;
-        JLabel server1NameCustomer = new JLabel(order1.getName());
-        server1NameCustomer.setHorizontalAlignment(SwingConstants.CENTER);
-        server1NameCustomer.setBounds(15, 41, 146, 20);
-        server1Panel.add(server1NameCustomer);
+            // Apply horizontal constraints to the GridBagLayout
+            // To fix all the panels in the mainContainer panel to the left and right sides
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel server1Total = new JLabel(order1.getInitialPrice() + " £");
-        server1Total.setHorizontalAlignment(SwingConstants.CENTER);
-        server1Total.setBounds(49, 158, 69, 20);
-        server1Panel.add(server1Total);
+            // Add the label to the server panel
+            JLabel serverTitle = new JLabel("Server");
+            serverTitle.setAlignmentY(Component.CENTER_ALIGNMENT);
+            serverTitle.setFont(new Font("Tahoma", Font.PLAIN, 19));
+            constraints.ipady = 5;
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            gridBagLayout.setConstraints(serverTitle, constraints);
+            constraints.weightx = 1;
+            add(serverTitle);
 
-        DefaultListModel<String> orderDetailsDefaultList = new DefaultListModel<>();
-        //List<Item> items = order1.getItems();
-        JList server1Details = new JList(orderDetailsDefaultList);
-        DefaultListCellRenderer renderer =  (DefaultListCellRenderer)server1Details.getCellRenderer();
-        renderer.setHorizontalAlignment(JLabel.CENTER);
-        JScrollPane jscroll = new JScrollPane();
-        jscroll.add(server1Details);
+            Order order = manager.getServers().get(0).processingOrder;
+            JLabel serverNameCustomer = new JLabel(order.getName());
+            serverTitle.setFont(new Font("Tahoma", Font.PLAIN, 19));
+            constraints.ipadx = 5;
+            constraints.gridx = 0;
+            constraints.gridy = 1;
+            gridBagLayout.setConstraints(serverNameCustomer, constraints);
+            constraints.weightx = 1;
+            add(serverNameCustomer);
 
-        for(int i=0; i<order1.getItems().size(); i++){
-            orderDetailsDefaultList.addElement(order1.getItems().get(i).getName());
+
+            DefaultListModel<String> orderDetailsDefaultList = new DefaultListModel<>();
+            //List<Item> items = order1.getItems();
+            for(int i=0; i<order.getItems().size(); i++){
+                orderDetailsDefaultList.addElement(order.getItems().get(i).getName());
+            }
+            JList serverDetails = new JList(orderDetailsDefaultList);
+            DefaultListCellRenderer renderer =  (DefaultListCellRenderer)serverDetails.getCellRenderer();
+            renderer.setAlignmentY(Component.CENTER_ALIGNMENT);
+            JScrollPane jscroll = new JScrollPane(serverDetails);
+
+
+            jscroll.setFont(new Font("Tahoma", Font.PLAIN, 19));
+            jscroll.setPreferredSize(new Dimension(146, 89));
+            jscroll.setBackground(Color.WHITE);
+            constraints.ipadx = 5;
+            constraints.gridx = 0;
+            constraints.gridy = 2;
+            gridBagLayout.setConstraints(jscroll, constraints);
+            //constraints.weightx = 1;
+            add(jscroll);
+
+            JLabel serverTotal = new JLabel(order.getInitialPrice() + " £");
+            //serverTotal.setAlignmentY(Component.CENTER_ALIGNMENT);
+            constraints.ipadx = 5;
+            constraints.gridx = 0;
+            constraints.gridy = 3;
+            gridBagLayout.setConstraints(serverTotal, constraints);
+            constraints.weightx = 1;
+            add(serverTotal);
+
+            setBorder( BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK)) );
+
         }
-        server1Details.setBounds(15, 67, 146, 89);
-        server1Panel.add(server1Details);
-     //   orderDetailsList = new DefaultListModel<>();
-
-
-        // Server2 Panel
-        JPanel server2Panel = new JPanel();
-        server2Panel.setBackground(new Color(250, 250, 210));
-        server2Panel.setBounds(223, 343, 176, 194);
-        getContentPane().add(server2Panel);
-        server2Panel.setLayout(null);
-
-        JLabel server2Title = new JLabel("Server2");
-        server2Title.setFont(new Font("Tahoma", Font.PLAIN, 19));
-        server2Title.setHorizontalAlignment(SwingConstants.CENTER);
-        server2Title.setBounds(30, 5, 113, 33);
-        server2Panel.add(server2Title);
-
-        JLabel server2NameCustomer = new JLabel("");
-        server2NameCustomer.setBounds(15, 41, 146, 20);
-        server2Panel.add(server2NameCustomer);
-
-        JLabel server2Total = new JLabel("");
-        server2Total.setBounds(50, 158, 69, 20);
-        server2Panel.add(server2Total);
-
-        JList server2Details = new JList();
-        server2Details.setBounds(15, 70, 146, 85);
-        server2Panel.add(server2Details);
-
-        // Server3 Panel
-        JPanel server3Panel = new JPanel();
-        server3Panel.setBackground(new Color(250, 250, 210));
-        server3Panel.setBounds(414, 343, 176, 194);
-        getContentPane().add(server3Panel);
-        server3Panel.setLayout(null);
-
-        JLabel server3Title = new JLabel("Server3");
-        server3Title.setFont(new Font("Tahoma", Font.PLAIN, 19));
-        server3Title.setHorizontalAlignment(SwingConstants.CENTER);
-        server3Title.setBounds(29, 5, 117, 30);
-        server3Panel.add(server3Title);
-
-        JLabel server3NameCustomer = new JLabel("");
-        server3NameCustomer.setBounds(15, 41, 146, 20);
-        server3Panel.add(server3NameCustomer);
-
-        JLabel server3Total = new JLabel("");
-        server3Total.setBounds(54, 170, 69, 20);
-        server3Panel.add(server3Total);
-
-        JList server3Details = new JList();
-        server3Details.setBounds(15, 69, 146, 85);
-        server3Panel.add(server3Details);
-
-        // Server4 Panel
-        JPanel server4Panel = new JPanel();
-        server4Panel.setBackground(new Color(250, 250, 210));
-        server4Panel.setBounds(605, 343, 176, 194);
-        getContentPane().add(server4Panel);
-        server4Panel.setLayout(null);
-
-        JLabel server4Title = new JLabel("Server4");
-        server4Title.setFont(new Font("Tahoma", Font.PLAIN, 19));
-        server4Title.setHorizontalAlignment(SwingConstants.CENTER);
-        server4Title.setBounds(41, 5, 98, 34);
-        server4Panel.add(server4Title);
-
-        JLabel server4NameCustomer = new JLabel("");
-        server4NameCustomer.setBounds(15, 42, 146, 20);
-        server4Panel.add(server4NameCustomer);
-
-        JLabel server4Total = new JLabel("");
-        server4Total.setBounds(55, 158, 69, 20);
-        server4Panel.add(server4Total);
-
-        JList server4Details = new JList();
-        server4Details.setBounds(15, 70, 146, 85);
-        server4Panel.add(server4Details);
 
     }
+
+    private void serverPanels() {
+
+        middlePanel = new JPanel();
+        middlePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        GridBagLayout gridBagLayout = new GridBagLayout();
+        middlePanel.setLayout(gridBagLayout);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+
+        for (int i = 0; i < nb_servers; i++) {
+
+            // Create a serverPanel
+            ServerPanel panel = new ServerPanel();
+
+            // Apply constraints on the serverPanel
+            // And Add it to the panels panel
+            constraints.ipady = 5;
+            constraints.gridx = i % MAX_COLUMNS;
+            constraints.gridy = rows;
+            gridBagLayout.setConstraints(panel, constraints);
+            middlePanel.add(panel, constraints);
+            middlePanel.add(Box.createHorizontalStrut(5));
+
+            System.out.println("Server");
+            System.out.println("Columns : " + i % MAX_COLUMNS);
+            System.out.println("Rows : " + rows);
+
+            if ((i % MAX_COLUMNS) == (MAX_COLUMNS - 1)) {
+                rows++;
+            }
+
+            //panelsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLUE), "Servers"));
+        }
+    }
+
 
 
 
@@ -362,6 +360,6 @@ public class ServerGUI extends JFrame {
         });
     }
 
-
 }
+
 
