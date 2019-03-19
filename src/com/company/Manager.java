@@ -16,7 +16,7 @@ public class Manager implements Subject {
         this.sharedObject = sharedObject;
         initializeMenu();
         viewMenu();
-        addServers(1);
+        addServers(2);
     }
 
     // Method to create a deep copy of an order
