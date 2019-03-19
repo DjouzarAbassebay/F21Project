@@ -14,7 +14,6 @@ public class Main {
         CsvProducer csvProducer = new CsvProducer(sharedObject, manager.getMenu());
         csvProducer.start();
 
-        System.out.println(order.getName()+"OOOOOOOOOOOOOOOOOO");
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {

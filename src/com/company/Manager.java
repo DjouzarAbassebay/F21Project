@@ -3,11 +3,13 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
+
 public class Manager {
     Map<String, Item> menu = new HashMap<>();
 
     private List<Order> processedOrders = new ArrayList<>();
     LinkedList<Server> servers = new LinkedList<Server>();
+    LinkedList<Barista> baristas = new LinkedList<>();
     SharedObject sharedObject;
 
     //Constructor
@@ -15,7 +17,8 @@ public class Manager {
         this.sharedObject = sharedObject;
         initializeMenu();
         viewMenu();
-        addServers(1);
+        addServers(2);
+        addBaristas(2);
     }
 
     // Method to create a deep copy of an order
@@ -144,6 +147,18 @@ public class Manager {
         System.out.println("Servers List Size : " + servers.size());
     }
 
+    public void addBaristas(int nbBaristas) {
+        int baristasListSize = baristas.size();
+        System.out.println("Baristas before changing : " + baristasListSize);
+        for (int i = 0; i < nbBaristas - baristasListSize; i++) {
+            // Add barista(s) if the maximum number of baristas is not reached !
+            Barista barista = new Barista(baristasListSize+i, this);
+            baristas.add(barista);
+            // When a new barista is added, start this thread
+            barista.start();
+        }
+        System.out.println("Baristas List Size : " + baristas.size());
+    }
 
 
     // method to display the menu in the terminal

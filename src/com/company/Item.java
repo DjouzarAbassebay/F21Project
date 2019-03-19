@@ -29,6 +29,9 @@ public class Item {
         this.timeProcess=timeProcess;
     }
 
+    public boolean isBeverage() {
+        return category.equals("Hot") || category.equals("Cold");
+    }
 
     // Getters
     String getName() {

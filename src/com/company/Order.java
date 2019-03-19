@@ -90,6 +90,14 @@ public class Order {
         calculatePrice();
     }
 
+    boolean containBeverage() {
+        for(Item item : items) {
+            if(item.isBeverage())
+                return true;
+        }
+        return false;
+    }
+
 
     //Getters and setters
     public int getCustomerID() {
