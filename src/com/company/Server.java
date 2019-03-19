@@ -1,6 +1,6 @@
 package com.company;
 
-import java.util.List;
+import java.io.IOException;
 
 public class Server extends Thread{
     Order processingOrder;
@@ -10,6 +10,7 @@ public class Server extends Thread{
     private boolean baristaFinished = false;
     int id;
     int processingSpeed = 1;
+    Log log;
 
 
     public Server(int id,Manager manager, SharedObject sharedObject) {
@@ -22,6 +23,12 @@ public class Server extends Thread{
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log logger1 = null;
+        try {
+            logger1 = log.getInstance();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         while(true)
@@ -51,10 +58,12 @@ public class Server extends Thread{
                     manager.addProcessedOrder(Manager.copyOrder(processingOrder));
                     baristaProcessing = false;
                     baristaFinished = false;
-
+                    logger1.log_order_server(processingOrder, id);
                 } catch (InterruptedException e) {
                     System.out.println(e.getMessage());
 
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
             try {

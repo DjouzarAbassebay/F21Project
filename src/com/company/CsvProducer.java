@@ -14,16 +14,26 @@ public class CsvProducer extends  Thread{
 
     private SharedObject sharedObject;
     Map<String, Item> menu ;
+    Log log;
 
-    public CsvProducer(SharedObject sharedObject, Map<String, Item> menu) {
+    Log logger2 = null;
+
+
+    public CsvProducer(SharedObject sharedObject, Map<String, Item> menu) throws IOException {
         this.sharedObject = sharedObject;
         this.menu = menu;
+        try {
+            logger2 = log.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public CsvProducer(SharedObject sharedObject) {
         this.sharedObject = sharedObject;
 
     }
+
 
 
     // Method to initialize the list of orders  from the CSV file : orders.csv
@@ -38,6 +48,7 @@ public class CsvProducer extends  Thread{
             Order order = new Order();
             int oldId = 0, newId;
 
+
             while ((line=bufferedReader.readLine()) != null) {
                 words = line.split(";");
                 newId = Integer.parseInt(words[0]);
@@ -45,6 +56,7 @@ public class CsvProducer extends  Thread{
                 if(oldId != newId) {
                     if(oldId != 0) {
                         addOrderToNormalOrdersSH(copyOrder(order));
+                        logger2.log_order_new(order);
                     }
                     order = new Order();
                     oldId = newId;
@@ -61,25 +73,23 @@ public class CsvProducer extends  Thread{
                 }
             }
             addOrderToNormalOrdersSH(copyOrder(order));
+            logger2.log_order_new(order);
+
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void addOrderToSharedObject(Order order) {
+    public void addOrderToSharedObject(Order order) throws IOException {
+
         Random r = new Random();
         int low = 1000;
         int high = 5000;
         int timeRandom = r.nextInt(high-low) + low;
-
         sharedObject.addOrder(order);
         System.out.println("This order has been correctly added to the shared object: \n"+order.toString()+"\n");
-        try {
-            Thread.sleep(timeRandom*2);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
+
     }
 
     public SharedObject getSharedObject(){
@@ -88,6 +98,7 @@ public class CsvProducer extends  Thread{
     }
 
     public void addOrderToNormalOrdersSH(Order order) {
+
         Random r = new Random();
         int low = 1000;
         int high = 5000;
