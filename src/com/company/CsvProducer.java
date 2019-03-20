@@ -62,30 +62,13 @@ public class CsvProducer extends  Thread{
         }
     }
 
-    public void addOrderToSharedObject(Order order) {
-        Random r = new Random();
-        int low = 1000;
-        int high = 5000;
-        int timeRandom = r.nextInt(high-low) + low;
-
-        sharedObject.addOrder(order);
-        System.out.println("This order has been correctly added to the shared object: \n"+order.toString()+"\n");
-        try {
-            Thread.sleep(timeRandom*2);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-    }
-
-
     public void addOrderToNormalOrdersSH(Order order) {
         Random r = new Random();
         int low = 1000;
         int high = 5000;
         int timeRandom = r.nextInt(high-low) + low;
 
-        sharedObject.addOrderToNormalOrders(order);
-        sharedObject.updateOrders();
+        sharedObject.addOrderFromNormalOrders(order);
         System.out.println("This order has been correctly added to the shared object: \n"+order.toString()+"\n");
         try {
             Thread.sleep(timeRandom*2);

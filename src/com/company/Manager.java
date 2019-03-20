@@ -135,18 +135,29 @@ public class Manager implements Subject {
     }
 
     public void removeServers(int nbServers) {
-        int serversListSize = servers.size();
-        int i = serversListSize;
-        while(i != nbServers){
-            servers.getLast().stop();
-            servers.removeLast();
-            i--;
+        System.out.println("Servers before changing : " + servers.size());
+        int nbActiveServer = servers.size();
+        for(Server server : servers) {
+            if(nbActiveServer > nbServers)
+                if(server.getProcessingOrder() == null) {
+                    server.stopServer();
+                    nbActiveServer -= 1;
+                }
+        }
+        if(nbActiveServer > nbServers) {
+            for(int i = nbActiveServer-1; i >= nbServers; i--) {
+                servers.getLast().stopServer();
+            }
         }
 
         System.out.println("Servers List Size : " + servers.size());
         notifyObservers();
     }
 
+    public void removeServer(Server server) {
+        servers.remove(server);
+        notifyObservers();
+    }
 
 
     // method to display the menu in the terminal
@@ -157,10 +168,6 @@ public class Manager implements Subject {
             System.out.println(value);
         }
     }
-
-    // method to display the orders from the csv file in the terminal
-
-
 
     void addProcessedOrder(Order order) {
         processedOrders.add(order);

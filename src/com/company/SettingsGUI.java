@@ -51,8 +51,8 @@ public class SettingsGUI extends JFrame {
     private int serversListSize = 0;
 
     // Static variables
-    private static int SERVERS_MAX = 5;
-    private static int BARISTAS_MAX = 5;
+    private static int SERVERS_MAX = 4;
+    private static int BARISTAS_MAX = 4;
 
     private Manager manager;
 
@@ -129,12 +129,9 @@ public class SettingsGUI extends JFrame {
         SpinnerNumberModel model = new SpinnerNumberModel(manager.servers.size(), 0, SERVERS_MAX, 1);
         serversSpinner = new JSpinner(model);
 
-        serversSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                serversNumber = (int) serversSpinner.getValue();
-                System.out.println("Spinner Servers : " + serversNumber);
-            }
+        serversSpinner.addChangeListener(e -> {
+            serversNumber = (int) model.getValue();
+            System.out.println("Spinner Servers : " + serversNumber);
         });
 
         // Create a GroupLayout which will be contained in serversPanel
@@ -253,44 +250,41 @@ public class SettingsGUI extends JFrame {
 
         // If the apply button is clicked...
         // Update and apply the selected values
-        applyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        applyButton.addActionListener(e -> {
+            // If we want to add server(s)...
+            System.out.println(serversNumber + " " + manager.servers.size());
+            if(serversNumber > manager.servers.size()) {
 
-                // If we want to add server(s)...
-                if(serversNumber > manager.servers.size()) {
+                manager.addServers(serversNumber);
+                serversListSize = manager.servers.size();
+                System.out.println("New Servers Size after adding : " + manager.servers.size());
 
+                // It is optional !!!
+                // Add servers only when there are more orders than processing servers...
+                /*if (manager.sharedObject.getOrders().size() > manager.servers.size()) {
                     manager.addServers(serversNumber);
                     serversListSize = manager.servers.size();
                     System.out.println("New Servers Size after adding : " + manager.servers.size());
+                } else {
+                    JOptionPane.showMessageDialog(mainContainerPanel, "There are enough servers to deal with orders.");
+                }*/
+            }
+            // If we want to remove server(s)...
+            else if (serversNumber < manager.servers.size()){
 
-                    // It is optional !!!
-                    // Add servers only when there are more orders than processing servers...
-                    /*if (manager.sharedObject.getOrders().size() > manager.servers.size()) {
-                        manager.addServers(serversNumber);
-                        serversListSize = manager.servers.size();
-                        System.out.println("New Servers Size after adding : " + manager.servers.size());
-                    } else {
-                        JOptionPane.showMessageDialog(mainContainerPanel, "There are enough servers to deal with orders.");
-                    }*/
-                }
-                // If we want to remove server(s)...
-                else if (serversNumber < manager.servers.size()){
+                // Remove server(s) if the servers list is not empty !
+                manager.removeServers(serversNumber);
+                serversListSize = manager.servers.size();
+                System.out.println("New Servers Size after removing : " + manager.servers.size());
+            }
 
-                    // Remove server(s) if the servers list is not empty !
-                    manager.removeServers(serversNumber);
-                    serversListSize = manager.servers.size();
-                    System.out.println("New Servers Size after removing : " + manager.servers.size());
-                }
+            // If the servers list is not empty...
+            if(!manager.servers.isEmpty()) {
 
-                // If the servers list is not empty...
-                if(!manager.servers.isEmpty()) {
+                // Apply the new processing time for each server
+                for (int i = 0; i < manager.servers.size(); i++) {
 
-                    // Apply the new processing time for each server
-                    for (int i = 0; i < manager.servers.size(); i++) {
-
-                        manager.servers.get(i).processingSpeed = processingSpeed;
-                    }
+                    manager.servers.get(i).processingSpeed = processingSpeed;
                 }
             }
         });
@@ -315,7 +309,6 @@ public class SettingsGUI extends JFrame {
         });
 
     }
-
 
 
     // This function initializes the User Interface
