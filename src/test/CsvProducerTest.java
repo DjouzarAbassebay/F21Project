@@ -1,9 +1,11 @@
+
 package test;
 
 import com.company.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +38,9 @@ class CsvProducerTest {
     }
 
     @Test
-    void testaddOrderToSharedObject() {
+    void testaddOrderToSharedObject() throws IOException {
         csvProducer.addOrderToSharedObject(completeOrder);
         assertEquals(1, csvProducer.getSharedObject().getOrders().size());
     }
 }
+

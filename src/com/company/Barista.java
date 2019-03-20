@@ -1,11 +1,13 @@
 package com.company;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Barista extends Thread {
 
     Manager manager;
     private int id;
+    Log log;
 
     public Barista(int id, Manager manager) {
         this.id = id;
@@ -18,12 +20,23 @@ public class Barista extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        Log logger1 = null;
+        try {
+            logger1 = log.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         while(true) {
             Server server = waitForServer();
             System.out.println("Barista " + id + " take care of: " + server.getServerId() + "\n");
             completeOrder(server.getProcessingOrder().getItems());
             server.baristaFinished();
             System.out.println("Barista " + id + " finished order\n");
+            try {
+                logger1.log_barista(id, server.getServerId());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             try {
                 Thread.sleep(100);
