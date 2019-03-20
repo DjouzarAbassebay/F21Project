@@ -82,7 +82,7 @@ public class Order {
         calculatePrice();
     }
 
-    void removeAllItem() {
+    public void removeAllItem() {
         for (Item item : items) {
             item.setStock(1);
         }

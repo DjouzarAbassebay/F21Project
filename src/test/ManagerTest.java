@@ -1,7 +1,7 @@
 /*
 package test;
 
-import com.company.InvalidItemNameException;
+import com.company.exceptions.InvalidItemNameException;
 import com.company.Item;
 import com.company.Manager;
 import com.company.Order;

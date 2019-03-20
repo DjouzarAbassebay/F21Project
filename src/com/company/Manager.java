@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.exceptions.InvalidItemIdException;
+import com.company.exceptions.InvalidItemNameException;
+
 import java.io.*;
 import java.util.*;
 
@@ -9,9 +12,9 @@ public class Manager implements Subject {
 
     private List<Order> processedOrders = new ArrayList<>();
     private List<Observer> observer = new LinkedList<>();
-    LinkedList<Server> servers = new LinkedList<>();
+    public LinkedList<Server> servers = new LinkedList<>();
     LinkedList<Barista> baristas = new LinkedList<>();
-    SharedObject sharedObject;
+    public SharedObject sharedObject;
 
     //Constructor
     public Manager(SharedObject sharedObject) {

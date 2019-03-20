@@ -1,6 +1,7 @@
 package test;
 
 import com.company.*;
+import com.company.exceptions.InvalidItemNameException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

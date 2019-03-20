@@ -1,5 +1,10 @@
-package com.company;
+package com.company.producer;
 
+
+import com.company.Item;
+import com.company.Log;
+import com.company.Order;
+import com.company.SharedObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

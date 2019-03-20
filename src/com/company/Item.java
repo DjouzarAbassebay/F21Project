@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.exceptions.InvalidItemNameException;
+
 public class Item {
 
     private String name;
@@ -34,21 +36,21 @@ public class Item {
     }
 
     // Getters
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    String getCategory() {
+    public String getCategory() {
         return category;
     }
 
     int getInitialStock() {return initialStock;}
 
-    double getCost() {
+    public double getCost() {
         return cost;
     }
 

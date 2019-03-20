@@ -1,4 +1,8 @@
-package com.company;
+package com.company.GUI;
+
+import com.company.*;
+import com.company.producer.CsvProducer;
+import com.company.producer.OnlineProducer;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -6,11 +10,8 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.lang.invoke.SerializedLambda;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 
 

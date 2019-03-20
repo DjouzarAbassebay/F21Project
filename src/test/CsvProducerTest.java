@@ -1,8 +1,10 @@
 package test;
 
 import com.company.*;
+import com.company.exceptions.InvalidItemNameException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.company.producer.CsvProducer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,5 +41,6 @@ class CsvProducerTest {
     void testaddOrderToSharedObject() {
         csvProducer.addOrderToNormalOrdersSH(completeOrder);
         assertEquals(1, csvProducer.getSharedObject().getOrders().size());
+
     }
 }

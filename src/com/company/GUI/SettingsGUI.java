@@ -1,4 +1,7 @@
-package com.company;
+package com.company.GUI;
+
+import com.company.Manager;
+import com.company.producer.CsvProducer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

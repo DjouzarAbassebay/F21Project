@@ -1,4 +1,6 @@
-package com.company;
+package com.company.producer;
+
+import com.company.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -59,7 +61,7 @@ public class OnlineProducer extends JFrame {
 
 
     // OnlineProducer Constructor
-    OnlineProducer(SharedObject sharedObject, Map<String, Item> menu){
+    public OnlineProducer(SharedObject sharedObject, Map<String, Item> menu){
         //fReport = new FinalReport(sharedObject, manager.menu);
         this.sharedObject = sharedObject;
         this.menu = menu;
@@ -212,7 +214,7 @@ public class OnlineProducer extends JFrame {
             JPanel imagePanel = new JPanel();
 
             // Create and insert an image in the image label
-            ImageIcon promotionIcon = new ImageIcon("src/com/company/images/promotions.jpg");
+            ImageIcon promotionIcon = new ImageIcon("src/resources/images/promotions.jpg");
             JLabel imageLabel = new JLabel(promotionIcon);
 
             // Add the label to the image panel
@@ -364,10 +366,10 @@ public class OnlineProducer extends JFrame {
         String[] itemsCategory = {"Hot drinks", "Cold drinks", "Sandwiches", "Pastry"};
 
         // Create an imageIcon for each category
-        ImageIcon hotDrinksIcon = new ImageIcon("src/com/company/images/hot_drinks.jpg");
-        ImageIcon coldDrinksIcon = new ImageIcon("src/com/company/images/cold_drinks.png");
-        ImageIcon sandwichesIcon = new ImageIcon("src/com/company/images/sandwiches.jpg");
-        ImageIcon pastryIcon = new ImageIcon("src/com/company/images/pastry.jpg");
+        ImageIcon hotDrinksIcon = new ImageIcon("src/resources/images/hot_drinks.jpg");
+        ImageIcon coldDrinksIcon = new ImageIcon("src/resources/images/cold_drinks.png");
+        ImageIcon sandwichesIcon = new ImageIcon("src/resources/images/sandwiches.jpg");
+        ImageIcon pastryIcon = new ImageIcon("src/resources/images/pastry.jpg");
 
         // Create a button for the "hot drinks" category
         hotDrinksButton = new JButton(itemsCategory[0], hotDrinksIcon);
@@ -522,9 +524,9 @@ public class OnlineProducer extends JFrame {
         for(int i=0; i<itemList.size(); i++){
 
             String[] details = itemList.get(i).split(";");
-            itemIcon = new ImageIcon("src/com/company/images/items/" + itemIDList.get(i) + ".jpg");
+            itemIcon = new ImageIcon("src/resources/images/items/" + itemIDList.get(i) + ".jpg");
             if ((itemIcon).getImageLoadStatus() != MediaTracker.COMPLETE){
-                itemIcon = new ImageIcon("src/com/company/images/items/" + "image_not_available.jpg");
+                itemIcon = new ImageIcon("src/resources/images/items/" + "image_not_available.jpg");
             }
             float itemPrice = Float.parseFloat(details[2]);
 
@@ -649,7 +651,7 @@ public class OnlineProducer extends JFrame {
 
 
     // This function initializes the User Interface
-    void initUI(){
+    public void initUI(){
 
         // Set a title for the JFrame
         setTitle("Coffee Shop");
