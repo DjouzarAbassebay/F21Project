@@ -1,4 +1,10 @@
-package com.company;
+package com.company.consumer;
+
+import com.company.model.Item;
+import com.company.model.Manager;
+import com.company.model.Order;
+import com.company.model.SharedObject;
+import com.company.outputs.Log;
 
 import java.io.IOException;
 

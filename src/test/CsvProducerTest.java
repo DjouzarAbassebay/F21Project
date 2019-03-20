@@ -1,7 +1,9 @@
 package test;
 
-import com.company.*;
 import com.company.exceptions.InvalidItemNameException;
+import com.company.model.Item;
+import com.company.model.Order;
+import com.company.model.SharedObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.company.producer.CsvProducer;

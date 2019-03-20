@@ -1,4 +1,6 @@
-package com.company;
+package com.company.interfaces;
+
+import com.company.interfaces.Observer;
 
 public interface Subject {
     public void registerObserver(Observer obs);

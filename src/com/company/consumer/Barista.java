@@ -1,4 +1,7 @@
-package com.company;
+package com.company.consumer;
+
+import com.company.model.Item;
+import com.company.model.Manager;
 
 import java.util.List;
 
@@ -6,6 +9,7 @@ public class Barista extends Thread {
 
     Manager manager;
     private int id;
+    private boolean running = true;
 
     public Barista(int id, Manager manager) {
         this.id = id;
@@ -18,7 +22,8 @@ public class Barista extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        while(true) {
+        System.out.println("New barista " + id);
+        while(running) {
             Server server = waitForServer();
             System.out.println("Barista " + id + " take care of: " + server.getServerId() + "\n");
             completeOrder(server.getProcessingOrder().getItems());
@@ -31,6 +36,7 @@ public class Barista extends Thread {
                 e.printStackTrace();
             }
         }
+        manager.removeBarista(this);
     }
 
     public Server waitForServer() {
@@ -71,5 +77,9 @@ public class Barista extends Thread {
                 System.out.println("Barista " + id + " finished " + item + "\n");
             }
         }
+    }
+
+    public void stopBarista() {
+        running = false;
     }
 }

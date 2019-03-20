@@ -1,6 +1,9 @@
 package com.company;
 
 import com.company.GUI.ServerGUI;
+import com.company.model.Manager;
+import com.company.model.Order;
+import com.company.model.SharedObject;
 import com.company.producer.CsvProducer;
 
 import java.awt.*;

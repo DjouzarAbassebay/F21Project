@@ -1,4 +1,6 @@
-package com.company;
+package com.company.model;
+
+import com.company.model.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +92,7 @@ public class Order {
         calculatePrice();
     }
 
-    boolean containBeverage() {
+    public boolean containBeverage() {
         for(Item item : items) {
             if(item.isBeverage())
                 return true;
@@ -108,7 +110,7 @@ public class Order {
         this.customerID = value;
     }
 
-    String getTimestamp() {
+    public String getTimestamp() {
         return this.timestamp;
     }
 
@@ -124,7 +126,7 @@ public class Order {
         return this.initialPrice;
     }
 
-    void setInitialPrice(double value) {
+    public void setInitialPrice(double value) {
         this.initialPrice += value;
     }
 

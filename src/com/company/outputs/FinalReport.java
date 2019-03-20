@@ -1,11 +1,14 @@
-package com.company;
+package com.company.outputs;
+
+import com.company.model.Item;
+import com.company.model.Order;
+import com.company.model.SharedObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 

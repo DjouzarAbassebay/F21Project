@@ -1,6 +1,10 @@
 package com.company.producer;
 
 import com.company.*;
+import com.company.model.Item;
+import com.company.model.Order;
+import com.company.model.SharedObject;
+import com.company.outputs.FinalReport;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,7 +16,7 @@ import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
 import java.util.*;
 
-import static com.company.Manager.copyOrder;
+import static com.company.model.Manager.copyOrder;
 import static javax.swing.GroupLayout.Alignment.LEADING;
 
 
@@ -75,7 +79,7 @@ public class OnlineProducer extends JFrame {
         welcomePanel = new JPanel();
         // Create a label with an associated text
         // JLabels definition
-        JLabel welcomeLabel = new JLabel("Welcome to F21Coffee !");
+        JLabel welcomeLabel = new JLabel("Welcome to the online F21Coffee !");
         // Add the label to the panel
         welcomePanel.add(welcomeLabel);
         // Draw a blue line around the panel
@@ -654,7 +658,7 @@ public class OnlineProducer extends JFrame {
     public void initUI(){
 
         // Set a title for the JFrame
-        setTitle("Coffee Shop");
+        setTitle("Online order");
 
         // Initialize the mainContainer panel of the JFrame
         mainContainerPanel = new JPanel();

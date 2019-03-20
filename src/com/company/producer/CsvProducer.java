@@ -1,10 +1,10 @@
 package com.company.producer;
 
 
-import com.company.Item;
-import com.company.Log;
-import com.company.Order;
-import com.company.SharedObject;
+import com.company.model.Item;
+import com.company.outputs.Log;
+import com.company.model.Order;
+import com.company.model.SharedObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Random;
 
 
-import static com.company.Manager.copyOrder;
+import static com.company.model.Manager.copyOrder;
 
 
 public class CsvProducer extends  Thread{

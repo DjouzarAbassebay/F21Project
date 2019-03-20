@@ -2,10 +2,10 @@
 package test;
 
 import com.company.exceptions.InvalidItemNameException;
-import com.company.Item;
-import com.company.Manager;
-import com.company.Order;
-import com.company.FinalReport;
+import com.company.model.Item;
+import com.company.model.Manager;
+import com.company.model.Order;
+import com.company.outputs.FinalReport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

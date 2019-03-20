@@ -1,6 +1,9 @@
 package com.company.GUI;
 
-import com.company.*;
+import com.company.consumer.Server;
+import com.company.interfaces.Observer;
+import com.company.model.Manager;
+import com.company.model.Order;
 import com.company.producer.CsvProducer;
 import com.company.producer.OnlineProducer;
 
@@ -212,6 +215,8 @@ public class ServerGUI extends JFrame implements Observer {
         updateProcessingQueue();
         updateNumberPeople();
         updateServers();
+        if(checkFinished())
+            System.exit(0);
     }
 
     private void updateWaitingQueue() {
@@ -289,7 +294,7 @@ public class ServerGUI extends JFrame implements Observer {
             constraintsPanel.insets = new Insets(0, 10, 0, 10);
 
             // Add the label to the server panel
-            JLabel serverTitle = new JLabel("Server " + server.getId());
+            JLabel serverTitle = new JLabel("Server " + server.getServerId());
             serverTitle.setFont(new Font("Tahoma", Font.PLAIN, 19));
             constraintsPanel.ipady = 5;
             constraintsPanel.gridx = 0;
@@ -356,8 +361,22 @@ public class ServerGUI extends JFrame implements Observer {
             }
         }
 
+    }
 
 
+    public boolean checkFinished(){
+        if(manager.sharedObject.getOrders().size() != 0)
+            return false;
+        else if(csvProducer.isAlive())
+            return false;
+        else{
+            for(Server server:manager.getServers())
+            {
+                if(server.getProcessingOrder()!=null)
+                    return false;
+            }
+        }
+        return true;
 
 
     }

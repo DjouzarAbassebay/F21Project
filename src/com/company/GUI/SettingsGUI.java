@@ -1,6 +1,6 @@
 package com.company.GUI;
 
-import com.company.Manager;
+import com.company.model.Manager;
 import com.company.producer.CsvProducer;
 
 import javax.swing.*;
@@ -52,6 +52,7 @@ public class SettingsGUI extends JFrame {
     private int serversNumber = 0;
     private int baristasNumber = 0;
     private int serversListSize = 0;
+    private int baristasListSize = 0;
 
     // Static variables
     private static int SERVERS_MAX = 4;
@@ -173,15 +174,13 @@ public class SettingsGUI extends JFrame {
 
         // Initialize JSpinners
         // Initialize the model for the spinner from 0 to 9, in 1 steps and start by the value 5
-        SpinnerNumberModel model = new SpinnerNumberModel(0, 0, BARISTAS_MAX, 1);
+        baristasNumber = manager.baristas.size();
+        SpinnerNumberModel model = new SpinnerNumberModel(baristasNumber, 0, BARISTAS_MAX, 1);
         baristasSpinner = new JSpinner(model);
 
-        baristasSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                baristasNumber = (int) baristasSpinner.getValue();
-                System.out.println("Baristas : " + baristasNumber);
-            }
+        baristasSpinner.addChangeListener(e -> {
+            baristasNumber = (int) model.getValue();
+            System.out.println("Baristas : " + baristasNumber);
         });
 
         // Create a GroupLayout which will be contained in baristasPanel
@@ -279,6 +278,18 @@ public class SettingsGUI extends JFrame {
                 // Remove server(s) if the servers list is not empty !
                 manager.removeServers(serversNumber);
                 serversListSize = manager.servers.size();
+            }
+
+            if(baristasNumber > manager.baristas.size()) {
+                manager.addBaristas(baristasNumber);
+                baristasListSize = manager.baristas.size();
+            }
+            // If we want to remove barista(s)...
+            else if (baristasNumber < manager.baristas.size()){
+
+                // Remove barista(s) if the baristas list is not empty !
+                manager.removeBaristas(baristasNumber);
+                baristasListSize = manager.baristas.size();
             }
 
             // If the servers list is not empty...

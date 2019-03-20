@@ -1,4 +1,4 @@
-package com.company;
+package com.company.model;
 
 import com.company.exceptions.InvalidItemNameException;
 
@@ -48,7 +48,7 @@ public class Item {
         return category;
     }
 
-    int getInitialStock() {return initialStock;}
+    public int getInitialStock() {return initialStock;}
 
     public double getCost() {
         return cost;
@@ -66,7 +66,7 @@ public class Item {
         this.initialStock = stock;
     }
 
-    void setStock(int variation) {
+    public void setStock(int variation) {
         this.stock+=variation;
     }
 
@@ -81,7 +81,7 @@ public class Item {
     }
 
     // Used to display the the menu in the Final Report
-    String toStringReport() {
+    public String toStringReport() {
         return "Name:" + name + " ||"+ "\n"
                 + " Stock:" + stock + "\n\n";
     }

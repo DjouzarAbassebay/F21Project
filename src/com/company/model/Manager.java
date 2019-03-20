@@ -1,5 +1,9 @@
-package com.company;
+package com.company.model;
 
+import com.company.interfaces.Observer;
+import com.company.interfaces.Subject;
+import com.company.consumer.Barista;
+import com.company.consumer.Server;
 import com.company.exceptions.InvalidItemIdException;
 import com.company.exceptions.InvalidItemNameException;
 
@@ -13,7 +17,7 @@ public class Manager implements Subject {
     private List<Order> processedOrders = new ArrayList<>();
     private List<Observer> observer = new LinkedList<>();
     public LinkedList<Server> servers = new LinkedList<>();
-    LinkedList<Barista> baristas = new LinkedList<>();
+    public LinkedList<Barista> baristas = new LinkedList<>();
     public SharedObject sharedObject;
 
     //Constructor
@@ -167,8 +171,24 @@ public class Manager implements Subject {
         }
         System.out.println("Baristas List Size : " + baristas.size());
     }
+    
+    public void removeBaristas(int nbBaristas) {
+        int nbActiveBarista = baristas.size();
+        if(nbActiveBarista > nbBaristas) {
+            for(int i = nbActiveBarista-1; i >= nbBaristas; i--) {
+                baristas.getLast().stopBarista();
+            }
+        }
+        notifyObservers();
+    }
+    
     public void removeServer(Server server) {
         servers.remove(server);
+        notifyObservers();
+    }
+
+    public void removeBarista(Barista barista) {
+        baristas.remove(barista);
         notifyObservers();
     }
 
@@ -182,7 +202,7 @@ public class Manager implements Subject {
         }
     }
 
-    void addProcessedOrder(Order order) {
+    public void addProcessedOrder(Order order) {
         processedOrders.add(order);
         notifyObservers();
     }
