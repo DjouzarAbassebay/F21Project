@@ -4,11 +4,12 @@ import java.io.*;
 import java.util.*;
 
 
-public class Manager {
+public class Manager implements Subject {
     Map<String, Item> menu = new HashMap<>();
 
     private List<Order> processedOrders = new ArrayList<>();
-    LinkedList<Server> servers = new LinkedList<Server>();
+    private List<Observer> observer = new LinkedList<>();
+    LinkedList<Server> servers = new LinkedList<>();
     LinkedList<Barista> baristas = new LinkedList<>();
     SharedObject sharedObject;
 
@@ -122,7 +123,6 @@ public class Manager {
 
     public void addServers(int nbServers) {
         int serversListSize = servers.size();
-        System.out.println("Servers before changing : " + serversListSize);
         for (int i = 0; i < nbServers - serversListSize; i++) {
 
             // Add server(s) if the maximum number of servers is not reached !
@@ -132,19 +132,24 @@ public class Manager {
             server.start();
 
         }
-        System.out.println("Servers List Size : " + servers.size());
+        notifyObservers();
     }
 
     public void removeServers(int nbServers) {
-        int serversListSize = servers.size();
-        int i = serversListSize;
-        while(i != nbServers){
-            servers.getLast().stop();
-            servers.removeLast();
-            i--;
+        int nbActiveServer = servers.size();
+        for(Server server : servers) {
+            if(nbActiveServer > nbServers)
+                if(server.getProcessingOrder() == null) {
+                    server.stopServer();
+                    nbActiveServer -= 1;
+                }
         }
-
-        System.out.println("Servers List Size : " + servers.size());
+        if(nbActiveServer > nbServers) {
+            for(int i = nbActiveServer-1; i >= nbServers; i--) {
+                servers.getLast().stopServer();
+            }
+        }
+        notifyObservers();
     }
 
     public void addBaristas(int nbBaristas) {
@@ -159,6 +164,10 @@ public class Manager {
         }
         System.out.println("Baristas List Size : " + baristas.size());
     }
+    public void removeServer(Server server) {
+        servers.remove(server);
+        notifyObservers();
+    }
 
 
     // method to display the menu in the terminal
@@ -170,12 +179,9 @@ public class Manager {
         }
     }
 
-    // method to display the orders from the csv file in the terminal
-
-
-
     void addProcessedOrder(Order order) {
         processedOrders.add(order);
+        notifyObservers();
     }
 
     public Map<String, Item> getMenu() {
@@ -183,5 +189,18 @@ public class Manager {
     }
 
     public List<Server> getServers() { return servers; }
+
+    public void registerObserver(Observer obs)
+    {
+        observer.add(obs);
+    }
+    public void removeObserver(Observer obs)
+    {
+        observer.remove(obs);
+    }
+    public void notifyObservers()
+    {
+        for (Observer obs : observer) obs.update();
+    }
 
 }

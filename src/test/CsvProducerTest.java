@@ -37,7 +37,7 @@ class CsvProducerTest {
 
     @Test
     void testaddOrderToSharedObject() {
-        csvProducer.addOrderToSharedObject(completeOrder);
+        csvProducer.addOrderToNormalOrdersSH(completeOrder);
         assertEquals(1, csvProducer.getSharedObject().getOrders().size());
     }
 }

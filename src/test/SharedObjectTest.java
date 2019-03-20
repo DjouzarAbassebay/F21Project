@@ -1,9 +1,6 @@
 package test;
 
-import com.company.InvalidItemNameException;
-import com.company.Item;
-import com.company.Order;
-import com.company.SharedObject;
+import com.company.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,12 +40,15 @@ public class SharedObjectTest {
         Order2.setDiscountPrice((float) 7.50);
         Order2.setItems(twoItems);
 
+        Manager manager = new Manager(sharedObject);
+        sharedObject.setManager(manager);
+
     }
     @Test
     void testAddOrder(){
 
 
-       sharedObject.addOrder(Order1);
+       sharedObject.addOrderFromNormalOrders(Order1);
         assertEquals(1, sharedObject.getOrders().size());
     }
 
@@ -56,8 +56,8 @@ public class SharedObjectTest {
     void testGetNextOrderRemove()
     {
 
-        sharedObject.addOrder(Order1);
-        sharedObject.addOrder(Order2);
+        sharedObject.addOrderFromNormalOrders(Order1);
+        sharedObject.addOrderFromNormalOrders(Order2);
         sharedObject.getNextOrder();
         assertEquals(1, sharedObject.getOrders().size());
 
@@ -67,8 +67,8 @@ public class SharedObjectTest {
     @Test
     void testGetNextorderValue()
     {
-        sharedObject.addOrder(Order1);
-        sharedObject.addOrder(Order2);
+        sharedObject.addOrderFromNormalOrders(Order1);
+        sharedObject.addOrderFromNormalOrders(Order2);
         sharedObject.getNextOrder();
         assertTrue(sharedObject.getOrders().contains(Order2));
     }

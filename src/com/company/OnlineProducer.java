@@ -611,9 +611,6 @@ public class OnlineProducer extends JFrame {
     }
 
 
-
-
-
     // This function adds the current order at the orders (in Shared Object)
     // Then re-initialize the current order to allow to make a new order
     public void validateCurrentOrder() {
@@ -643,8 +640,7 @@ public class OnlineProducer extends JFrame {
     // And update the orders (in Shared Object)
     public void addOrderToPriorityOrdersSH(Order order) {
 
-        sharedObject.addOrderToPriorityOrders(order);
-        sharedObject.updateOrders();
+        sharedObject.addOrderFromPriorityOrders(order);
         System.out.println("This order has been correctly added to the shared object: \n"+order.toString()+"\n");
 
     }
@@ -743,7 +739,7 @@ public class OnlineProducer extends JFrame {
         });
 
         // On click on the close button, exit the application
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set the JFrame unresizable
         setResizable(false);

@@ -8,7 +8,9 @@ import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.Random;
 
+
 import static com.company.Manager.copyOrder;
+
 
 public class CsvProducer extends  Thread{
 
@@ -17,6 +19,7 @@ public class CsvProducer extends  Thread{
     Log log;
 
     Log logger2 = null;
+    private int processingSpeed = 1;
 
 
     public CsvProducer(SharedObject sharedObject, Map<String, Item> menu) throws IOException {
@@ -81,22 +84,6 @@ public class CsvProducer extends  Thread{
         }
     }
 
-    public void addOrderToSharedObject(Order order) throws IOException {
-
-        Random r = new Random();
-        int low = 1000;
-        int high = 5000;
-        int timeRandom = r.nextInt(high-low) + low;
-        sharedObject.addOrder(order);
-        System.out.println("This order has been correctly added to the shared object: \n"+order.toString()+"\n");
-
-    }
-
-    public SharedObject getSharedObject(){
-
-        return sharedObject;
-    }
-
     public void addOrderToNormalOrdersSH(Order order) {
 
         Random r = new Random();
@@ -104,13 +91,25 @@ public class CsvProducer extends  Thread{
         int high = 5000;
         int timeRandom = r.nextInt(high-low) + low;
 
-        sharedObject.addOrderToNormalOrders(order);
-        sharedObject.updateOrders();
+        sharedObject.addOrderFromNormalOrders(order);
         System.out.println("This order has been correctly added to the shared object: \n"+order.toString()+"\n");
         try {
-            Thread.sleep(timeRandom*2);
+            Thread.sleep(timeRandom*2/processingSpeed);
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
+    }
+
+    public int getProcessingSpeed() {
+        return processingSpeed;
+    }
+
+    public void setProcessingSpeed(int processingSpeed) {
+        this.processingSpeed = processingSpeed;
+    }
+
+    public SharedObject getSharedObject()
+    {
+        return sharedObject;
     }
 }

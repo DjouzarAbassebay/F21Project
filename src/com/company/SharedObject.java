@@ -10,42 +10,40 @@ public class SharedObject {
     private LinkedList<Order> orders;
     private List<Order> normalOrders;
     private List<Order> priorityOrders;
+    private Manager manager;
 
     public SharedObject() {
         this.orders = new LinkedList<>();
         this.normalOrders = new ArrayList<>();
         this.priorityOrders = new ArrayList<>();
-
     }
 
 
-
-    public synchronized void addOrder(Order order)
-    {
-        orders.add(order);
-    }
-
-    public synchronized void addOrderToNormalOrders(Order order)
+    public synchronized void addOrderFromNormalOrders(Order order)
     {
         normalOrders.add(order);
+        updateOrders();
     }
 
-    public synchronized void addOrderToPriorityOrders(Order order)
+    public synchronized void addOrderFromPriorityOrders(Order order)
     {
         priorityOrders.add(order);
+        updateOrders();
     }
 
-    public synchronized void removeOrderToNormalOrders(Order order)
+    public synchronized void removeOrderFromNormalOrders(Order order)
     {
         normalOrders.remove(order);
+        updateOrders();
     }
 
-    public synchronized void removeOrderToPrioritylOrders(Order order)
+    public synchronized void removeOrderFromPriorityOrders(Order order)
     {
         priorityOrders.remove(order);
+        updateOrders();
     }
 
-    public synchronized void updateOrders(){
+    private synchronized void updateOrders(){
 
         LinkedList<Order> temp = new LinkedList<>();
 
@@ -58,12 +56,14 @@ public class SharedObject {
 
         orders = temp;
 
+        manager.notifyObservers();
+
         /*System.out.println("********** ORDERS LIST **********" );
         for(int i=0; i<orders.size(); i++){
             System.out.println(orders.get(i) );
         }
-        System.out.println("*******************************" );
-*/
+        System.out.println("*******************************" );*/
+
     }
 
 
@@ -89,10 +89,11 @@ public class SharedObject {
     }
 
     public synchronized Order getNextOrder(){
-        Order order = new Order();
+        Order order;
         try{
             order = orders.removeFirst();
-/*            System.out.println("********** ORDERS LEFT LIST **********" );
+            manager.notifyObservers();
+           /* System.out.println("********** ORDERS LEFT LIST **********" );
             for(int i=0; i<orders.size(); i++){
                 System.out.println(orders.get(i) );
             }
@@ -102,8 +103,6 @@ public class SharedObject {
         }
         catch(NoSuchElementException e){
             order = null;
-
-
         }
         return order;
     }
@@ -130,6 +129,7 @@ public class SharedObject {
         this.priorityOrders = orders;
     }
 
+    public void setManager(Manager manager) {this.manager = manager;}
 
     public String[] toStringCustomer() {
         String str[] = new String[orders.size()];

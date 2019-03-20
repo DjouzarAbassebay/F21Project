@@ -9,8 +9,9 @@ public class Server extends Thread{
     private boolean baristaProcessing = false;
     private boolean baristaFinished = false;
     int id;
-    int processingSpeed = 1;
     Log log;
+    private int processingSpeed = 1;
+    private boolean running = true;
 
 
     public Server(int id,Manager manager, SharedObject sharedObject) {
@@ -31,15 +32,15 @@ public class Server extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while(true)
+        while(running)
         {
             if((processingOrder=sharedObject.getNextOrder())!=null)
             {
                 // Remove the processing order to this associated order list
                 if(sharedObject.getPriorityOrders().contains(processingOrder)){
-                    sharedObject.removeOrderToPrioritylOrders(processingOrder);
+                    sharedObject.removeOrderFromPriorityOrders(processingOrder);
                 } else {
-                    sharedObject.removeOrderToNormalOrders(processingOrder);
+                    sharedObject.removeOrderFromNormalOrders(processingOrder);
                 }
 
                 try {
@@ -59,6 +60,11 @@ public class Server extends Thread{
                     baristaProcessing = false;
                     baristaFinished = false;
                     logger1.log_order_server(processingOrder, id);
+
+
+                    Order copiedOrder = Manager.copyOrder(processingOrder);
+                    processingOrder = null;
+                    manager.addProcessedOrder(Manager.copyOrder(copiedOrder));
                 } catch (InterruptedException e) {
                     System.out.println(e.getMessage());
 
@@ -71,8 +77,17 @@ public class Server extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
         }
+        manager.removeServer(this);
+    }
+
+    public void stopServer() {
+        running = false;
+    }
+
+
+    public int getProcessingSpeed() {
+        return processingSpeed;
     }
 
     public synchronized boolean baristaTaking() {
@@ -92,4 +107,8 @@ public class Server extends Thread{
     public synchronized boolean getBaristaProcessing() {return baristaProcessing;}
 
     public int getServerId() {return id;}
+
+    public void setProcessingSpeed(int processingSpeed) {
+        this.processingSpeed = processingSpeed;
+    }
 }

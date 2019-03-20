@@ -56,6 +56,7 @@ class CustomerGUI extends JFrame {
     private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.UK);
 
 
+
     // CustomerGUI Constructor
     CustomerGUI(Manager manager){
         fReport = new FinalReport(manager);

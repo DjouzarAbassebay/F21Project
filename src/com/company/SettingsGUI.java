@@ -38,7 +38,7 @@ public class SettingsGUI extends JFrame {
     private JSlider runtimeSlider;
     private static int RUNTIME_MIN = 1;
     private static int RUNTIME_MAX = 10;
-    private static int RUNTIME_INIT = 1;
+    private int runtimeInit;
 
     //JSpinners definition
     private JSpinner serversSpinner;
@@ -51,14 +51,16 @@ public class SettingsGUI extends JFrame {
     private int serversListSize = 0;
 
     // Static variables
-    private static int SERVERS_MAX = 5;
-    private static int BARISTAS_MAX = 5;
+    private static int SERVERS_MAX = 4;
+    private static int BARISTAS_MAX = 4;
 
     private Manager manager;
+    private CsvProducer csvProducer;
 
     // SettingsGUI Constructor
-    SettingsGUI(Manager manager){
+    SettingsGUI(Manager manager, CsvProducer csvProducer){
         this.manager = manager;
+        this.csvProducer = csvProducer;
         initUI();
     }
 
@@ -69,8 +71,9 @@ public class SettingsGUI extends JFrame {
         runtimePanel = new JPanel();
         sliderPanel = new JPanel();
 
+        runtimeInit = manager.servers.get(0).getProcessingSpeed();
         // Initialize JSlider
-        runtimeSlider = new JSlider(RUNTIME_MIN, RUNTIME_MAX, RUNTIME_INIT);
+        runtimeSlider = new JSlider(RUNTIME_MIN, RUNTIME_MAX, runtimeInit);
 
         // Slider settings
         runtimeSlider.setPaintTicks(true);
@@ -79,10 +82,10 @@ public class SettingsGUI extends JFrame {
 
         // If Slider value changes...
         // Change the processingTime for each server
-        runtimeSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                processingSpeed = runtimeSlider.getValue();
+        runtimeSlider.addChangeListener(e -> {
+            JSlider source = (JSlider)e.getSource();
+            if(!source.getValueIsAdjusting()) {
+                processingSpeed = source.getValue();
                 System.out.println("Runtime Speed : " + processingSpeed);
             }
         });
@@ -126,15 +129,12 @@ public class SettingsGUI extends JFrame {
 
         // Initialize JSpinners
         // Initialize the model for the spinner from 0 to 9, in 1 steps and start by the value 5
-        SpinnerNumberModel model = new SpinnerNumberModel(manager.servers.size(), 0, SERVERS_MAX, 1);
+        serversNumber = manager.servers.size();
+        SpinnerNumberModel model = new SpinnerNumberModel(serversNumber, 1, SERVERS_MAX, 1);
         serversSpinner = new JSpinner(model);
 
-        serversSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                serversNumber = (int) serversSpinner.getValue();
-                System.out.println("Spinner Servers : " + serversNumber);
-            }
+        serversSpinner.addChangeListener(e -> {
+            serversNumber = (int) model.getValue();
         });
 
         // Create a GroupLayout which will be contained in serversPanel
@@ -253,46 +253,40 @@ public class SettingsGUI extends JFrame {
 
         // If the apply button is clicked...
         // Update and apply the selected values
-        applyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        applyButton.addActionListener(e -> {
+            // If we want to add server(s)...
+            if(serversNumber > manager.servers.size()) {
 
-                // If we want to add server(s)...
-                if(serversNumber > manager.servers.size()) {
+                manager.addServers(serversNumber);
+                serversListSize = manager.servers.size();
 
+                // It is optional !!!
+                // Add servers only when there are more orders than processing servers...
+                /*if (manager.sharedObject.getOrders().size() > manager.servers.size()) {
                     manager.addServers(serversNumber);
                     serversListSize = manager.servers.size();
                     System.out.println("New Servers Size after adding : " + manager.servers.size());
+                } else {
+                    JOptionPane.showMessageDialog(mainContainerPanel, "There are enough servers to deal with orders.");
+                }*/
+            }
+            // If we want to remove server(s)...
+            else if (serversNumber < manager.servers.size()){
 
-                    // It is optional !!!
-                    // Add servers only when there are more orders than processing servers...
-                    /*if (manager.sharedObject.getOrders().size() > manager.servers.size()) {
-                        manager.addServers(serversNumber);
-                        serversListSize = manager.servers.size();
-                        System.out.println("New Servers Size after adding : " + manager.servers.size());
-                    } else {
-                        JOptionPane.showMessageDialog(mainContainerPanel, "There are enough servers to deal with orders.");
-                    }*/
-                }
-                // If we want to remove server(s)...
-                else if (serversNumber < manager.servers.size()){
+                // Remove server(s) if the servers list is not empty !
+                manager.removeServers(serversNumber);
+                serversListSize = manager.servers.size();
+            }
 
-                    // Remove server(s) if the servers list is not empty !
-                    manager.removeServers(serversNumber);
-                    serversListSize = manager.servers.size();
-                    System.out.println("New Servers Size after removing : " + manager.servers.size());
-                }
-
-                // If the servers list is not empty...
-                if(!manager.servers.isEmpty()) {
-
-                    // Apply the new processing time for each server
-                    for (int i = 0; i < manager.servers.size(); i++) {
-
-                        manager.servers.get(i).processingSpeed = processingSpeed;
-                    }
+            // If the servers list is not empty...
+            if(!manager.servers.isEmpty()) {
+                // Apply the new processing time for each server
+                for (int i = 0; i < manager.servers.size(); i++) {
+                    manager.servers.get(i).setProcessingSpeed(processingSpeed);
                 }
             }
+
+            csvProducer.setProcessingSpeed(processingSpeed);
         });
 
         // If the cancel button is clicked...
@@ -302,7 +296,7 @@ public class SettingsGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 try {
-                    runtimeSlider.setValue(manager.servers.get(0).processingSpeed);
+                    runtimeSlider.setValue(manager.servers.get(0).getProcessingSpeed());
                 }
                 catch (IndexOutOfBoundsException indexException){
                     System.out.println("\nArray index is out of bounds\nUser clicked on the cancel button whereas the servers list is empty.");
@@ -315,7 +309,6 @@ public class SettingsGUI extends JFrame {
         });
 
     }
-
 
 
     // This function initializes the User Interface
@@ -373,7 +366,7 @@ public class SettingsGUI extends JFrame {
         pack();
 
         // On click on the close button, exit the application
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set the JFrame unresizable
         setResizable(false);
