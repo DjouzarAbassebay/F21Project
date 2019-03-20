@@ -7,7 +7,7 @@ public class Server extends Thread{
     SharedObject sharedObject;
     Manager manager;
     int id;
-    int processingSpeed = 1;
+    private int processingSpeed = 1;
     private boolean running = true;
 
 
@@ -38,7 +38,9 @@ public class Server extends Thread{
                     }
                     Thread.sleep(time*1000/processingSpeed);
 
-                    manager.addProcessedOrder(Manager.copyOrder(processingOrder));
+                    Order copiedOrder = Manager.copyOrder(processingOrder);
+                    processingOrder = null;
+                    manager.addProcessedOrder(Manager.copyOrder(copiedOrder));
                 } catch (InterruptedException e) {
                     System.out.println(e.getMessage());
 
@@ -53,11 +55,19 @@ public class Server extends Thread{
         manager.removeServer(this);
     }
 
+    public void stopServer() {
+        running = false;
+    }
+
     public Order getProcessingOrder() {
         return processingOrder;
     }
 
-    public void stopServer() {
-        running = false;
+    public int getProcessingSpeed() {
+        return processingSpeed;
+    }
+
+    public void setProcessingSpeed(int processingSpeed) {
+        this.processingSpeed = processingSpeed;
     }
 }

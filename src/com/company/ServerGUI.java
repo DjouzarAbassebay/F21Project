@@ -39,10 +39,12 @@ public class ServerGUI extends JFrame implements Observer {
     private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.UK);
 
     private Manager manager;
+    private CsvProducer csvProducer;
 
     // Create the application
-    public ServerGUI(Manager manager) {
+    public ServerGUI(Manager manager, CsvProducer csvProducer) {
         this.manager = manager;
+        this.csvProducer = csvProducer;
         initialize();
     }
 
@@ -81,7 +83,6 @@ public class ServerGUI extends JFrame implements Observer {
         middlePanel.setBounds(27, 323, 761, 233);
         getContentPane().add(middlePanel);
 
-        System.out.println(manager.sharedObject.getOrders().size());
         lblNbrePeopleWaiting = new JLabel("There are currently " + manager.sharedObject.getOrders().size() + " people waiting in the queue:");
         lblNbrePeopleWaiting.setHorizontalAlignment(SwingConstants.CENTER);
         lblNbrePeopleWaiting.setBounds(55, 45, 644, 20);
@@ -169,11 +170,9 @@ public class ServerGUI extends JFrame implements Observer {
         getContentPane().add(btnOnlineOrder);
 
         // When the button is clicked
-        btnOnlineOrder.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                OnlineProducer onlineProducer = new OnlineProducer(manager.sharedObject, manager.getMenu());
-                onlineProducer.initUI();
-            }
+        btnOnlineOrder.addActionListener(arg0 -> {
+            OnlineProducer onlineProducer = new OnlineProducer(manager.sharedObject, manager.getMenu());
+            onlineProducer.initUI();
         });
 
         // Settings button
@@ -185,11 +184,9 @@ public class ServerGUI extends JFrame implements Observer {
         getContentPane().add(btnSettings);
 
         // When the button is clicked
-        btnSettings.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                SettingsGUI settingsGUI = new SettingsGUI(manager);
-                settingsGUI.initUI();
-            }
+        btnSettings.addActionListener(arg0 -> {
+            SettingsGUI settingsGUI = new SettingsGUI(manager, csvProducer);
+            settingsGUI.initUI();
         });
 
         // Finish button

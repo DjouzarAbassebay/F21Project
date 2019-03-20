@@ -120,7 +120,6 @@ public class Manager implements Subject {
 
     public void addServers(int nbServers) {
         int serversListSize = servers.size();
-        System.out.println("Servers before changing : " + serversListSize);
         for (int i = 0; i < nbServers - serversListSize; i++) {
 
             // Add server(s) if the maximum number of servers is not reached !
@@ -130,12 +129,10 @@ public class Manager implements Subject {
             server.start();
 
         }
-        System.out.println("Servers List Size : " + servers.size());
         notifyObservers();
     }
 
     public void removeServers(int nbServers) {
-        System.out.println("Servers before changing : " + servers.size());
         int nbActiveServer = servers.size();
         for(Server server : servers) {
             if(nbActiveServer > nbServers)
@@ -149,8 +146,6 @@ public class Manager implements Subject {
                 servers.getLast().stopServer();
             }
         }
-
-        System.out.println("Servers List Size : " + servers.size());
         notifyObservers();
     }
 

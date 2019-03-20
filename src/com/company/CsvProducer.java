@@ -13,7 +13,8 @@ import static com.company.Manager.copyOrder;
 public class CsvProducer extends  Thread{
 
     private SharedObject sharedObject;
-    Map<String, Item> menu ;
+    private Map<String, Item> menu ;
+    private int processingSpeed = 1;
 
     public CsvProducer(SharedObject sharedObject, Map<String, Item> menu) {
         this.sharedObject = sharedObject;
@@ -62,7 +63,7 @@ public class CsvProducer extends  Thread{
         }
     }
 
-    public void addOrderToNormalOrdersSH(Order order) {
+    private void addOrderToNormalOrdersSH(Order order) {
         Random r = new Random();
         int low = 1000;
         int high = 5000;
@@ -71,10 +72,17 @@ public class CsvProducer extends  Thread{
         sharedObject.addOrderFromNormalOrders(order);
         System.out.println("This order has been correctly added to the shared object: \n"+order.toString()+"\n");
         try {
-            Thread.sleep(timeRandom*2);
+            Thread.sleep(timeRandom*2/processingSpeed);
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
     }
 
+    public int getProcessingSpeed() {
+        return processingSpeed;
+    }
+
+    public void setProcessingSpeed(int processingSpeed) {
+        this.processingSpeed = processingSpeed;
+    }
 }

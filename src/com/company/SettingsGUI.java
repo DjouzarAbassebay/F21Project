@@ -38,7 +38,7 @@ public class SettingsGUI extends JFrame {
     private JSlider runtimeSlider;
     private static int RUNTIME_MIN = 1;
     private static int RUNTIME_MAX = 10;
-    private static int RUNTIME_INIT = 1;
+    private int runtimeInit;
 
     //JSpinners definition
     private JSpinner serversSpinner;
@@ -55,10 +55,12 @@ public class SettingsGUI extends JFrame {
     private static int BARISTAS_MAX = 4;
 
     private Manager manager;
+    private CsvProducer csvProducer;
 
     // SettingsGUI Constructor
-    SettingsGUI(Manager manager){
+    SettingsGUI(Manager manager, CsvProducer csvProducer){
         this.manager = manager;
+        this.csvProducer = csvProducer;
         initUI();
     }
 
@@ -69,8 +71,9 @@ public class SettingsGUI extends JFrame {
         runtimePanel = new JPanel();
         sliderPanel = new JPanel();
 
+        runtimeInit = manager.servers.get(0).getProcessingSpeed();
         // Initialize JSlider
-        runtimeSlider = new JSlider(RUNTIME_MIN, RUNTIME_MAX, RUNTIME_INIT);
+        runtimeSlider = new JSlider(RUNTIME_MIN, RUNTIME_MAX, runtimeInit);
 
         // Slider settings
         runtimeSlider.setPaintTicks(true);
@@ -79,10 +82,10 @@ public class SettingsGUI extends JFrame {
 
         // If Slider value changes...
         // Change the processingTime for each server
-        runtimeSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                processingSpeed = runtimeSlider.getValue();
+        runtimeSlider.addChangeListener(e -> {
+            JSlider source = (JSlider)e.getSource();
+            if(!source.getValueIsAdjusting()) {
+                processingSpeed = source.getValue();
                 System.out.println("Runtime Speed : " + processingSpeed);
             }
         });
@@ -126,12 +129,12 @@ public class SettingsGUI extends JFrame {
 
         // Initialize JSpinners
         // Initialize the model for the spinner from 0 to 9, in 1 steps and start by the value 5
-        SpinnerNumberModel model = new SpinnerNumberModel(manager.servers.size(), 0, SERVERS_MAX, 1);
+        serversNumber = manager.servers.size();
+        SpinnerNumberModel model = new SpinnerNumberModel(serversNumber, 1, SERVERS_MAX, 1);
         serversSpinner = new JSpinner(model);
 
         serversSpinner.addChangeListener(e -> {
             serversNumber = (int) model.getValue();
-            System.out.println("Spinner Servers : " + serversNumber);
         });
 
         // Create a GroupLayout which will be contained in serversPanel
@@ -252,12 +255,10 @@ public class SettingsGUI extends JFrame {
         // Update and apply the selected values
         applyButton.addActionListener(e -> {
             // If we want to add server(s)...
-            System.out.println(serversNumber + " " + manager.servers.size());
             if(serversNumber > manager.servers.size()) {
 
                 manager.addServers(serversNumber);
                 serversListSize = manager.servers.size();
-                System.out.println("New Servers Size after adding : " + manager.servers.size());
 
                 // It is optional !!!
                 // Add servers only when there are more orders than processing servers...
@@ -275,18 +276,17 @@ public class SettingsGUI extends JFrame {
                 // Remove server(s) if the servers list is not empty !
                 manager.removeServers(serversNumber);
                 serversListSize = manager.servers.size();
-                System.out.println("New Servers Size after removing : " + manager.servers.size());
             }
 
             // If the servers list is not empty...
             if(!manager.servers.isEmpty()) {
-
                 // Apply the new processing time for each server
                 for (int i = 0; i < manager.servers.size(); i++) {
-
-                    manager.servers.get(i).processingSpeed = processingSpeed;
+                    manager.servers.get(i).setProcessingSpeed(processingSpeed);
                 }
             }
+
+            csvProducer.setProcessingSpeed(processingSpeed);
         });
 
         // If the cancel button is clicked...
@@ -296,7 +296,7 @@ public class SettingsGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 try {
-                    runtimeSlider.setValue(manager.servers.get(0).processingSpeed);
+                    runtimeSlider.setValue(manager.servers.get(0).getProcessingSpeed());
                 }
                 catch (IndexOutOfBoundsException indexException){
                     System.out.println("\nArray index is out of bounds\nUser clicked on the cancel button whereas the servers list is empty.");

@@ -15,12 +15,11 @@ public class Main {
         CsvProducer csvProducer = new CsvProducer(sharedObject, manager.getMenu());
         csvProducer.start();
 
-        System.out.println(order.getName()+"OOOOOOOOOOOOOOOOOO");
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
 
-                    ServerGUI frame = new ServerGUI(manager);
+                    ServerGUI frame = new ServerGUI(manager, csvProducer);
                     frame.setVisible(true);
                     manager.registerObserver(frame);
                 } catch (Exception e) {
