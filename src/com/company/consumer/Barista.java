@@ -2,6 +2,9 @@ package com.company.consumer;
 
 import com.company.model.Item;
 import com.company.model.Manager;
+import com.company.outputs.Log;
+
+import java.io.IOException;
 
 import java.util.List;
 
@@ -10,6 +13,7 @@ public class Barista extends Thread {
     Manager manager;
     private int id;
     private boolean running = true;
+    Log log;
 
     public Barista(int id, Manager manager) {
         this.id = id;
