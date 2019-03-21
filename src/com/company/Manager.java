@@ -152,6 +152,10 @@ public class Manager implements Subject {
         notifyObservers();
     }
 
+    public void removeBaristas(int nbBaristas){
+
+    }
+
     public void addBaristas(int nbBaristas) {
         int baristasListSize = baristas.size();
         System.out.println("Baristas before changing : " + baristasListSize);
@@ -164,6 +168,7 @@ public class Manager implements Subject {
         }
         System.out.println("Baristas List Size : " + baristas.size());
     }
+
     public void removeServer(Server server) {
         servers.remove(server);
         notifyObservers();
@@ -179,7 +184,7 @@ public class Manager implements Subject {
         }
     }
 
-    void addProcessedOrder(Order order) {
+    public void addProcessedOrder(Order order) {
         processedOrders.add(order);
         notifyObservers();
     }
@@ -189,6 +194,9 @@ public class Manager implements Subject {
     }
 
     public List<Server> getServers() { return servers; }
+    public List<Barista> getBaristas() { return baristas; }
+    public List<Order> getProcessedOrders() { return processedOrders; }
+    public List<Observer> getObservers() { return observer; }
 
     public void registerObserver(Observer obs)
     {

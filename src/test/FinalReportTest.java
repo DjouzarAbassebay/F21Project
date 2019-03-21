@@ -1,11 +1,7 @@
-/*
+
 package test;
 
-import com.company.InvalidItemNameException;
-import com.company.Item;
-import com.company.Manager;
-import com.company.Order;
-import com.company.FinalReport;
+import com.company.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,16 +17,19 @@ class FinalReportTest {
     private Item itemChoc;
     private Manager manager;
     private FinalReport report;
-    private LinkedList<Order> listOrders;
+
+    private SharedObject sharedObject;
 
 
     @BeforeEach
     void setUp() throws InvalidItemNameException {
 
-        listOrders = new LinkedList<>();
         orderSimpleItem = new Order();
-        manager = new Manager();
-        report = new FinalReport(manager);
+        sharedObject = new SharedObject();
+        manager = new Manager(sharedObject);
+        sharedObject.setManager(manager);
+        report = new FinalReport(sharedObject, manager.getMenu());
+
         itemChoc = new Item("Expresso", "A hot chocolate", "Hot",2.50, 3,30);
         List<Item> simpleItemChoc = new ArrayList<>();
         simpleItemChoc.add(itemChoc);
@@ -38,9 +37,15 @@ class FinalReportTest {
         orderSimpleItem.setItems(simpleItemChoc);
 
         orderSimpleItem.calculatePrice();
-        listOrders.add(orderSimpleItem);
 
-        manager.setOrders(listOrders);
+        orderSimpleItem.setCustomerID(1);
+        orderSimpleItem.setTimestamp("2016-11-09T11:44:44.797");
+        orderSimpleItem.setName("Peter Parker");
+        orderSimpleItem.setDiscountPrice((float) 0);
+        orderSimpleItem.setItems(simpleItemChoc);
+
+        sharedObject.addOrderFromNormalOrders(orderSimpleItem);
+
     }
 
 
@@ -55,11 +60,8 @@ class FinalReportTest {
     void testVariationStock() {
         String variation ="";
         variation = report.calculateVariationClass("Hot_001");
-        assertEquals("Hot_001 : 1.0", variation);
-
+        assertEquals("Hot_001 : 0.0", variation);
     }
 
     }
 
-
-*/

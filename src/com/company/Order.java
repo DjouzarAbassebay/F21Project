@@ -82,7 +82,7 @@ public class Order {
         calculatePrice();
     }
 
-    void removeAllItem() {
+    public void removeAllItem() {
         for (Item item : items) {
             item.setStock(1);
         }
@@ -90,7 +90,7 @@ public class Order {
         calculatePrice();
     }
 
-    boolean containBeverage() {
+    public boolean containBeverage() {
         for(Item item : items) {
             if(item.isBeverage())
                 return true;

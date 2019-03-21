@@ -1,4 +1,4 @@
-/*package test;
+package test;
 
 import com.company.InvalidItemNameException;
 import com.company.Item;
@@ -174,6 +174,12 @@ class OrderTest {
     }
 
     @Test
+    void testRemoveAllItem(){
+        orderTwoItems.removeAllItem();
+        assertEquals(0, orderTwoItems.getItems().size());
+    }
+
+    @Test
     void testRemoveItemWhenDouble() {
         orderDoubleItem.removeItem(0);
         assertEquals(1, orderDoubleItem.getItems().size());
@@ -257,5 +263,15 @@ class OrderTest {
         emptyOrder.calculatePrice();
         assertEquals(0, emptyOrder.getInitialPrice());
     }
+
+    @Test
+    void testOneContainBeverage(){
+        assertEquals(true, orderMenu.containBeverage());
+    }
+
+    @Test
+    void testTwoContainBeverage(){
+        assertEquals(false, orderSandwiches.containBeverage());
+    }
+
 }
-*/
