@@ -19,89 +19,44 @@ public class SharedObject {
     }
 
 
-    public synchronized void addOrderFromNormalOrders(Order order)
-    {
+    public synchronized void addOrderFromNormalOrders(Order order) {
         normalOrders.add(order);
         updateOrders();
     }
 
-    public synchronized void addOrderFromPriorityOrders(Order order)
-    {
+    public synchronized void addOrderFromPriorityOrders(Order order) {
         priorityOrders.add(order);
         updateOrders();
     }
 
-    public synchronized void removeOrderFromNormalOrders(Order order)
-    {
+    public synchronized void removeOrderFromNormalOrders(Order order) {
         normalOrders.remove(order);
         updateOrders();
     }
 
-    public synchronized void removeOrderFromPriorityOrders(Order order)
-    {
+    public synchronized void removeOrderFromPriorityOrders(Order order) {
         priorityOrders.remove(order);
         updateOrders();
     }
 
-    public synchronized void updateOrders(){
+    public synchronized void updateOrders() {
 
-        LinkedList<Order> temp = new LinkedList<>();
-
-        for(int i=0; i<priorityOrders.size(); i++){
-            temp.add(priorityOrders.get(i));
-        }
-        for(int i=0; i<normalOrders.size(); i++){
-            temp.add(normalOrders.get(i));
-        }
+        LinkedList<Order> temp = new LinkedList<>(priorityOrders);
+        temp.addAll(normalOrders);
 
         orders = temp;
 
         manager.notifyObservers();
 
-        /*System.out.println("********** ORDERS LIST **********" );
-        for(int i=0; i<orders.size(); i++){
-            System.out.println(orders.get(i) );
-        }
-        System.out.println("*******************************" );*/
-
     }
 
 
-    /*private void viewOrders() {
-        System.out.println("Orders List");
-        for (Order order : orders) {
-            System.out.println(order);
-        }
-    }*/
-
-    // method to display the items in each order in the terminal
-    /*private void displayOrders() {
-        for (Order order : orders) {
-            System.out.println(order.getCustomerID());
-            if (order.getItems().isEmpty())
-                System.out.println("Order empty !");
-            else {
-                for (int j = 0; j < order.getItems().size(); j++) {
-                    System.out.println(order.getItems().get(j));
-                }
-            }
-        }
-    }*/
-
-    public synchronized Order getNextOrder(){
+    public synchronized Order getNextOrder() {
         Order order;
-        try{
+        try {
             order = orders.removeFirst();
             manager.notifyObservers();
-           /* System.out.println("********** ORDERS LEFT LIST **********" );
-            for(int i=0; i<orders.size(); i++){
-                System.out.println(orders.get(i) );
-            }
-            System.out.println("*******************************" );
-            System.out.println("*******************************" );*/
-
-        }
-        catch(NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             order = null;
         }
         return order;
@@ -111,32 +66,17 @@ public class SharedObject {
     public List<Order> getOrders() {
         return orders;
     }
-    /*public void setOrders(LinkedList<Order> orders) {
-        this.orders = orders;
-    }*/
 
     public List<Order> getNormalOrders() {
         return normalOrders;
     }
 
-    /*public void setNormalOrders(List<Order> orders) {
-        this.normalOrders = orders;
-    }*/
-
     public List<Order> getPriorityOrders() {
         return priorityOrders;
     }
 
-    /*public void setPriorityOrders(List<Order> orders) {
-        this.priorityOrders = orders;
-    }*/
-
-    public void setManager(Manager manager) {this.manager = manager;}
-
-    public String[] toStringCustomer() {
-        String str[] = new String[orders.size()];
-        for(int i = 0; i < orders.size(); i++)
-            str[i] = orders.get(i).getName() + " : " + orders.get(i).getItems().size() + " Items";
-        return  str;
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
+
 }

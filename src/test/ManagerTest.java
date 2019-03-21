@@ -21,7 +21,6 @@ class ManagerTest {
 
     private Manager manager;
     private Order completeOrder;
-    private SharedObject sharedObject;
     private CsvProducer csvProducer;
     private ServerGUI serverGUI;
 
@@ -56,8 +55,7 @@ class ManagerTest {
         completeOrder.setItems(twoItems);
 
 
-
-        sharedObject = new SharedObject();
+        SharedObject sharedObject = new SharedObject();
         manager = new Manager(sharedObject);
 
         try {

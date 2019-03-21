@@ -11,10 +11,10 @@ import java.util.List;
 
 public class Barista extends Thread {
 
-    Manager manager;
+    private Manager manager;
     private int id;
     private boolean running = true;
-    Log log;
+
 
     public Barista(int id, Manager manager) {
         this.id = id;
@@ -30,7 +30,7 @@ public class Barista extends Thread {
         System.out.println("New barista " + id);
         Log logger1 = null;
         try {
-            logger1 = log.getInstance();
+            logger1 = Log.getInstance();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,6 +42,7 @@ public class Barista extends Thread {
             System.out.println("Barista " + id + " finished order\n");
 
             try {
+                assert logger1 != null;
                 logger1.log_barista(id, server.getServerId());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -56,7 +57,7 @@ public class Barista extends Thread {
         manager.removeBarista(this);
     }
 
-    public Server waitForServer() {
+    private Server waitForServer() {
         List<Server> servers = manager.getServers();
         boolean occupied = false;
         int serverIndex = 0;
@@ -83,7 +84,7 @@ public class Barista extends Thread {
         return server;
     }
 
-    public void completeOrder(List<Item> items) {
+    private void completeOrder(List<Item> items) {
         for (Item item : items) {
             if (item.isBeverage()) {
                 try {

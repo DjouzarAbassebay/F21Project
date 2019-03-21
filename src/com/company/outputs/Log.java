@@ -15,9 +15,7 @@ public class Log {
     //private BufferedWriter bw = null;
 
 
-    public Log() throws IOException {
-        FileWriter fw = new FileWriter(file);
-
+    public Log() {
     }
 
 

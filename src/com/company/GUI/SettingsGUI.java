@@ -137,9 +137,7 @@ public class SettingsGUI extends JFrame {
         SpinnerNumberModel model = new SpinnerNumberModel(serversNumber, 1, SERVERS_MAX, 1);
         serversSpinner = new JSpinner(model);
 
-        serversSpinner.addChangeListener(e -> {
-            serversNumber = (int) model.getValue();
-        });
+        serversSpinner.addChangeListener(e -> serversNumber = (int) model.getValue());
 
         // Create a GroupLayout which will be contained in serversPanel
         GroupLayout serversGroupLayout = new GroupLayout(serversPanel);
@@ -305,21 +303,18 @@ public class SettingsGUI extends JFrame {
 
         // If the cancel button is clicked...
         // Put back the previous values
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        cancelButton.addActionListener(e -> {
 
-                try {
-                    runtimeSlider.setValue(manager.servers.get(0).getProcessingSpeed());
-                }
-                catch (IndexOutOfBoundsException indexException){
-                    System.out.println("\nArray index is out of bounds\nUser clicked on the cancel button whereas the servers list is empty.");
-                    JOptionPane.showMessageDialog(mainContainerPanel, "Please set parameters and click on the apply button.");
-                }
-
-                serversSpinner.setValue(serversListSize);
-
+            try {
+                runtimeSlider.setValue(manager.servers.get(0).getProcessingSpeed());
             }
+            catch (IndexOutOfBoundsException indexException){
+                System.out.println("\nArray index is out of bounds\nUser clicked on the cancel button whereas the servers list is empty.");
+                JOptionPane.showMessageDialog(mainContainerPanel, "Please set parameters and click on the apply button.");
+            }
+
+            serversSpinner.setValue(serversListSize);
+
         });
 
     }

@@ -1,7 +1,5 @@
 package com.company.model;
 
-import com.company.model.Item;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,17 +41,14 @@ public class Order {
                 number_pastry += 1;
         }
 
-        if(number_cold==1 && number_sandwiches==1 && number_hot==0 && number_pastry==1) {
+        if (number_cold == 1 && number_sandwiches == 1 && number_hot == 0 && number_pastry == 1) {
             discountPrice = 7.0;
-        }
-        else if(number_cold==0 && number_sandwiches==3 && number_hot==0 && number_pastry==0) {
+        } else if (number_cold == 0 && number_sandwiches == 3 && number_hot == 0 && number_pastry == 0) {
             discountPrice = 13;
-        }
-        else if(number_cold==0 && number_sandwiches==0 && number_hot==0 && number_pastry==3) {
+        } else if (number_cold == 0 && number_sandwiches == 0 && number_hot == 0 && number_pastry == 3) {
             discountPrice = 5;
-        }
-        else if(number_cold==0 && number_sandwiches==0 && number_hot>=4 && number_pastry==0) {
-            discountPrice = initialPrice*0.9;
+        } else if (number_cold == 0 && number_sandwiches == 0 && number_hot >= 4 && number_pastry == 0) {
+            discountPrice = initialPrice * 0.9;
         }
     }
 
@@ -67,15 +62,13 @@ public class Order {
 
 
     public void addItem(Item item) {
-        if(item.getStock()>0)
-        {
+        if (item.getStock() > 0) {
             item.setStock(-1);
             items.add(item);
-        }
-        else
+        } else
             System.out.println("Sorry, we don't have this item anymore.");
 
-       calculatePrice();
+        calculatePrice();
     }
 
     public void removeItem(int index) {
@@ -93,8 +86,8 @@ public class Order {
     }
 
     public boolean containBeverage() {
-        for(Item item : items) {
-            if(item.isBeverage())
+        for (Item item : items) {
+            if (item.isBeverage())
                 return true;
         }
         return false;
@@ -118,15 +111,19 @@ public class Order {
         this.timestamp = value;
     }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) {this.name = name;}
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public double getInitialPrice() {
         return this.initialPrice;
     }
 
-    public void setInitialPrice(double value) {
+    void setInitialPrice(double value) {
         this.initialPrice += value;
     }
 
@@ -155,7 +152,6 @@ public class Order {
                 + "Price: " + discountPrice + "\n"
                 + "Number of Items: " + items.size() + "\n\n";
     }
-
 
 
 }

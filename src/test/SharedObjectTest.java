@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class SharedObjectTest {
+class SharedObjectTest {
 
     private Order Order1;
     private Order Order2;

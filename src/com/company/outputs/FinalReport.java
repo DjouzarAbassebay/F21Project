@@ -16,7 +16,7 @@ public class FinalReport {
     private double income;
 
     private SharedObject sharedObject;
-    Map<String, Item> menu ;
+    private Map<String, Item> menu ;
 
     public FinalReport(SharedObject sharedObject, Map<String, Item> menu) {
         this.sharedObject = sharedObject;

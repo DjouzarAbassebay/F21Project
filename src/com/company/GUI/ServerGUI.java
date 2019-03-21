@@ -262,7 +262,7 @@ public class ServerGUI extends JFrame implements Observer {
         private DefaultListModel<String> orderDetailsDefaultList;
         private JLabel serverTotal;
 
-        public ServerPanel(Server server) {
+        ServerPanel(Server server) {
 
             this.server = server;
 
@@ -327,7 +327,7 @@ public class ServerGUI extends JFrame implements Observer {
             updateServerPanel();
         }
 
-        public void updateServerPanel() {
+        void updateServerPanel() {
             Order order = server.getProcessingOrder();
             // If the server takes an order...
             if (order != null) {
@@ -350,7 +350,7 @@ public class ServerGUI extends JFrame implements Observer {
     }
 
 
-    public boolean checkFinished(){
+    private boolean checkFinished(){
         if(manager.sharedObject.getOrders().size() != 0)
             return false;
         else if(csvProducer.isAlive())

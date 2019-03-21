@@ -1,18 +1,18 @@
 package com.company.model;
 
-import com.company.interfaces.Observer;
-import com.company.interfaces.Subject;
 import com.company.consumer.Barista;
 import com.company.consumer.Server;
 import com.company.exceptions.InvalidItemIdException;
 import com.company.exceptions.InvalidItemNameException;
+import com.company.interfaces.Observer;
+import com.company.interfaces.Subject;
 
 import java.io.*;
 import java.util.*;
 
 
 public class Manager implements Subject {
-    Map<String, Item> menu = new HashMap<>();
+    private Map<String, Item> menu = new HashMap<>();
 
     private List<Order> processedOrders = new ArrayList<>();
     private List<Observer> observer = new LinkedList<>();
@@ -63,8 +63,7 @@ public class Manager implements Subject {
                 String[] words = line.split(";");
 
                 try {
-                    if(!words[0].matches("((Hot|Cold|Sandwiches|Pastry)_\\d{3})"))
-                    {
+                    if (!words[0].matches("((Hot|Cold|Sandwiches|Pastry)_\\d{3})")) {
                         throw new InvalidItemIdException(words[0]);
                     }
                     String category = words[0].split("_")[0];
@@ -72,7 +71,7 @@ public class Manager implements Subject {
                     menu.put(words[0], item);
                     item.setInitialStock(item.getStock());
                 } catch (InvalidItemNameException | InvalidItemIdException e) {
-                    message = e.getMessage() + "\n Item not added: "+words[1];
+                    message = e.getMessage() + "\n Item not added: " + words[1];
                     System.out.println(message);
                 }
 
@@ -101,42 +100,62 @@ public class Manager implements Subject {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
             BufferedWriter bufferedwriter = new BufferedWriter(outputStreamWriter);
 
-            for(int i = 0 ; i<menu.size() ; i++) {
+            for (int i = 0; i < menu.size(); i++) {
                 String[] words = lines[i].split(";");
                 if (i == item_nb) {
                     int stock = Integer.parseInt(words[4]) + stock_nb;
                     String stock_string = Integer.toString(stock);
                     words[4] = stock_string;
-                    lines[i] = words[0] + ";" + words[1] + ";" + words[2] + ";" + words[3] + ";" + words[4] ;
+                    lines[i] = words[0] + ";" + words[1] + ";" + words[2] + ";" + words[3] + ";" + words[4];
                     System.out.println(words[0] + ";" + words[1] + ";" + words[2] + ";" + words[3] + ";" + words[4]);
                 }
 
             }
 
-            for(int k = 0 ; k<menu.size() ; k++) {
+            for (int k = 0; k < menu.size(); k++) {
                 System.out.println(lines[k]);
                 bufferedwriter.write(lines[k]);
                 bufferedwriter.newLine();
             }
             bufferedwriter.close();
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void addServers(int nbServers) {
         int serversListSize = servers.size();
+
         for (int i = 0; i < nbServers - serversListSize; i++) {
 
-            // Add server(s) if the maximum number of servers is not reached !
-            Server server = new Server(serversListSize+i, this, sharedObject);
-            servers.add(server);
-            // When a new server is added, start this thread
-            server.start();
+            if (servers.size() == 0) {
+                // Add server(s) if the maximum number of servers is not reached !
+                //Server server = new Server(serversListSize, this, sharedObject);
+                Server server = new Server(servers.size() + 1, this, sharedObject);
+                servers.add(server);
+                // When a new server is added, start this thread
+                server.start();
+
+
+            } else {
+
+                int new_id = 1;
+
+                for (Server server : servers) {
+                    if (server.getServerId() == new_id) {
+                        new_id++;
+                    }
+
+                }
+
+                Server server = new Server(new_id, this, sharedObject);
+                servers.add(server);
+                // When a new server is added, start this thread
+                server.start();
+
+
+            }
+
 
         }
         notifyObservers();
@@ -144,16 +163,11 @@ public class Manager implements Subject {
 
     public void removeServers(int nbServers) {
         int nbActiveServer = servers.size();
-        for(Server server : servers) {
-            if(nbActiveServer > nbServers)
-                if(server.getProcessingOrder() == null) {
-                    server.stopServer();
-                    nbActiveServer -= 1;
-                }
-        }
-        if(nbActiveServer > nbServers) {
-            for(int i = nbActiveServer-1; i >= nbServers; i--) {
-                servers.getLast().stopServer();
+
+        for (Server server : servers) {
+            if (nbActiveServer > nbServers) {
+                server.stopServer();
+                nbActiveServer -= 1;
             }
         }
         notifyObservers();
@@ -165,7 +179,7 @@ public class Manager implements Subject {
         System.out.println("Baristas before changing : " + baristasListSize);
         for (int i = 0; i < nbBaristas - baristasListSize; i++) {
             // Add barista(s) if the maximum number of baristas is not reached !
-            Barista barista = new Barista(baristasListSize+i, this);
+            Barista barista = new Barista(baristasListSize + i, this);
             baristas.add(barista);
             // When a new barista is added, start this thread
             barista.start();
@@ -175,8 +189,8 @@ public class Manager implements Subject {
 
     public void removeBaristas(int nbBaristas) {
         int nbActiveBarista = baristas.size();
-        if(nbActiveBarista > nbBaristas) {
-            for(int i = nbActiveBarista-1; i >= nbBaristas; i--) {
+        if (nbActiveBarista > nbBaristas) {
+            for (int i = nbActiveBarista - 1; i >= nbBaristas; i--) {
                 baristas.getLast().stopBarista();
             }
         }
@@ -192,8 +206,6 @@ public class Manager implements Subject {
         servers.remove(server);
         notifyObservers();
     }
-
-
 
 
     // method to display the menu in the terminal
@@ -214,21 +226,31 @@ public class Manager implements Subject {
         return menu;
     }
 
-    public List<Server> getServers() { return servers; }
-    public List<Barista> getBaristas() { return baristas; }
-    public List<Order> getProcessedOrders() { return processedOrders; }
-    public List<Observer> getObservers() { return observer; }
+    public List<Server> getServers() {
+        return servers;
+    }
 
-    public void registerObserver(Observer obs)
-    {
+    public List<Barista> getBaristas() {
+        return baristas;
+    }
+
+    public List<Order> getProcessedOrders() {
+        return processedOrders;
+    }
+
+    public List<Observer> getObservers() {
+        return observer;
+    }
+
+    public void registerObserver(Observer obs) {
         observer.add(obs);
     }
-    public void removeObserver(Observer obs)
-    {
+
+    public void removeObserver(Observer obs) {
         observer.remove(obs);
     }
-    public void notifyObservers()
-    {
+
+    public void notifyObservers() {
         for (Observer obs : observer) obs.update();
     }
 

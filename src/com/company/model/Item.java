@@ -62,11 +62,11 @@ public class Item {
 
 
     // Setters
-    public void setInitialStock(int stock) {
+    void setInitialStock(int stock) {
         this.initialStock = stock;
     }
 
-    public void setStock(int variation) {
+    void setStock(int variation) {
         this.stock+=variation;
     }
 

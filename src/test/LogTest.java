@@ -15,23 +15,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class LogTest {
+class LogTest {
 
 
     private Log logger;
     private Order Order1;
 
     {
-        try {
-            logger = new Log();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        logger = new Log();
     }
 
 
     @BeforeEach
-    public void setUp() throws InvalidItemNameException, IOException {
+    void setUp() throws InvalidItemNameException, IOException {
         Order1= new Order();
         Item itemChoc = new Item("Hot Chocolate", "A hot chocolate", "Hot", 2.50, 3, 20);
         Item itemSandwich = new Item("Ham Sandwich", "A ham sandwich", "Sandwiches", 5.0, 2, 15);

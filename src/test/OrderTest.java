@@ -266,12 +266,12 @@ class OrderTest {
 
     @Test
     void testOneContainBeverage(){
-        assertEquals(true, orderMenu.containBeverage());
+        assertTrue(orderMenu.containBeverage());
     }
 
     @Test
     void testTwoContainBeverage(){
-        assertEquals(false, orderSandwiches.containBeverage());
+        assertFalse(orderSandwiches.containBeverage());
     }
 
 }
