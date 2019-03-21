@@ -480,7 +480,7 @@ public class OnlineProducer extends JFrame {
         JPanel previousAndCategoryPanel = new JPanel();
 
         // Create an button (previous button) in which will be inserted an ImageIcon
-        ImageIcon previousIcon = new ImageIcon("src/com/company/images/previous.png");
+        ImageIcon previousIcon = new ImageIcon("src/resources/images/previous.png");
         JButton previousButton = new JButton(previousIcon);
 
         // Create listener for this button
