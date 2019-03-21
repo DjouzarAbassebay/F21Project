@@ -19,6 +19,7 @@ public class Manager implements Subject {
     public LinkedList<Server> servers = new LinkedList<>();
     public LinkedList<Barista> baristas = new LinkedList<>();
     public SharedObject sharedObject;
+    private ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
     //Constructor
     public Manager(SharedObject sharedObject) {
@@ -52,8 +53,7 @@ public class Manager implements Subject {
 
             // Read the CSV file
             String menuPath = "menu.csv";
-            FileInputStream fileInputStream = new FileInputStream(menuPath);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            InputStreamReader inputStreamReader = new InputStreamReader(classLoader.getResourceAsStream(menuPath));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
 
@@ -86,8 +86,7 @@ public class Manager implements Subject {
         try {
             String line;
             String menuPath = "menu.csv";
-            FileInputStream fileInputStream = new FileInputStream(menuPath);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            InputStreamReader inputStreamReader = new InputStreamReader(classLoader.getResourceAsStream(menuPath));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String[] lines = new String[menu.size()];
 

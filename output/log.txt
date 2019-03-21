@@ -1,0 +1,208 @@
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :1
+  Customer name Rick Sanchez
+  Price :6.5
+  Number of Items : 2.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :2
+  Customer name Mortimer Smith
+  Price :6.990000009536743
+  Number of Items : 2.0
+
+
+Barista 1 take care of order from the server: 1
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :3
+  Customer name Jamie Lannister
+  Price :11.5
+  Number of Items : 3.0
+
+
+Barista 0 take care of order from the server: 2
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :1
+  Customer name Rick Sanchez
+  Price :6.5
+  Number of Items : 2.0
+
+
+Barista 0 take care of order from the server: 1
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :2
+  Customer name Mortimer Smith
+  Price :6.990000009536743
+  Number of Items : 2.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :1
+  Customer name Rick Sanchez
+  Price :6.5
+  Number of Items : 2.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :2
+  Customer name Mortimer Smith
+  Price :6.990000009536743
+  Number of Items : 2.0
+
+
+Barista 0 take care of order from the server: 2
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :3
+  Customer name Jamie Lannister
+  Price :11.5
+  Number of Items : 3.0
+
+
+Barista 1 take care of order from the server: 1
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :4
+  Customer name Mycroft Holmes
+  Price :8.980000019073486
+  Number of Items : 3.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :1
+  Customer name Rick Sanchez
+  Price :6.5
+  Number of Items : 2.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :1
+  Customer name Rick Sanchez
+  Price :6.5
+  Number of Items : 2.0
+
+
+Barista 0 take care of order from the server: 1
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :2
+  Customer name Mortimer Smith
+  Price :6.990000009536743
+  Number of Items : 2.0
+
+
+Barista 1 take care of order from the server: 2
+
+New order processed at  :2016-11-09T11:44:44.797
+  CustomerId :1
+  Server ID 1
+  Customer name Rick Sanchez
+  Price :6.5
+  Number of Items : 2.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :3
+  Customer name Jamie Lannister
+  Price :11.5
+  Number of Items : 3.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :4
+  Customer name Mycroft Holmes
+  Price :8.980000019073486
+  Number of Items : 3.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :5
+  Customer name Naruto Uzumaki
+  Price :15.480000019073486
+  Number of Items : 5.0
+
+
+Barista 0 take care of order from the server: 1
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :6
+  Customer name Crixus
+  Price :9.980000019073486
+  Number of Items : 3.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :7
+  Customer name Ragnar Lodbrok
+  Price :4.490000009536743
+  Number of Items : 2.0
+
+
+New order processed at  :2016-11-09T11:54:44.799
+  CustomerId :2
+  Server ID 2
+  Customer name Mortimer Smith
+  Price :6.990000009536743
+  Number of Items : 2.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.799
+  CustomerId :8
+  Customer name Aureliano Adami
+  Price :15.980000019073486
+  Number of Items : 4.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :9
+  Customer name King Horik
+  Price :4.5
+  Number of Items : 3.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :10
+  Customer name Don Pablo
+  Price :2.5
+  Number of Items : 2.0
+
+
+Barista 1 take care of order from the server: 2
+
+New order processed at  :2016-11-09T11:44:44.797
+  CustomerId :3
+  Server ID 1
+  Customer name Jamie Lannister
+  Price :11.5
+  Number of Items : 3.0
+
+
+New order processed at  :2016-11-09T11:54:44.799
+  CustomerId :4
+  Server ID 2
+  Customer name Mycroft Holmes
+  Price :8.980000019073486
+  Number of Items : 3.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:44:44.797
+  CustomerId :1
+  Customer name Rick Sanchez
+  Price :6.5
+  Number of Items : 2.0
+
+
+New order added to the queue (Shared object) at  :2016-11-09T11:54:44.799
+  CustomerId :2
+  Customer name Mortimer Smith
+  Price :6.990000009536743
+  Number of Items : 2.0
+
+
+Barista 0 take care of order from the server: 2
+
+Barista 1 take care of order from the server: 1
+

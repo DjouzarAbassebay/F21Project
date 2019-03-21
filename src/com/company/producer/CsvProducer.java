@@ -6,10 +6,7 @@ import com.company.outputs.Log;
 import com.company.model.Order;
 import com.company.model.SharedObject;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Map;
 import java.util.Random;
 
@@ -25,6 +22,8 @@ public class CsvProducer extends  Thread{
 
     Log logger2 = null;
     private int processingSpeed = 1;
+
+    ClassLoader classLoader = ClassLoader.getSystemClassLoader();
 
 
     public CsvProducer(SharedObject sharedObject, Map<String, Item> menu) throws IOException {
@@ -48,8 +47,7 @@ public class CsvProducer extends  Thread{
     public void run() {
         try {
             String ordersPath = "orders.csv";
-            FileInputStream fileInputStream = new FileInputStream(ordersPath);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            InputStreamReader inputStreamReader = new InputStreamReader(classLoader.getResourceAsStream(ordersPath));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line;
             String[] words;

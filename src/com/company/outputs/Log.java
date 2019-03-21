@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Log {
     // private final String logFile;
     private static Log instance;
-    private File file = new File(".\\log.txt");
+    private String logPath = "output/log.txt";
     private FileWriter fw;
     //private BufferedWriter bw = null;
 
@@ -43,7 +43,7 @@ public class Log {
 
         // If the file does not exist, it will be created
 
-        fw = new FileWriter(file, true);
+        fw = new FileWriter(logPath, true);
 
         BufferedWriter bw = new BufferedWriter(fw);
 
@@ -74,7 +74,7 @@ public class Log {
 
         // If the file does not exist, it will be created
 
-        fw = new FileWriter(file, true);
+        fw = new FileWriter(logPath, true);
 
         BufferedWriter bw = new BufferedWriter(fw);
 
@@ -93,7 +93,7 @@ public class Log {
 
 
 
-        fw = new FileWriter(file, true);
+        fw = new FileWriter(logPath, true);
 
         BufferedWriter bw = new BufferedWriter(fw);
 

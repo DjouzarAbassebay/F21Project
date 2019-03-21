@@ -52,17 +52,7 @@ public class FinalReport {
 
         try {
 
-            //Specifying the file name and path
-            File file = new File(".\\report.txt");
-
-            // If the file does not exist, it will be created
-            if (!file.exists()) {
-                boolean resu = file.createNewFile();
-                if(!resu)
-                    System.out.println("Impossible to create the file");
-            }
-
-            FileWriter fw = new FileWriter(file);
+            FileWriter fw = new FileWriter("output/report.txt");
             bw = new BufferedWriter(fw);
 
             bw.write("This is the report of the day  (" +

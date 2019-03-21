@@ -63,6 +63,8 @@ public class OnlineProducer extends JFrame {
 
     private Order currentOrder;
 
+    ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+
 
     // OnlineProducer Constructor
     public OnlineProducer(SharedObject sharedObject, Map<String, Item> menu){
@@ -218,7 +220,7 @@ public class OnlineProducer extends JFrame {
             JPanel imagePanel = new JPanel();
 
             // Create and insert an image in the image label
-            ImageIcon promotionIcon = new ImageIcon("src/resources/images/promotions.jpg");
+            ImageIcon promotionIcon = new ImageIcon(classLoader.getResource("images/promotions.jpg"));
             JLabel imageLabel = new JLabel(promotionIcon);
 
             // Add the label to the image panel
@@ -370,10 +372,10 @@ public class OnlineProducer extends JFrame {
         String[] itemsCategory = {"Hot drinks", "Cold drinks", "Sandwiches", "Pastry"};
 
         // Create an imageIcon for each category
-        ImageIcon hotDrinksIcon = new ImageIcon("src/resources/images/hot_drinks.jpg");
-        ImageIcon coldDrinksIcon = new ImageIcon("src/resources/images/cold_drinks.png");
-        ImageIcon sandwichesIcon = new ImageIcon("src/resources/images/sandwiches.jpg");
-        ImageIcon pastryIcon = new ImageIcon("src/resources/images/pastry.jpg");
+        ImageIcon hotDrinksIcon = new ImageIcon(classLoader.getResource("images/hot_drinks.jpg"));
+        ImageIcon coldDrinksIcon = new ImageIcon(classLoader.getResource("images/cold_drinks.png"));
+        ImageIcon sandwichesIcon = new ImageIcon(classLoader.getResource("images/sandwiches.jpg"));
+        ImageIcon pastryIcon = new ImageIcon(classLoader.getResource("images/pastry.jpg"));
 
         // Create a button for the "hot drinks" category
         hotDrinksButton = new JButton(itemsCategory[0], hotDrinksIcon);
@@ -480,7 +482,7 @@ public class OnlineProducer extends JFrame {
         JPanel previousAndCategoryPanel = new JPanel();
 
         // Create an button (previous button) in which will be inserted an ImageIcon
-        ImageIcon previousIcon = new ImageIcon("src/resources/images/previous.png");
+        ImageIcon previousIcon = new ImageIcon(classLoader.getResource("images/previous.png"));
         JButton previousButton = new JButton(previousIcon);
 
         // Create listener for this button
@@ -528,9 +530,9 @@ public class OnlineProducer extends JFrame {
         for(int i=0; i<itemList.size(); i++){
 
             String[] details = itemList.get(i).split(";");
-            itemIcon = new ImageIcon("src/resources/images/items/" + itemIDList.get(i) + ".jpg");
+            itemIcon = new ImageIcon(classLoader.getResource("images/items/" + itemIDList.get(i) + ".jpg"));
             if ((itemIcon).getImageLoadStatus() != MediaTracker.COMPLETE){
-                itemIcon = new ImageIcon("src/resources/images/items/" + "image_not_available.jpg");
+                itemIcon = new ImageIcon(classLoader.getResource("images/items/" + "image_not_available.jpg"));
             }
             float itemPrice = Float.parseFloat(details[2]);
 
@@ -711,38 +713,6 @@ public class OnlineProducer extends JFrame {
 
         // Size optimally all the JFrame's components
         pack();
-
-        // When the JFrame is closed
-        // Call the method to generate the report
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                //fReport.launch();
-
-                /*Scanner sc = new Scanner(System.in);
-                int str;
-                System.out.println("Do you want to add stock ? Yes = 1 No = 0:");
-                str = sc.nextInt();
-                while(str != 0 && str != 1){
-                    System.out.println("Please enter 1 or 0");
-                    str = sc.nextInt();
-                }
-
-                while(str == 1) {
-                    System.out.println("Which item ?");
-                    int item = sc.nextInt();
-                    System.out.println("How many ?");
-                    int nb_item = sc.nextInt();
-                    manager.addStock(item, nb_item);
-                    System.out.println("Do you want to add stock ? Yes = 1 No = 0:");
-                    str = sc.nextInt();
-                    while(str != 0 && str != 1){
-                        System.out.println("Please enter 1 or 0");
-                        str = sc.nextInt();
-                    }
-                }*/
-            }
-        });
 
         // On click on the close button, exit the application
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
