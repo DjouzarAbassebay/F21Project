@@ -82,4 +82,10 @@ public class Barista extends Thread {
     public void stopBarista() {
         running = false;
     }
+
+
+    public boolean getRunning()
+    {
+        return this.running;
+    }
 }

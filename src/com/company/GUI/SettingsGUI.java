@@ -175,7 +175,7 @@ public class SettingsGUI extends JFrame {
         // Initialize JSpinners
         // Initialize the model for the spinner from 0 to 9, in 1 steps and start by the value 5
         baristasNumber = manager.baristas.size();
-        SpinnerNumberModel model = new SpinnerNumberModel(baristasNumber, 0, BARISTAS_MAX, 1);
+        SpinnerNumberModel model = new SpinnerNumberModel(baristasNumber, 1, BARISTAS_MAX, 1);
         baristasSpinner = new JSpinner(model);
 
         baristasSpinner.addChangeListener(e -> {

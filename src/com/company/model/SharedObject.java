@@ -43,7 +43,7 @@ public class SharedObject {
         updateOrders();
     }
 
-    private synchronized void updateOrders(){
+    public synchronized void updateOrders(){
 
         LinkedList<Order> temp = new LinkedList<>();
 
@@ -67,15 +67,15 @@ public class SharedObject {
     }
 
 
-    private void viewOrders() {
+    /*private void viewOrders() {
         System.out.println("Orders List");
         for (Order order : orders) {
             System.out.println(order);
         }
-    }
+    }*/
 
     // method to display the items in each order in the terminal
-    private void displayOrders() {
+    /*private void displayOrders() {
         for (Order order : orders) {
             System.out.println(order.getCustomerID());
             if (order.getItems().isEmpty())
@@ -86,7 +86,7 @@ public class SharedObject {
                 }
             }
         }
-    }
+    }*/
 
     public synchronized Order getNextOrder(){
         Order order;
@@ -111,23 +111,25 @@ public class SharedObject {
     public List<Order> getOrders() {
         return orders;
     }
-    public void setOrders(LinkedList<Order> orders) {
+    /*public void setOrders(LinkedList<Order> orders) {
         this.orders = orders;
-    }
+    }*/
 
     public List<Order> getNormalOrders() {
         return normalOrders;
     }
-    public void setNormalOrders(List<Order> orders) {
+
+    /*public void setNormalOrders(List<Order> orders) {
         this.normalOrders = orders;
-    }
+    }*/
 
     public List<Order> getPriorityOrders() {
         return priorityOrders;
     }
-    public void setPriorityOrders(List<Order> orders) {
+
+    /*public void setPriorityOrders(List<Order> orders) {
         this.priorityOrders = orders;
-    }
+    }*/
 
     public void setManager(Manager manager) {this.manager = manager;}
 

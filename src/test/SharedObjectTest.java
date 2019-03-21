@@ -48,28 +48,34 @@ public class SharedObjectTest {
         sharedObject.setManager(manager);
 
     }
-    @Test
-    void testAddOrder(){
 
+    @Test
+    void testAddOrderFromNormalOrders(){
 
        sharedObject.addOrderFromNormalOrders(Order1);
-        assertEquals(1, sharedObject.getOrders().size());
+        assertEquals(1, sharedObject.getNormalOrders().size());
     }
+
+
+    @Test
+    void testAddOrderFromPriorityOrders(){
+
+        sharedObject.addOrderFromPriorityOrders(Order1);
+        assertEquals(1, sharedObject.getPriorityOrders().size());
+    }
+
 
     @Test
     void testGetNextOrderRemove()
     {
-
         sharedObject.addOrderFromNormalOrders(Order1);
         sharedObject.addOrderFromNormalOrders(Order2);
         sharedObject.getNextOrder();
         assertEquals(1, sharedObject.getOrders().size());
-
-
     }
 
     @Test
-    void testGetNextorderValue()
+    void testGetNextOrder()
     {
         sharedObject.addOrderFromNormalOrders(Order1);
         sharedObject.addOrderFromNormalOrders(Order2);
@@ -77,6 +83,29 @@ public class SharedObjectTest {
         assertTrue(sharedObject.getOrders().contains(Order2));
     }
 
+    @Test
+    void testRemoveOrderFromNormalOrders()
+    {
+        sharedObject.addOrderFromNormalOrders(Order1);
+        sharedObject.removeOrderFromNormalOrders(Order1);
+        assertEquals(0, sharedObject.getNormalOrders().size());
+    }
+
+    @Test
+    void testRemoveOrderFromPriorityOrders()
+    {
+        sharedObject.addOrderFromPriorityOrders(Order1);
+        sharedObject.removeOrderFromPriorityOrders(Order1);
+        assertEquals(0, sharedObject.getPriorityOrders().size());
+    }
+
+    @Test
+    void testUpdateOrders() {
+        sharedObject.addOrderFromNormalOrders(Order1);
+        sharedObject.addOrderFromPriorityOrders(Order2);
+        sharedObject.updateOrders();
+        assertEquals(Order2, sharedObject.getOrders().get(0));
+    }
 }
 
 

@@ -159,6 +159,7 @@ public class Manager implements Subject {
         notifyObservers();
     }
 
+
     public void addBaristas(int nbBaristas) {
         int baristasListSize = baristas.size();
         System.out.println("Baristas before changing : " + baristasListSize);
@@ -171,7 +172,7 @@ public class Manager implements Subject {
         }
         System.out.println("Baristas List Size : " + baristas.size());
     }
-    
+
     public void removeBaristas(int nbBaristas) {
         int nbActiveBarista = baristas.size();
         if(nbActiveBarista > nbBaristas) {
@@ -181,16 +182,18 @@ public class Manager implements Subject {
         }
         notifyObservers();
     }
-    
+
+    public void removeBarista(Barista barista) {
+        barista.stopBarista();
+        notifyObservers();
+    }
+
     public void removeServer(Server server) {
         servers.remove(server);
         notifyObservers();
     }
 
-    public void removeBarista(Barista barista) {
-        baristas.remove(barista);
-        notifyObservers();
-    }
+
 
 
     // method to display the menu in the terminal
@@ -212,6 +215,9 @@ public class Manager implements Subject {
     }
 
     public List<Server> getServers() { return servers; }
+    public List<Barista> getBaristas() { return baristas; }
+    public List<Order> getProcessedOrders() { return processedOrders; }
+    public List<Observer> getObservers() { return observer; }
 
     public void registerObserver(Observer obs)
     {
