@@ -15,18 +15,11 @@ public class Log {
     //private BufferedWriter bw = null;
 
 
-    private Log() throws IOException {
+    public Log() throws IOException {
         FileWriter fw = new FileWriter(file);
 
     }
 
-    /*public void closebw(){
-        try {
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public static synchronized Log getInstance() throws IOException {
 
@@ -97,5 +90,19 @@ public class Log {
         bw.newLine();
         bw.close();
     }
+
+    public void log_barista(int id_barista, int server_id) throws IOException {
+
+
+
+        fw = new FileWriter(file, true);
+
+        BufferedWriter bw = new BufferedWriter(fw);
+
+        bw.write("Barista " + id_barista + " take care of order from the server: " + server_id + "\n");
+        bw.newLine();
+        bw.close();
+    }
+
 }
 

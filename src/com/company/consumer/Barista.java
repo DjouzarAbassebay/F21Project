@@ -4,6 +4,7 @@ import com.company.model.Item;
 import com.company.model.Manager;
 import com.company.outputs.Log;
 
+
 import java.io.IOException;
 
 import java.util.List;
@@ -27,12 +28,24 @@ public class Barista extends Thread {
             e.printStackTrace();
         }
         System.out.println("New barista " + id);
+        Log logger1 = null;
+        try {
+            logger1 = log.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         while(running) {
             Server server = waitForServer();
             System.out.println("Barista " + id + " take care of: " + server.getServerId() + "\n");
             completeOrder(server.getProcessingOrder().getItems());
             server.baristaFinished();
             System.out.println("Barista " + id + " finished order\n");
+
+            try {
+                logger1.log_barista(id, server.getServerId());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             try {
                 Thread.sleep(100);

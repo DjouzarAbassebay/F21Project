@@ -170,7 +170,7 @@ public class ServerGUI extends JFrame implements Observer {
         btnOnlineOrder.setForeground(new Color(255, 255, 255));
         btnOnlineOrder.setFont(new Font("Tahoma", Font.BOLD, 16));
         btnOnlineOrder.setBackground(new Color(205, 133, 63));
-        btnOnlineOrder.setBounds(183, 571, 154, 29);
+        btnOnlineOrder.setBounds(240, 571, 154, 29);
         getContentPane().add(btnOnlineOrder);
 
         // When the button is clicked
@@ -184,7 +184,7 @@ public class ServerGUI extends JFrame implements Observer {
         btnSettings.setFont(new Font("Tahoma", Font.BOLD, 16));
         btnSettings.setForeground(new Color(255, 255, 255));
         btnSettings.setBackground(new Color(205, 133, 63));
-        btnSettings.setBounds(363, 571, 135, 29);
+        btnSettings.setBounds(430, 571, 135, 29);
         getContentPane().add(btnSettings);
 
         // When the button is clicked
@@ -193,20 +193,6 @@ public class ServerGUI extends JFrame implements Observer {
             settingsGUI.initUI();
         });
 
-        // Finish button
-        JButton btnFinish = new JButton("MAJ");
-        btnFinish.setForeground(new Color(255, 255, 255));
-        btnFinish.setFont(new Font("Tahoma", Font.BOLD, 16));
-        btnFinish.setBackground(new Color(205, 133, 63));
-        btnFinish.setBounds(525, 571, 135, 29);
-        getContentPane().add(btnFinish);
-
-        // When the button is clicked
-        btnFinish.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                update();
-            }
-        });
     }
 
 
